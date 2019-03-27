@@ -1,0 +1,18 @@
+Arena
+{
+	numComponents : 2
+	Transform
+	{
+		translation : { 0, 0 }
+		rotation : 0
+		scale : { 790, 590 }
+	}
+	ColliderLine
+	{
+		reflection : 1
+		lineSegments : { { 395, 295 }, { -395, 295 } }
+		lineSegments : { { 395, -295 }, { 395, 295 } }
+		lineSegments : { { -395, -295 }, { 395, -295 } }
+		lineSegments : { { -395, 295 }, { -395, -295 } }
+	}
+}

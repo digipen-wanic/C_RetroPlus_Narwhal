@@ -1,0 +1,33 @@
+Bullet
+{
+	numComponents : 6
+	Transform
+	{
+		translation : { 0, 0 }
+		rotation : 0
+		scale : { 7, 7 }
+	}
+	Physics
+	{
+		acceleration : { 0, 0 }
+		velocity : { 0, 0 }
+		angularVelocity : 0
+		inverseMass : 1
+	}
+	Sprite
+	{
+		frameIndex : 0
+		color : { 1 , 1 , 1 , 1 }
+	}
+	ColliderCircle
+	{
+		radius : 3.5
+	}
+	Behaviors::TimedDeath
+	{
+		timeUntilDeath : 5
+	}
+	Behaviors::PlayerProjectile
+	{
+	}
+}
