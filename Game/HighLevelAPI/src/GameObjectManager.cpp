@@ -268,7 +268,7 @@ void GameObjectManager::CheckCollisions(void)
 			continue;
 		}
 
-		for (int j = 0; j < numObjects; ++j)
+		for (int j = i + 1; j < numObjects; ++j)
 		{
 			if (gameObjectActiveList[j]->IsDestroyed())
 			{
