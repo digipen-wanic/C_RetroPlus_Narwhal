@@ -34,6 +34,8 @@ namespace Behaviors
 {
 	enum PlayerState
 	{
+		standing,
+
 		idleLtUp,
 		idleRtUp,
 		idleLt,
@@ -42,7 +44,15 @@ namespace Behaviors
 		runLtUp,
 		runLt,
 		runRtUp,
-		runRt
+		runRt,
+
+		jumpLt,
+		jumpLtUp,
+		jumpRt,
+		jumpRtUp,
+
+		jumpLtRoll,
+		jumpLtRoll
 	};
 
 	class PlayerMovement : public Component
