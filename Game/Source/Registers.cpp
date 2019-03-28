@@ -21,6 +21,7 @@ as specified in specification file Registers.h.
 #include "ScreenWrap.h"
 #include "TimedDeath.h"
 #include "PlayerProjectile.h"
+#include "CameraFollow.h"
 
 
 //master component register
@@ -32,4 +33,5 @@ void Registers::RegisterComponents()
 	GameObjectFactory::GetInstance().RegisterComponent<Behaviors::ScreenWrap>();
 	GameObjectFactory::GetInstance().RegisterComponent<Behaviors::TimedDeath>();
 	GameObjectFactory::GetInstance().RegisterComponent<Behaviors::PlayerProjectile>();
+	GameObjectFactory::GetInstance().RegisterComponent<Behaviors::CameraFollow>();
 }

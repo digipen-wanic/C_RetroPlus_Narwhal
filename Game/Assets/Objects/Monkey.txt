@@ -1,6 +1,6 @@
 Monkey
 {
-	numComponents : 5
+	numComponents : 7
 	Transform
 	{
 		translation : { 0, 0 }
@@ -28,5 +28,11 @@ Monkey
 	ColliderRectangle
 	{
 		extents : { 50, 50 }
+	}
+	Behaviors::CameraFollow
+	{
+	}
+	Animation
+	{
 	}
 }

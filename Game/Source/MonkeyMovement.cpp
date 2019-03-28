@@ -88,10 +88,7 @@ namespace Behaviors
 		MoveHorizontal();
 		MoveVertical();
 
-		Graphics& graphics = Graphics::GetInstance();
 
-		Camera& camera = graphics.GetCurrentCamera();
-		camera.SetTranslation(transform->GetTranslation());
 	}
 
 	// Map collision handler for Monkey objects.
