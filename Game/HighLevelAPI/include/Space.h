@@ -16,6 +16,7 @@
 //------------------------------------------------------------------------------
 
 #include "GameObjectManager.h"
+#include "ResourceManager.h"
 #include <BetaObject.h>
 
 //------------------------------------------------------------------------------
@@ -81,6 +82,9 @@ public:
 	// Returns the object manager, which you can use to retrieve and add objects.
 	GameObjectManager& GetObjectManager();
 
+	// Returns the object manager, which you can use to retrieve and add objects.
+	ResourceManager& GetResourceManager();
+
 private:
 	//------------------------------------------------------------------------------
 	// Private Functions:
@@ -97,6 +101,7 @@ private:
 	Level* currentLevel;
 	Level* nextLevel;
 	GameObjectManager objectManager;
+	ResourceManager resourceManager;
 };
 
 //------------------------------------------------------------------------------

@@ -59,12 +59,6 @@ public:
 	//   A pointer to a collider.
 	Component* Clone() const override;
 
-	// Saves object data to a file.
-	virtual void Serialize(Parser& parser) const override;
-
-	// Loads object data from a file.
-	virtual void Deserialize(Parser& parser) override;
-
 	// Debug drawing for colliders.
 	void Draw() override;
 
@@ -79,6 +73,16 @@ public:
 	// Params:
 	//   map = A pointer to the tilemap resource.
 	void SetTilemap(const Tilemap* map);
+
+	// Loads object data from a file.
+	// Params:
+	//   parser = The parser for the file we want to read from.
+	virtual void Deserialize(Parser& parser);
+
+	// Saves object data to a file.
+	// Params:
+	//   parser = The parser for the file we want to write to.
+	virtual void Serialize(Parser& parser) const;
 
 private:
 	//------------------------------------------------------------------------------

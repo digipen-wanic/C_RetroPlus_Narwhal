@@ -38,6 +38,7 @@ file Archetypes.h.
 #include "Physics.h"
 #include "Transform.h"
 #include "TileMap.h"
+#include <Animation.h>
 
 //metroid
 #include "PlayerController.h"
@@ -411,6 +412,37 @@ GameObject* Archetypes::CreateArenaArchetype()
 
 	return arena;
 }
+
+
+// Create door object
+// Params:
+//   mesh = The mesh to use for the sprite.
+//   spriteSource = The sprite source to use for the sprite.
+// Returns:
+//   A pointer to the newly constructed game object.
+GameObject* Archetypes::CreateDoorObject(Mesh * mesh, SpriteSource * spriteSource)
+{
+	//initilize all components
+	Transform* transform = new Transform(100.0f, 50.0f);
+	transform->SetScale(Vector2D(50.0f, 100.0f));
+
+	Sprite* sprite = new Sprite();
+	sprite->SetMesh(mesh);
+	sprite->SetSpriteSource(spriteSource);
+	Animation* animation = new Animation();
+	ColliderRectangle* collider = new ColliderRectangle();
+	collider->SetExtents(transform->GetScale() * 0.5f);
+
+	//create object add all the components
+	GameObject* door = new GameObject("Door");
+	door->AddComponent(transform);
+	door->AddComponent(sprite);
+	door->AddComponent(collider);
+	door->AddComponent(animation);
+
+	return door;
+}
+
 
 /*
 // Create a collectable object

@@ -1,11 +1,11 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	SpriteTilemap.h
+// File Name:	MapObjectSpawner.h
 // Author(s):	Jeremy Kings (j.kings)
-// Project:		BetaFramework
+// Project:		BetaFramework Map Editor
 // Course:		WANIC VGP2 2018-2019
 //
-// Copyright © 2018 DigiPen (USA) Corporation.
+// Copyright © 2019 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
@@ -15,39 +15,40 @@
 // Include Files:
 //------------------------------------------------------------------------------
 
-#include "Sprite.h"
+#include <Component.h>
 
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Forward References:
+// Forward Declarations:
 //------------------------------------------------------------------------------
 
+class Transform;
 class Tilemap;
 
 //------------------------------------------------------------------------------
 // Public Structures:
 //------------------------------------------------------------------------------
 
-// You are free to change the contents of this structure as long as you do not
-//   change the public interface declared in the header.
-class SpriteTilemap : public Sprite
+class MapObjectSpawner : public Component
 {
 public:
 	//------------------------------------------------------------------------------
 	// Public Functions:
 	//------------------------------------------------------------------------------
 
-	// Create a new sprite for use with a tilemap.
-	SpriteTilemap();
+	// Constructor
+	MapObjectSpawner();
 
-	// Clone the sprite, returning a dynamically allocated copy.
+	// Clone a component and return a pointer to the cloned component.
+	// Returns:
+	//   A pointer to a dynamically allocated clone of the component.
 	Component* Clone() const override;
 
-	// Draw a sprite (Sprite can be textured or untextured).
-	void Draw() override;
+	// Initialize this component (happens at object creation).
+	void Initialize() override;
 
-	// Sets the tilemap data that will be used by the sprite.
+	// Sets the tilemap data that will be used by this component.
 	// Params:
 	//   map = A pointer to the tilemap resource.
 	void SetTilemap(const Tilemap* map);
@@ -55,19 +56,29 @@ public:
 	// Loads object data from a file.
 	// Params:
 	//   parser = The parser for the file we want to read from.
-	virtual void Deserialize(Parser& parser);
+	virtual void Deserialize(Parser& parser) override;
 
 	// Saves object data to a file.
 	// Params:
 	//   parser = The parser for the file we want to write to.
-	virtual void Serialize(Parser& parser) const;
+	virtual void Serialize(Parser& parser) const override;
 
 private:
+	//------------------------------------------------------------------------------
+	// Private Functions:
+	//------------------------------------------------------------------------------
+
+	// Actual object placement function
+	void PlaceObject(GameObject* object, int x, int y);
+
 	//------------------------------------------------------------------------------
 	// Private Variables:
 	//------------------------------------------------------------------------------
 
-	// The tilemap
+	// Components
+	Transform* transform;
+
+	// Resources
 	const Tilemap* map;
 };
 

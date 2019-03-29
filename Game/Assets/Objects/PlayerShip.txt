@@ -1,34 +1,42 @@
 PlayerShip
 {
-	numComponents : 5
-	Transform
-	{
-		translation : { 0, 0 }
-		rotation : 0
-		scale : { 50, 50 }
-	}
-	Physics
-	{
-		acceleration : { 0, 0 }
-		velocity : { 0, 0 }
-		angularVelocity : 0
-		inverseMass : 1
-	}
-	Sprite
-	{
-		frameIndex : 0
-		color : { 0 , 0.5 , 1 , 1 }
-	}
-	ColliderCircle
-	{
-		radius : 25
-	}
-	Behaviors::PlayerShip
-	{
-		forwardThrust : 100
-		maximumSpeed : 200
-		rotationSpeed : 5
-		bulletSpeed : 500
-		deathDuration : 4
-	}
+  numComponents : 7
+  Transform
+  {
+    translation : { 0, 0 }
+    rotation : 0
+    scale : { 50, 50 }
+  }
+  Sprite
+  {
+    spriteSource : Ship
+    color : { 0 , 0 , 1 , 1 }
+    zDepth : 0
+  }
+  Physics
+  {
+    velocity : { 0, 0 }
+    angularVelocity : 0
+    mass : 1
+  }
+  Behaviors::PlayerShip
+  {
+    forwardThrust : 150
+    rotationSpeed : 3.14159
+    bulletSpeed : 200
+    deathDuration : 4
+    spreadNumber : 3
+    spreadAngle : 0.523599
+  }
+  Behaviors::ScreenWrap
+  {
+  }
+  ColliderCircle
+  {
+    radius : 25
+  }
+  Behaviors::RaycastTest
+  {
+    castDistance : 200
+  }
 }

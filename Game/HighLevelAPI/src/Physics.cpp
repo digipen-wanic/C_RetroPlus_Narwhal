@@ -47,19 +47,18 @@ Component* Physics::Clone() const
 // Saves object data to a file.
 void Physics::Serialize(Parser& parser) const
 {
-	parser.WriteVariable("acceleration", acceleration);
 	parser.WriteVariable("velocity", velocity);
 	parser.WriteVariable("angularVelocity", angularVelocity);
-	parser.WriteVariable("inverseMass", inverseMass);
+	parser.WriteVariable("mass", 1 / inverseMass);
 }
 
 // Loads object data from a file.
 void Physics::Deserialize(Parser& parser)
 {
-	parser.ReadVariable("acceleration", acceleration );
 	parser.ReadVariable("velocity", velocity);
 	parser.ReadVariable("angularVelocity", angularVelocity);
-	parser.ReadVariable("inverseMass", inverseMass);
+	parser.ReadVariable("mass", inverseMass);
+	inverseMass = 1 / inverseMass;
 }
 
 // Initialize components.

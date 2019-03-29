@@ -28,6 +28,7 @@
 #include "Texture.h"
 #include <Engine.h>
 #include "CameraFollow.h"
+#include <Parser.h>
 
 namespace Levels
 {
@@ -47,11 +48,13 @@ namespace Levels
 		std::cout << "MainLevel::Load" << std::endl;
 
 		textureMonkey = Texture::CreateTextureFromFile("Monkey.png");
-		spriteSourceMonkey = new SpriteSource(columnsMonkey, rowsMonkey, textureMonkey);
+		spriteSourceMonkey = new SpriteSource(textureMonkey, "Monkey", columnsMonkey, rowsMonkey);
 
 		meshMonkey = CreateQuadMesh(Vector2D(0.33333f, 0.2f), Vector2D(0.5, 0.5));
 
-		Tilemap* tilemapBuffer = Tilemap::CreateTilemapFromFile("Assets/Levels/Platformer.txt");
+		Tilemap* tilemapBuffer = new Tilemap();
+		Parser parser("Assets/Levels/Platformer.txt", std::fstream::in);
+		tilemapBuffer->Deserialize(parser);
 
 		if (tilemapBuffer != nullptr)
 		{
@@ -63,7 +66,7 @@ namespace Levels
 		}
 
 		textureMap = Texture::CreateTextureFromFile("Tilemap.png");
-		spriteSourceMap = new SpriteSource(columnsMap, rowsMap, textureMap);
+		spriteSourceMap = new SpriteSource(textureMap, "Map", columnsMap, rowsMap);
 
 		meshMap = CreateQuadMesh(Vector2D(0.25f, 0.33333f), Vector2D(0.5, 0.5));
 	}
@@ -85,7 +88,7 @@ namespace Levels
 	void MainLevel::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
-
+		/*
 		if (Input::GetInstance().CheckTriggered('1'))
 		{
 			GetSpace()->SetLevel(new Level1());
@@ -101,13 +104,13 @@ namespace Levels
 		else if (Input::GetInstance().CheckTriggered('O'))
 		{
 			GetSpace()->SetLevel(new Omega());
-		}
+		}*/
 	}
 
 	// Unload the resources associated with Level 2.
 	void MainLevel::Unload()
 	{
-		std::cout << "Level2::Unload" << std::endl;
+		std::cout << "MainLevel::Unload" << std::endl;
 
 		delete meshMonkey;
 		delete textureMonkey;

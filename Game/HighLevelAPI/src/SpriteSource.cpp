@@ -1,69 +1,186 @@
-//==================================================================-
-/*
-/file   SpriteSource.cpp
-/author Jakob McFarland
-/date   10/23/2018
-/brief
+//------------------------------------------------------------------------------
+//
+// File Name:	SpriteSource.cpp
+// Author(s):	Jeremy Kings (j.kings)
+// Project:		BetaFramework
+// Course:		WANIC VGP2 2018-2019
+//
+// Copyright © 2018 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 
-This is the implementation file for all member functions
-of the class SpriteSource, as specified in specification
-file SpriteSource.h.
-
-*/
-//==================================================================-
+//------------------------------------------------------------------------------
+// Include Files:
+//------------------------------------------------------------------------------
 
 #include "stdafx.h"
 #include "SpriteSource.h"
 
-#include "Vector2D.h"
+// Resources
+#include <Texture.h>
 
-//==================================================================-
+// Systems
+#include <Parser.h>
+
+// Math
+#include <Vector2D.h> // SetX and SetY
+
+//------------------------------------------------------------------------------
+
+const std::string SpriteSource::spriteSourcePath = "SpriteSources/";
+
+//------------------------------------------------------------------------------
 // Public Functions:
-//==================================================================-
+//------------------------------------------------------------------------------
 
-// Allocate a new sprite source object.
+// Constructor for SpriteSource
 // Params:
-//	 numCols = The number of columns in the sprite sheet.
-//	 numRows = The number of rows in the sprite sheet.
-//	 texture = A pointer to a texture that has been loaded by the Alpha Engine.
-SpriteSource::SpriteSource(int numCols, int numRows, Texture* texture)
-	: numRows(numRows), numCols(numCols), texture(texture)
+//   texture = The texture that contains the frames that this sprite source will use.
+//   name = The name to use for this sprite source.
+//	 numCols = The number of total columns in the sprite sheet texture.
+//	 numRows = The number of total rows in the sprite sheet texture.
+//   frameCount = The number of frames in the sprite source (for animation).
+//   frameStart = The starting frame for the sprite source (for animation).
+SpriteSource::SpriteSource(const Texture* texture, std::string _name,
+	unsigned numCols, unsigned numRows, unsigned frameCount, unsigned frameStart)
+	: numCols(numCols), numRows(numRows), frameCount(frameCount),
+	frameStart(frameStart), texture(texture), name(_name)
 {
+	// If name is empty, use name of texture without file extension
+	if (name == "" && texture != nullptr)
+	{
+		// Get texture name without path
+		std::string filename = texture->GetName();
+		size_t lastSlash = filename.find_last_of('/');
+		if (lastSlash != std::string::npos)
+			filename = filename.substr(lastSlash + 1);
+
+		// Remove file extension (.png)
+		name = filename.substr(0, filename.length() - 4);
+	}
 }
 
 // Returns a pointer to the texture, for the purposes of rendering a sprite.
+// Params:
+//	 spriteSource = Pointer to the sprite source object.
 // Returns:
-//	 A pointer to the sprite source texture.
-Texture* SpriteSource::GetTexture() const
+//	 If the sprite source pointer is valid,
+//		then return a pointer to its texture,
+//		else return nullptr.
+const Texture* SpriteSource::GetTexture() const
 {
 	return texture;
 }
 
-// Returns the maximum number of frames possible, given the dimensions of the sprite sheet.
-// (Hint: Frame count = numCols * numRows.)
-// Returns:
-//	 The calculated frame count.
-unsigned SpriteSource::GetFrameCount() const
+// Sets the texture used by the sprite source.
+void SpriteSource::SetTexture(const Texture * _texture)
+{
+	texture = _texture;
+}
+
+// Returns the maximum number of possible frames in the sprite source's texture (rows * cols).
+unsigned SpriteSource::GetFrameCountTexture() const
 {
 	return numCols * numRows;
 }
 
+// Returns the first frame used when animating.
+unsigned SpriteSource::GetFrameCount() const
+{
+	return frameCount;
+}
+
+// Returns the first frame used when animating.
+unsigned SpriteSource::GetFrameStart() const
+{
+	return frameStart;
+}
+
 // Returns the UV coordinates of the specified frame in a sprite sheet.
-// (Hint: Refer to the Week 2 lecture slides for the correct calculations.)
 // Params:
 //	 frameIndex = A frame index within a sprite sheet.
-//   textureCoords = Reference to a Vector2D containing the UV/texture coordinates.
-void SpriteSource::GetUV(unsigned int frameIndex, Vector2D& textureCoords) const
+// Returns:
+//   A vector containing the UV/texture coordinates.
+const Vector2D SpriteSource::GetUV(unsigned int frameIndex) const
 {
-	//get uv scalers
-	float uSize = 1.0f / static_cast<float>(numCols);
-	float vSize = 1.0f / static_cast<float>(numRows);
+	Vector2D textureCoords;
 
-	//get offset
-	int row = frameIndex / numCols;
-	int col = frameIndex % numCols;
+	float uSize = 1.0f / numCols;
+	float vSize = 1.0f / numRows;
 
-	//scale and set
-	textureCoords.x = static_cast<float>(col) * uSize;
-	textureCoords.y = static_cast<float>(row) * vSize;
+	textureCoords.x = uSize * (frameIndex % numCols);
+	textureCoords.y = vSize * (frameIndex / numCols);
+
+	return textureCoords;
+}
+
+// Gets the name of the sprite source.
+const std::string & SpriteSource::GetName() const
+{
+	return name;
+}
+
+// Gets the name of the texture (for serialization)
+const std::string & SpriteSource::GetTextureName() const
+{
+	if (texture != nullptr)
+	{
+		return texture->GetName();
+	}
+	else
+	{
+		return textureName;
+	}
+}
+
+// Gets the dimensions of the texture in rows/cols
+const Vector2D SpriteSource::GetTextureDimensions() const
+{
+	return Vector2D(static_cast<float>(numCols), static_cast<float>(numRows));
+}
+
+// Save object data to file.
+// Params:
+//   parser = The parser object used to save the object's data.
+void SpriteSource::Serialize(Parser& parser) const
+{
+	parser.WriteValue(name);
+	parser.BeginScope();
+
+	parser.WriteVariable("numRows", numRows);
+	parser.WriteVariable("numCols", numCols);
+
+	parser.WriteVariable("frameCount", frameCount);
+	parser.WriteVariable("frameStart", frameStart);
+
+	// Extract the filename from the relative path
+	std::string filename = texture->GetName();
+	size_t lastSlash = filename.find_last_of('/');
+	if(lastSlash != std::string::npos)
+	filename = filename.substr(lastSlash + 1);
+
+	// Write texture filename to file
+	parser.WriteVariable("texture", filename);
+
+	parser.EndScope();
+}
+
+// Load object data from file
+// Params:
+//   parser = The parser object used to load the object's data.
+void SpriteSource::Deserialize(Parser& parser)
+{
+	parser.ReadValue(name);
+	parser.ReadSkip('{');
+
+	parser.ReadVariable("numRows", numRows);
+	parser.ReadVariable("numCols", numCols);
+
+	parser.ReadVariable("frameCount", frameCount);
+	parser.ReadVariable("frameStart", frameStart);
+
+	// Read the texture filename
+	parser.ReadVariable("texture", textureName);
+
+	parser.ReadSkip('}');
 }

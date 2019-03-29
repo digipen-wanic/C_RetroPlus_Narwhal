@@ -1,31 +1,41 @@
-//==================================================================-
-/*
-/file   SriteTilemap.cpp
-/author Jakob McFarland
-/date   12/4/2018
-/brief
+//------------------------------------------------------------------------------
+//
+// File Name:	SpriteTilemap.cpp
+// Author(s):	Jeremy Kings (j.kings)
+// Project:		BetaFramework
+// Course:		WANIC VGP2 2018-2019
+//
+// Copyright © 2018 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 
-This is the implementation file for all member functions
-of the class SriteTilemap as specified in specification
-file SriteTilemap.h.
-
-*/
-//==================================================================-
+//------------------------------------------------------------------------------
+// Include Files:
+//------------------------------------------------------------------------------
 
 #include "stdafx.h"
 #include "SpriteTilemap.h"
 
-#include "GameObject.h"
-#include "Transform.h"
-#include "Tilemap.h"
+// Components
+#include "Transform.h"	// GetMatrix
+#include "GameObject.h"	// GetComponent
+
+// Systems
+#include <Parser.h> // Read/Write Variable
+#include <Space.h>	// GetResourceManager
+
+// Resources
+#include "Tilemap.h"	// GetWidth, GetHeight, GetCellValue
+
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 // Public Functions:
 //------------------------------------------------------------------------------
 
-// Create a new sprite for use with a tilemap.
+// Create a new sprite object.
 SpriteTilemap::SpriteTilemap()
-	: Sprite()
+	: map(nullptr)
 {
 }
 
@@ -38,27 +48,35 @@ Component* SpriteTilemap::Clone() const
 // Draw a sprite (Sprite can be textured or untextured).
 void SpriteTilemap::Draw()
 {
-	unsigned rows = map->GetHeight();
-	unsigned cols = map->GetWidth();
+	// Set up variables
+	int minX = map->GetMinIndexX();
+	int maxX = map->GetMaxIndexX();
+	int minY = map->GetMinIndexY();
+	int maxY = map->GetMaxIndexY();
+	Vector2D offset;
+	int cellValue = 0;
+	const Vector2D& tileSize = transform->GetScale();
 
-	Vector2D scale = transform->GetScale();
-
-	int cellData;
-
-	for (unsigned row = 0; row < rows; ++row)
+	// Loop through cells in map
+	for(int r = minY; r < maxY; ++r)
 	{
-		for (unsigned col = 0; col < cols; ++col)
+		for (int c = minX; c < maxX; ++c)
 		{
-			//foreach cell, get cell data
-			cellData = map->GetCellValue(col, row);
+			// Set frame index based on cell data
+			cellValue = map->GetCellValue(c, r);
 
-			// skip it if empty
-			if (cellData <= 0) continue;			
+			// Skip empty cells
+			if (cellValue < 1)
+				continue;
 
-			Sprite::SetFrame(cellData - 1);
+			// Set frame index to cell value
+			SetFrame(cellValue);
 
-			//draw with offset from upper left corner
-			Vector2D offset( col * scale.x, row * scale.y * -1 );
+			// Set offset based on cell location and scale
+			offset.x = c * tileSize.x;
+			offset.y = r * -tileSize.y;
+
+			// Draw the sprite
 			Sprite::Draw(offset);
 		}
 	}
@@ -70,4 +88,24 @@ void SpriteTilemap::Draw()
 void SpriteTilemap::SetTilemap(const Tilemap* map_)
 {
 	map = map_;
+}
+
+// Loads object data from a file.
+// Params:
+//   parser = The parser for the file we want to read from.
+void SpriteTilemap::Deserialize(Parser & parser)
+{
+	Sprite::Deserialize(parser);
+	std::string tilemapName;
+	parser.ReadVariable("tilemap", tilemapName);
+	SetTilemap(GetOwner()->GetSpace()->GetResourceManager().GetTilemap(tilemapName));
+}
+
+// Saves object data to a file.
+// Params:
+//   parser = The parser for the file we want to write to.
+void SpriteTilemap::Serialize(Parser & parser) const
+{
+	Sprite::Serialize(parser);
+	parser.WriteVariable("tilemap", map->GetName());
 }
