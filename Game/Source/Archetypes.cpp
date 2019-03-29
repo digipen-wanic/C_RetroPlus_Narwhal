@@ -39,10 +39,52 @@ file Archetypes.h.
 #include "Transform.h"
 #include "TileMap.h"
 
+//metroid
+#include "PlayerController.h"
+#include "CameraFollow.h"
+
 
 //==================================================================-
 // Public Functions:
 //==================================================================-
+
+// Create the player game object.
+	// Params:
+	//   mesh  = The mesh to use for the object's sprite.
+	//   spriteSource = The sprite source to use for the object.
+	// Returns:
+	//	 A pointer to the newly constructed game object
+GameObject * Archetypes::CreateSamus(Mesh * mesh, SpriteSource * spriteSource)
+{
+	//initilize all components
+	Transform* transform = new Transform(0.0f, 0.0f);
+	transform->SetScale(Vector2D(100.0f, 100.0f));
+
+	Sprite* sprite = new Sprite();
+	sprite->SetMesh(mesh);
+	sprite->SetSpriteSource(spriteSource);
+
+	Physics* physics = new Physics();
+	ColliderRectangle* colliderRectangle =
+		new ColliderRectangle(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
+
+	Behaviors::PlayerController* playerController = new Behaviors::PlayerController();
+	Behaviors::CameraFollow* cameraFollow = new Behaviors::CameraFollow();
+
+	//create object add all the components
+	GameObject* samusObject = new GameObject("Samus");
+	samusObject->AddComponent(transform);
+	samusObject->AddComponent(physics);
+	samusObject->AddComponent(sprite);
+	samusObject->AddComponent(playerController);
+	samusObject->AddComponent(cameraFollow);
+	samusObject->AddComponent(colliderRectangle);
+
+	GameObjectFactory::GetInstance().SaveObjectToFile(samusObject);
+
+	return samusObject;
+}
+
 
 // Create a game object that uses the Ship texture.
 // Returns:

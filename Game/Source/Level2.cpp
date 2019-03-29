@@ -80,10 +80,9 @@ namespace Levels
 		std::cout << "Level2::Initialize" << std::endl;
 
 		GetSpace()->GetObjectManager().AddObject(*Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap));
-		GameObject* monkey = GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
+		GameObject* monkey = Archetypes::CreateSamus(meshMonkey, spriteSourceMonkey); //GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		monkey->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
-		GetSpace()->GetObjectManager().AddObject(*monkey);
-		
+		GetSpace()->GetObjectManager().AddObject(*monkey);	
 	}
 
 	// Update Level 2.
