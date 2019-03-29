@@ -1,6 +1,6 @@
-//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------PlayerController
 //
-// File Name:	PlayerMovement.h
+// File Name:	PlayerController.h
 // Author(s):	Jakob McFarland
 //
 //------------------------------------------------------------------------------
@@ -52,10 +52,10 @@ namespace Behaviors
 		jumpRtUp,
 
 		jumpLtRoll,
-		jumpLtRoll
+		jumpRtRoll
 	};
 
-	class PlayerMovement : public Component
+	class PlayerController : public Component
 	{
 	public:
 		//------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ namespace Behaviors
 		//------------------------------------------------------------------------------
 
 		// Constructor
-		PlayerMovement();
+		PlayerController();
 
 		// Clone a component and return a pointer to the cloned component.
 		// Returns:
@@ -108,18 +108,27 @@ namespace Behaviors
 		// Moves vertically based on input
 		void MoveVertical();
 
+		// Moves vertically based on input
+		void Shoot();
+
 		//------------------------------------------------------------------------------
 		// Private Variables:
 		//------------------------------------------------------------------------------
 
 		//world data
-		float tileUnit = 200.0f;
+		float tileUnit = 100.0f;
 
 		// Movement properties
 		float PlayerWalkSpeed;
 		float PlayerJumpSpeed;
 		float maxJumpHeight;
 		Vector2D gravity;
+
+		//shooting properties
+		float firingSpeed;
+		float firingTimer;
+		float bulletSpeed;
+		GameObject* bulletArchetype;
 
 		// Components
 		Transform* transform;
@@ -128,6 +137,7 @@ namespace Behaviors
 		// Misc
 		float jumpStartY;
 		bool onGround;
+		bool jumping;
 		PlayerState playerState;
 	};
 }

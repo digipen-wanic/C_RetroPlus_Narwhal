@@ -1,0 +1,35 @@
+Samus
+{
+	numComponents : 6
+	Transform
+	{
+		translation : { 0, 0 }
+		rotation : 0
+		scale : { 100, 100 }
+	}
+	Physics
+	{
+		acceleration : { 0, 0 }
+		velocity : { 0, 0 }
+		angularVelocity : 0
+		inverseMass : 1
+	}
+	Sprite
+	{
+		frameIndex : 0
+		color : { 1 , 1 , 1 , 1 }
+	}
+	Behaviors::PlayerController
+	{
+		PlayerWalkSpeed : 200
+		PlayerJumpSpeed : 400
+		gravity : { 0, -300 }
+	}
+	Behaviors::CameraFollow
+	{
+	}
+	ColliderRectangle
+	{
+		extents : { 50, 50 }
+	}
+}

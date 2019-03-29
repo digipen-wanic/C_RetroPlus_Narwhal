@@ -13,6 +13,9 @@
     <Filter Include="Game\Behaviors">
       <UniqueIdentifier>{30b4313e-2f34-40ba-9613-d250bab122eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Metroid">
+      <UniqueIdentifier>{dc5cf687-0d18-4c5d-be1b-a81765ecab15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp" />
@@ -58,6 +61,15 @@
     <ClCompile Include="Source\Omega.cpp">
       <Filter>Game\Levels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PlayerController.cpp">
+      <Filter>Game\Metroid</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CameraFollow.cpp">
+      <Filter>Game\Metroid</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MainLevel.cpp">
+      <Filter>Game\Metroid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\stdafx.h">
@@ -101,6 +113,15 @@
     </ClInclude>
     <ClInclude Include="Source\Omega.h">
       <Filter>Game\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerController.h">
+      <Filter>Game\Metroid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraFollow.h">
+      <Filter>Game\Metroid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MainLevel.h">
+      <Filter>Game\Metroid</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
