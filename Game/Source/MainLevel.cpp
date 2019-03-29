@@ -38,7 +38,7 @@ namespace Levels
 
 	// Creates an instance of Level 2.
 	MainLevel::MainLevel()
-		: Level("MainLevel"), columnsMonkey(3), rowsMonkey(5), columnsMap(4), rowsMap(3)
+		: Level("MainLevel"), columnsMonkey(3), rowsMonkey(5), columnsMap(3), rowsMap(4)
 	{
 	}
 
@@ -53,7 +53,7 @@ namespace Levels
 		meshMonkey = CreateQuadMesh(Vector2D(0.33333f, 0.2f), Vector2D(0.5, 0.5));
 
 		Tilemap* tilemapBuffer = new Tilemap();
-		Parser parser("Assets/Levels/Platformer.txt", std::fstream::in);
+		Parser parser("Assets/Levels/MainLevel.txt", std::fstream::in);
 		tilemapBuffer->Deserialize(parser);
 
 		if (tilemapBuffer != nullptr)
@@ -65,10 +65,10 @@ namespace Levels
 			std::cout << "Error loading map!" << std::endl;
 		}
 
-		textureMap = Texture::CreateTextureFromFile("Tilemap.png");
+		textureMap = Texture::CreateTextureFromFile("TilemapMetroid.png");
 		spriteSourceMap = new SpriteSource(textureMap, "Map", columnsMap, rowsMap);
 
-		meshMap = CreateQuadMesh(Vector2D(0.25f, 0.33333f), Vector2D(0.5, 0.5));
+		meshMap = CreateQuadMesh(Vector2D(1.0f / columnsMap, 1.0f / rowsMap), Vector2D(0.5, 0.5));
 	}
 
 	// Initialize the memory associated with Level 2.

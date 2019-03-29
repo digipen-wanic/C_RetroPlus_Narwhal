@@ -70,7 +70,7 @@ void SpriteTilemap::Draw()
 				continue;
 
 			// Set frame index to cell value
-			SetFrame(cellValue);
+			SetFrame(cellValue - 1);
 
 			// Set offset based on cell location and scale
 			offset.x = c * tileSize.x;
