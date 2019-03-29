@@ -1,0 +1,8 @@
+MonkeyJump
+{
+  numRows : 5
+  numCols : 3
+  frameCount : 1
+  frameStart : 9
+  texture : Monkey.png
+}

@@ -104,6 +104,14 @@ namespace Archetypes
 	// Returns:
 	//	 A pointer to the newly constructed game object
 	GameObject* CreateArenaArchetype();
+
+	// Create door object
+	// Params:
+	//   mesh = The mesh to use for the sprite.
+	//   spriteSource = The sprite source to use for the sprite.
+	// Returns:
+	//   A pointer to the newly constructed game object.
+	GameObject* CreateDoorObject(Mesh * mesh, SpriteSource * spriteSource);
 }
 
 //----------------------------------------------------------------------------

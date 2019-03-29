@@ -1,115 +1,116 @@
-//==================================================================-
-/*
-/file   Animation.cpp
-/author Jakob McFarland
-/date   10/23/2018
-/brief
+//------------------------------------------------------------------------------
+//
+// File Name:	Animation.cpp
+// Author(s):	Jeremy Kings (j.kings)
+// Project:		BetaFramework
+// Course:		WANIC VGP2 2018-2019
+//
+// Copyright © 2018 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 
-This is the implementation file for all member functions
-of the class Animation, as specified in specification
-file Animation.h.
-
-*/
-//==================================================================-
+//------------------------------------------------------------------------------
+// Include Files:
+//------------------------------------------------------------------------------
 
 #include "stdafx.h"
 #include "Animation.h"
 
-#include "Component.h"
-#include "GameObject.h"
-#include "Sprite.h"
+// Components
+#include "Sprite.h" // SetFrame
+#include "GameObject.h" // GetComponent
 
-//==================================================================-
+// Resources
+#include <SpriteSource.h>
+
+// Systems
+#include <Parser.h>
+
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
 // Public Functions:
-//==================================================================-
+//------------------------------------------------------------------------------
 
-// Construct a new animation object.
-// Params:
-//   sprite = The sprite this animation will be manipulating.
+// Allocate a new animation object.
 Animation::Animation()
-	: Component("Animation"), frameIndex(0), frameCount(0), frameStart(0),
-	frameDelay(0), frameDuration(0), isRunning(false), isLooping(false),
-	isDone(0)
+	: Component("Animation"), frameIndex(0), frameDelay(0.0f),
+	frameDuration(0), isRunning(false), isLooping(false), isDone(false), lastSpriteSource(nullptr)
 {
 }
 
-// Clone an animation, returning a dynamically allocated copy.
-Component* Animation::Clone() const
+// Returns a dynamically allocated copy of the component.
+// Must be implemented so correct component is copied during copy.
+Component * Animation::Clone() const
 {
 	return new Animation(*this);
 }
 
-// Loads object data from a file.
-void Animation::Deserialize(Parser& parser)
-{
-	UNREFERENCED_PARAMETER(parser);
-}
-
-// Saves object data to a file.
-void Animation::Serialize(Parser& parser) const
-{
-	UNREFERENCED_PARAMETER(parser);
-}
-
 // Initialize components.
-void Animation::Initialize() 
+void Animation::Initialize()
 {
-	sprite = static_cast<Sprite*>( GetOwner()->GetComponent("Sprite") );
+	sprite = GetOwner()->GetComponent<Sprite>();
 }
 
 // Play a simple animation sequence (0 .. frameCount).
 // Params:
-//   frameStart = The starting frame for the sequence.
-//	 frameCount = The number of frames in the sequence.
 //	 frameDuration = The amount of time to wait between frames (in seconds).
 //	 isLooping = True if the animation loops, false otherwise.
-void Animation::Play(unsigned frameStart_, unsigned frameCount_, float frameDuration_, bool isLooping_)
+void Animation::Play(float frameDuration_, bool isLooping_)
 {
-	frameStart = frameStart_;
-	frameIndex = frameStart;
-	frameCount = frameCount_;
 	frameDuration = frameDuration_;
 	frameDelay = frameDuration;
 	isLooping = isLooping_;
 	isRunning = true;
-
-	sprite->SetFrame(frameStart);
+	frameIndex = sprite->GetSpriteSource()->GetFrameStart();
+	isDone = false;
+	sprite->SetFrame(frameIndex);
+	lastSpriteSource = sprite->GetSpriteSource();
 }
 
 // Update the animation.
 // Params:
 //	 dt = Change in time (in seconds) since the last game loop.
-void Animation::Update(float dt)
+void Animation::FixedUpdate(float dt)
 {
-	isDone = false;
+	if (isRunning == false) return;
 
-	if (!isRunning)
+	// If sprite source was changed
+	if (sprite->GetSpriteSource() != lastSpriteSource)
 	{
-		return;
+		// Start from beginning of animation
+		Play(frameDuration, isLooping);
 	}
-	
+
+	isDone = false;
 	frameDelay -= dt;
 
-	if (frameDelay <= 0)
-	{
-		frameDelay = frameDuration;
-		unsigned nextFrame = frameIndex + 1;
+	unsigned frameStart = sprite->GetSpriteSource()->GetFrameStart();
+	unsigned frameCount = sprite->GetSpriteSource()->GetFrameCount();
 
-		if (nextFrame > frameCount)
+	// SIMPLE ANIMATION
+	if (frameDelay <= 0.0f)
+	{
+		frameIndex++;
+
+		// Animation is done
+		if (frameIndex > frameStart + frameCount - 1)
 		{
+			if (isLooping) frameIndex = frameStart;
+			else isRunning = false;
+
 			isDone = true;
-			nextFrame = frameStart;
 		}
 
+		float nextDelay = frameDuration;
+
+		// If animation is unfinished or finished and looping, proceed to next frame
 		if (!isDone || isLooping)
 		{
-			frameIndex = nextFrame;
 			sprite->SetFrame(frameIndex);
 		}
-		else
-		{
-			isRunning = true;
-		}
+
+		frameDelay = nextDelay;
 	}
 }
 
@@ -119,4 +120,12 @@ void Animation::Update(float dt)
 bool Animation::IsDone() const
 {
 	return isDone;
+}
+
+// Set the time to wait between frames for the currently playing animation.
+// Params:
+//	 duration = The amount of time to wait between frames (in seconds).
+void Animation::SetFrameDuration(float duration)
+{
+	frameDuration = duration;
 }

@@ -16,7 +16,7 @@
 //------------------------------------------------------------------------------
 
 #include "Component.h"
-#include <Color.h>
+#include "Color.h"
 
 //------------------------------------------------------------------------------
 
@@ -25,8 +25,8 @@
 //------------------------------------------------------------------------------
 
 class Mesh;
-class SpriteSource;
 class Transform;
+class SpriteSource;
 class Vector2D;
 
 //------------------------------------------------------------------------------
@@ -45,17 +45,12 @@ public:
 	// Create a new sprite object.
 	Sprite();
 
-	// Clone the sprite, returning a dynamically allocated copy.
-	Component* Clone() const override;
+	// Returns a dynamically allocated copy of the component.
+	// Must be implemented so correct component is copied during copy.
+	Component* Clone() const;
 
-	// Initialize components.
+	// Grabs mesh and sprite source from resource manager
 	void Initialize();
-
-	// Saves object data to a file.
-	virtual void Serialize(Parser& parser) const override;
-
-	// Loads object data from a file.
-	virtual void Deserialize(Parser& parser) override;
 
 	// Draw a sprite (Sprite can be textured or untextured).
 	void Draw() override;
@@ -74,25 +69,25 @@ public:
 	float GetAlpha() const;
 
 	// Set the sprite's current frame.
-	// (NOTE: You must validate the frame index against the sprite source's frame count.)
+	// (NOTE: You must validate the frame index against the texture's frame count.)
 	// Params:
 	//   frameIndex = New frame index for the sprite (0 .. frame count).
 	void SetFrame(unsigned int frameIndex);
-
-	// Returns the index of the current frame being displayed.
-	unsigned GetFrame() const;
 
 	// Set the sprite's mesh.
 	// (NOTE: This mesh may be textured or untextured.)
 	// (NOTE: This mesh may contain any number of triangles.)
 	// Params:
-	//   mesh = Pointer to a mesh created using the Alpha Engine.
+	//   mesh = Pointer to a mesh created using the Beta Framework.
 	void SetMesh(Mesh* mesh);
 
-	// Set a new sprite source for the specified sprite.
+	// Set a new SpriteSource for the specified sprite.
 	// Params:
 	//	 spriteSource = A new sprite source for the sprite.
 	void SetSpriteSource(SpriteSource* spriteSource);
+
+	// Returns the current sprite source being used by the sprite.
+	const SpriteSource* GetSpriteSource();
 
 	// Set the blend color for the specified sprite.
 	// Params:
@@ -101,6 +96,22 @@ public:
 
 	// Retrieves the blend color for the sprite.
 	const Color& GetColor() const;
+
+	// Retrieves the current depth of the sprite in the scene.
+	float GetZDepth() const;
+
+	// Sets the current depth of the sprite in the scene.
+	void SetZDepth(float depth);
+
+	// Save object data to file.
+	// Params:
+	//   parser = The parser object used to save the object's data.
+	void Serialize(Parser& parser) const;
+
+	// Load object data from file
+	// Params:
+	//   parser = The parser object used to load the object's data.
+	void Deserialize(Parser& parser);
 
 protected:
 	//------------------------------------------------------------------------------
@@ -126,6 +137,9 @@ private:
 
 	// Color used for blending/tint
 	Color color;
+
+	// For depth
+	float zDepth;
 };
 
 //------------------------------------------------------------------------------

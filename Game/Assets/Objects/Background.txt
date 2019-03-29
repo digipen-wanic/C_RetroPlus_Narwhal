@@ -1,0 +1,16 @@
+Background
+{
+  numComponents : 2
+  Transform
+  {
+    translation : { 0, 0 }
+    rotation : 0
+    scale : { 1024, 462 }
+  }
+  Sprite
+  {
+    spriteSource : SandBackground
+    color : { 1 , 1 , 1 , 1 }
+    zDepth : -0.1
+  }
+}

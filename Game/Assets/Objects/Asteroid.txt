@@ -1,29 +1,37 @@
 Asteroid
 {
-	numComponents : 5
-	Transform
-	{
-		translation : { 0, 0 }
-		rotation : 0
-		scale : { 50, 50 }
-	}
-	Physics
-	{
-		acceleration : { 0, 0 }
-		velocity : { 0, 0 }
-		angularVelocity : 0
-		inverseMass : 1
-	}
-	Sprite
-	{
-		frameIndex : 0
-		color : { 1 , 1 , 1 , 1 }
-	}
-	Behaviors::Asteroid
-	{
-	}
-	ColliderCircle
-	{
-		radius : 25
-	}
+  numComponents : 6
+  Transform
+  {
+    translation : { 0, 0 }
+    rotation : 0
+    scale : { 50, 50 }
+  }
+  Sprite
+  {
+    spriteSource : Asteroid
+    color : { 1 , 1 , 1 , 1 }
+    zDepth : 0
+  }
+  Physics
+  {
+    velocity : { 0, 0 }
+    angularVelocity : 0
+    mass : 1
+  }
+  Behaviors::Asteroid
+  {
+    speedMin : 50
+    speedMax : 100
+    basePointsValue : 20
+    sizePointsModifier : 0.5
+    spawnScaleModifier : 0.8
+  }
+  Behaviors::ScreenWrap
+  {
+  }
+  ColliderCircle
+  {
+    radius : 25
+  }
 }

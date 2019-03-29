@@ -61,6 +61,7 @@ void Space::Shutdown()
 	{
 		currentLevel->Shutdown();
 		currentLevel->Unload();
+		resourceManager.Shutdown();
 
 		delete currentLevel;
 		currentLevel = nullptr;
@@ -119,6 +120,11 @@ GameObjectManager& Space::GetObjectManager()
 	return objectManager;
 }
 
+ResourceManager & Space::GetResourceManager()
+{
+	return resourceManager;
+}
+
 //==================================================================-
 // Private Methods:
 //==================================================================-
@@ -146,6 +152,7 @@ void Space::ChangeLevel()
 			//unload current level, changes current level, and load new current level
 			currentLevel->Unload();
 			objectManager.Unload();
+			resourceManager.Shutdown();
 			delete currentLevel;
 			currentLevel = nextLevel;
 			currentLevel->Load();

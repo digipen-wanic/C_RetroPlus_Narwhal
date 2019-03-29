@@ -1,0 +1,25 @@
+Tilemap
+{
+	numComponents : 4
+	Transform
+	{
+		translation : { -350, 250 }
+		rotation : 0
+		scale : { 100, 100 }
+	}
+	SpriteTilemap
+	{
+		spriteSource : Tilemap
+		color : { 1 , 1 , 1 , 1 }
+		zDepth : 0
+		tilemap : Platformer
+	}
+	ColliderTilemap
+	{
+		tilemap : Platformer
+	}
+	MapObjectSpawner
+	{
+		tilemap : Platformer
+	}
+}

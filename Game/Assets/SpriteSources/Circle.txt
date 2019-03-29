@@ -1,0 +1,8 @@
+Circle
+{
+  numRows : 1
+  numCols : 1
+  frameCount : 1
+  frameStart : 0
+  texture : Circle.png
+}

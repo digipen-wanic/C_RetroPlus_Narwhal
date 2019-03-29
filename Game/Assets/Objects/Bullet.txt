@@ -7,25 +7,25 @@ Bullet
 		rotation : 0
 		scale : { 7, 7 }
 	}
-	Physics
-	{
-		acceleration : { 0, 0 }
-		velocity : { 0, 0 }
-		angularVelocity : 0
-		inverseMass : 1
-	}
 	Sprite
 	{
-		frameIndex : 0
-		color : { 1 , 1 , 1 , 1 }
+		spriteSource : Bullet
+		color : { 1 , 1 , 0 , 1 }
+		zDepth : 0
+	}
+	Physics
+	{
+		velocity : { 0, 0 }
+		angularVelocity : 0
+		mass : 1
+	}
+	Behaviors::TimedDeath
+	{
+		timeUntilDeath : 3
 	}
 	ColliderCircle
 	{
 		radius : 3.5
-	}
-	Behaviors::TimedDeath
-	{
-		timeUntilDeath : 5
 	}
 	Behaviors::PlayerProjectile
 	{

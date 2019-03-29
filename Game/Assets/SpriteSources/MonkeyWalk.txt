@@ -1,0 +1,8 @@
+MonkeyWalk
+{
+  numRows : 5
+  numCols : 3
+  frameCount : 8
+  frameStart : 0
+  texture : Monkey.png
+}

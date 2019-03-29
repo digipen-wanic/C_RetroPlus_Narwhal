@@ -1,0 +1,33 @@
+Enemy
+{
+  numComponents : 5
+  Transform
+  {
+    translation : { 0, 0 }
+    rotation : 0
+    scale : { 100, 100 }
+  }
+  Sprite
+  {
+    spriteSource : null
+    color : { 1 , 1 , 1 , 1 }
+    zDepth : 0
+  }
+  Behaviors::Enemy
+  {
+    stateChangeTime : 2
+    baseSpeed : 50
+    chaseMultiplier : 2
+    sightRange : 200
+  }
+  Physics
+  {
+    velocity : { 0, 0 }
+    angularVelocity : 0
+    mass : 1
+  }
+  ColliderCircle
+  {
+    radius : 50
+  }
+}

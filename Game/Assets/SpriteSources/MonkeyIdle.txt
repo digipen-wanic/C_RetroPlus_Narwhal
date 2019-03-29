@@ -1,0 +1,8 @@
+MonkeyIdle
+{
+  numRows : 5
+  numCols : 3
+  frameCount : 1
+  frameStart : 12
+  texture : Monkey.png
+}
