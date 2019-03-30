@@ -20,6 +20,7 @@
 
 // Engine modules
 #include "Space.h"
+#include <SoundManager.h>
 
 // Register functions
 #include "Registers.h"
@@ -56,6 +57,7 @@ int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prevInstance, _In
 
 	// Add additional modules to engine
 	Engine::GetInstance().AddModule(space);
+	Engine::GetInstance().AddModule(new SoundManager());
 
 	// Call all register functions
 	Registers::RegisterComponents();

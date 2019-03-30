@@ -69,6 +69,21 @@ namespace Levels
 		spriteSourceMap = new SpriteSource(textureMap, "Map", columnsMap, rowsMap);
 
 		meshMap = CreateQuadMesh(Vector2D(1.0f / columnsMap, 1.0f / rowsMap), Vector2D(0.5, 0.5));
+	
+		//load sounds
+		soundManager = Engine::GetInstance().GetModule<SoundManager>();
+		//soundManager->AddMusic("Asteroid_Field.mp3");
+		soundManager->AddEffect("EnemyDeathFX.wav");
+		soundManager->AddEffect("EnemyHitFX.wav");
+		soundManager->AddEffect("EnergyPickUpFX.wav");
+		soundManager->AddEffect("LowHealthFX.wav");
+		soundManager->AddEffect("PauseFX2.wav");
+		soundManager->AddEffect("PlayerDeathFX1.wav");
+		soundManager->AddEffect("PlayerFire.wav");
+		soundManager->AddEffect("PlayerHitFX.wav");
+		soundManager->AddEffect("PlayerJump.wav");
+		soundManager->AddEffect("PlayerRun2FX.wav");
+
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -80,6 +95,9 @@ namespace Levels
 		GameObject* monkey = GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		monkey->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
 		GetSpace()->GetObjectManager().AddObject(*monkey);
+		
+		//play music
+		//musicChannel = soundManager->PlaySound("");
 	}
 
 	// Update Level 2.
@@ -88,29 +106,27 @@ namespace Levels
 	void MainLevel::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
-		/*
-		if (Input::GetInstance().CheckTriggered('1'))
+		
+		//press enter/start
+		if (Input::GetInstance().CheckTriggered(VK_RETURN))
 		{
-			GetSpace()->SetLevel(new Level1());
+			//pause
+			soundManager->PlaySound("PauseFX2.wav")->setVolume(0.2f);
 		}
-		else if (Input::GetInstance().CheckTriggered('2'))
+		else if (Input::GetInstance().CheckTriggered('1'))
 		{
 			GetSpace()->RestartLevel();
 		}
-		else if (Input::GetInstance().CheckTriggered('3'))
-		{
-			GetSpace()->SetLevel(new Level3());
-		}
-		else if (Input::GetInstance().CheckTriggered('O'))
-		{
-			GetSpace()->SetLevel(new Omega());
-		}*/
+
 	}
 
 	// Unload the resources associated with Level 2.
 	void MainLevel::Unload()
 	{
 		std::cout << "MainLevel::Unload" << std::endl;
+
+		//unload sounds
+		soundManager->Shutdown();
 
 		delete meshMonkey;
 		delete textureMonkey;

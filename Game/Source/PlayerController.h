@@ -25,6 +25,7 @@
 class Transform;
 class Physics;
 struct MapCollision;
+class SoundManager;
 
 //------------------------------------------------------------------------------
 // Public Structures:
@@ -139,6 +140,7 @@ namespace Behaviors
 		bool onGround;
 		bool jumping;
 		PlayerState playerState;
+		SoundManager* soundManager;
 	};
 }
 
