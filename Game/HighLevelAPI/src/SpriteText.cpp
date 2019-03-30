@@ -51,16 +51,24 @@ void SpriteText::Draw()
 	{
 		int asciiVal = text[i];
 
-		if (asciiVal < 58 && asciiVal > 47)
+		//capital letters
+		if (asciiVal < 91 && asciiVal > 64)
 		{
-			SetFrame(asciiVal - 48);
+			SetFrame(asciiVal - 65);
 			Sprite::Draw(currOffset);
 
 			
 		}
-		else if (asciiVal < 91 && asciiVal > 65)
+		//lowercase letters
+		else if (asciiVal < 123 && asciiVal > 96)
 		{
-			SetFrame(asciiVal - 55);
+			SetFrame(asciiVal - 97);
+			Sprite::Draw(currOffset);
+		}
+		//numbers
+		else if (asciiVal < 58 && asciiVal > 47)
+		{
+			SetFrame(asciiVal - 48);
 			Sprite::Draw(currOffset);
 		}
 
