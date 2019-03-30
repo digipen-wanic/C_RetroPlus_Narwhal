@@ -101,10 +101,12 @@
     <ClInclude Include="include\GameObjectManager.h" />
     <ClInclude Include="include\Intersection2D.h" />
     <ClInclude Include="include\Level.h" />
+    <ClInclude Include="include\MapObjectSpawner.h" />
     <ClInclude Include="include\Matrix2DStudent.h" />
     <ClInclude Include="include\MeshHelper.h" />
     <ClInclude Include="include\Parser.h" />
     <ClInclude Include="include\Physics.h" />
+    <ClInclude Include="include\ResourceManager.h" />
     <ClInclude Include="include\Serializable.h" />
     <ClInclude Include="include\SoundManager.h" />
     <ClInclude Include="include\Space.h" />
@@ -129,10 +131,12 @@
     <ClCompile Include="src\GameObjectManager.cpp" />
     <ClCompile Include="src\Intersection2D.cpp" />
     <ClCompile Include="src\Level.cpp" />
+    <ClCompile Include="src\MapObjectSpawner.cpp" />
     <ClCompile Include="src\Matrix2DStudent.cpp" />
     <ClCompile Include="src\MeshHelper.cpp" />
     <ClCompile Include="src\Parser.cpp" />
     <ClCompile Include="src\Physics.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Serializable.cpp" />
     <ClCompile Include="src\SoundManager.cpp" />
     <ClCompile Include="src\Space.cpp" />

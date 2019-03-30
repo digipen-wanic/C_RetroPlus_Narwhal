@@ -24,9 +24,13 @@
 #include "Physics.h"
 #include "Space.h"
 #include "Graphics.h"
+
 #include "Sprite.h"
 #include "Mesh.h"
 #include "SpriteSource.h"
+
+#include <SoundManager.h>
+#include <Engine.h>
 
 namespace Behaviors
 {
@@ -86,6 +90,9 @@ namespace Behaviors
 
 		collider->SetMapCollisionHandler( PlayerMapCollisionHandler );
 		collider->SetCollisionHandler( PlayerCollisionHandler );
+	
+		soundManager = Engine::GetInstance().GetModule<SoundManager>();
+	
 	}
 
 	// Fixed update function for this component.
@@ -164,6 +171,8 @@ namespace Behaviors
 
 			if (onGround)
 			{
+				soundManager->PlaySound("PlayerRun2FX.wav");
+
 				if (playerState == PlayerState::idleRt)
 				{
 					playerState = PlayerState::runRt;
@@ -378,6 +387,9 @@ namespace Behaviors
 		if (Input::GetInstance().CheckTriggered('Z'))
 		{
 			//initiliaze working data
+
+			soundManager->PlaySound("PlayerFire.wav");
+
 			GameObject* bullet = new GameObject(*bulletArchetype);
 			Transform* bulletTransform = static_cast<Transform*>(bullet->GetComponent("Transform"));
 			Physics* bulletPhysics = static_cast<Physics*>(bullet->GetComponent("Physics"));

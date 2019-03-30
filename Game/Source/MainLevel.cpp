@@ -38,7 +38,7 @@ namespace Levels
 
 	// Creates an instance of Level 2.
 	MainLevel::MainLevel()
-		: Level("MainLevel"), columnsMonkey(3), rowsMonkey(5), columnsMap(4), rowsMap(3)
+		: Level("MainLevel"), columnsMonkey(3), rowsMonkey(5), columnsMap(3), rowsMap(4)
 	{
 	}
 
@@ -62,7 +62,7 @@ namespace Levels
 		samusRoll = GetSpace()->GetResourceManager().GetSpriteSource("SamusRoll");
 
 		Tilemap* tilemapBuffer = new Tilemap();
-		Parser parser("Assets/Levels/Platformer.txt", std::fstream::in);
+		Parser parser("Assets/Levels/MainLevel.txt", std::fstream::in);
 		tilemapBuffer->Deserialize(parser);
 
 		if (tilemapBuffer != nullptr)
@@ -74,10 +74,25 @@ namespace Levels
 			std::cout << "Error loading map!" << std::endl;
 		}
 
-		textureMap = Texture::CreateTextureFromFile("Tilemap.png");
+		textureMap = Texture::CreateTextureFromFile("TilemapMetroid.png");
 		spriteSourceMap = new SpriteSource(textureMap, "Map", columnsMap, rowsMap);
 
-		meshMap = CreateQuadMesh(Vector2D(0.25f, 0.33333f), Vector2D(0.5, 0.5));
+		meshMap = CreateQuadMesh(Vector2D(1.0f / columnsMap, 1.0f / rowsMap), Vector2D(0.5, 0.5));
+	
+		//load sounds
+		soundManager = Engine::GetInstance().GetModule<SoundManager>();
+		//soundManager->AddMusic("Asteroid_Field.mp3");
+		soundManager->AddEffect("EnemyDeathFX.wav");
+		soundManager->AddEffect("EnemyHitFX.wav");
+		soundManager->AddEffect("EnergyPickUpFX.wav");
+		soundManager->AddEffect("LowHealthFX.wav");
+		soundManager->AddEffect("PauseFX2.wav");
+		soundManager->AddEffect("PlayerDeathFX1.wav");
+		soundManager->AddEffect("PlayerFire.wav");
+		soundManager->AddEffect("PlayerHitFX.wav");
+		soundManager->AddEffect("PlayerJump.wav");
+		soundManager->AddEffect("PlayerRun2FX.wav");
+
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -86,11 +101,15 @@ namespace Levels
 		std::cout << "Level2::Initialize" << std::endl;
 
 		GetSpace()->GetObjectManager().AddObject(*Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap));
+
 		GameObject* samus = Archetypes::CreateSamus(samusIdleMesh, samusRunMesh, samusStanding, samusIdle,
 			samusRun, samusRunShoot, samusJump, samusJumpRoll, samusRoll);
 			//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
 		GetSpace()->GetObjectManager().AddObject(*samus);
+
+		//play music
+		//musicChannel = soundManager->PlaySound("");
 	}
 
 	// Update Level 2.
@@ -99,29 +118,27 @@ namespace Levels
 	void MainLevel::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
-		/*
-		if (Input::GetInstance().CheckTriggered('1'))
+		
+		//press enter/start
+		if (Input::GetInstance().CheckTriggered(VK_RETURN))
 		{
-			GetSpace()->SetLevel(new Level1());
+			//pause
+			soundManager->PlaySound("PauseFX2.wav")->setVolume(0.2f);
 		}
-		else if (Input::GetInstance().CheckTriggered('2'))
+		else if (Input::GetInstance().CheckTriggered('1'))
 		{
 			GetSpace()->RestartLevel();
 		}
-		else if (Input::GetInstance().CheckTriggered('3'))
-		{
-			GetSpace()->SetLevel(new Level3());
-		}
-		else if (Input::GetInstance().CheckTriggered('O'))
-		{
-			GetSpace()->SetLevel(new Omega());
-		}*/
+
 	}
 
 	// Unload the resources associated with Level 2.
 	void MainLevel::Unload()
 	{
 		std::cout << "MainLevel::Unload" << std::endl;
+
+		//unload sounds
+		soundManager->Shutdown();
 
 		delete meshMonkey;
 		delete textureMonkey;

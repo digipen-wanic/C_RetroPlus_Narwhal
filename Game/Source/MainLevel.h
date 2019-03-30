@@ -16,6 +16,7 @@
 //------------------------------------------------------------------------------
 
 #include <Level.h>
+#include <SoundManager.h>
 
 //------------------------------------------------------------------------------
 
@@ -91,6 +92,10 @@ namespace Levels
 		Mesh* meshMap;
 		unsigned columnsMap;
 		unsigned rowsMap;
+
+		//Sound manager
+		SoundManager* soundManager;
+		FMOD::Channel* musicChannel;
 	};
 }
 

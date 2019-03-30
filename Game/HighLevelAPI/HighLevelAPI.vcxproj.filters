@@ -112,6 +112,12 @@
     <ClInclude Include="include\ColliderLine.h">
       <Filter>Collisions</Filter>
     </ClInclude>
+    <ClInclude Include="include\MapObjectSpawner.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ResourceManager.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stdafx.cpp">
@@ -191,6 +197,12 @@
     </ClCompile>
     <ClCompile Include="src\ColliderLine.cpp">
       <Filter>Collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapObjectSpawner.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResourceManager.cpp">
+      <Filter>Levels</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
