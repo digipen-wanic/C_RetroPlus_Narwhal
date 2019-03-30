@@ -50,7 +50,16 @@ namespace Levels
 		textureMonkey = Texture::CreateTextureFromFile("Monkey.png");
 		spriteSourceMonkey = new SpriteSource(textureMonkey, "Monkey", columnsMonkey, rowsMonkey);
 
-		meshMonkey = CreateQuadMesh(Vector2D(0.33333f, 0.2f), Vector2D(0.5, 0.5));
+		samusIdleMesh = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
+		samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
+
+		samusStanding = GetSpace()->GetResourceManager().GetSpriteSource("SamusStanding");
+		samusIdle = GetSpace()->GetResourceManager().GetSpriteSource("SamusIdle");
+		samusRun = GetSpace()->GetResourceManager().GetSpriteSource("SamusRun");
+		samusRunShoot = GetSpace()->GetResourceManager().GetSpriteSource("SamusRunShoot");
+		samusJump = GetSpace()->GetResourceManager().GetSpriteSource("SamusJump");
+		samusJumpRoll = GetSpace()->GetResourceManager().GetSpriteSource("SamusJumpRoll");
+		samusRoll = GetSpace()->GetResourceManager().GetSpriteSource("SamusRoll");
 
 		Tilemap* tilemapBuffer = new Tilemap();
 		Parser parser("Assets/Levels/Platformer.txt", std::fstream::in);
@@ -77,9 +86,11 @@ namespace Levels
 		std::cout << "Level2::Initialize" << std::endl;
 
 		GetSpace()->GetObjectManager().AddObject(*Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap));
-		GameObject* monkey = GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
-		monkey->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
-		GetSpace()->GetObjectManager().AddObject(*monkey);
+		GameObject* samus = Archetypes::CreateSamus(samusIdleMesh, samusRunMesh, samusStanding, samusIdle,
+			samusRun, samusRunShoot, samusJump, samusJumpRoll, samusRoll);
+			//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
+		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
+		GetSpace()->GetObjectManager().AddObject(*samus);
 	}
 
 	// Update Level 2.

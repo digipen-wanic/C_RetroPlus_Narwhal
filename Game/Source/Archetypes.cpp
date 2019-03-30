@@ -55,21 +55,24 @@ file Archetypes.h.
 	//   spriteSource = The sprite source to use for the object.
 	// Returns:
 	//	 A pointer to the newly constructed game object
-GameObject * Archetypes::CreateSamus(Mesh * mesh, SpriteSource * spriteSource)
+GameObject * Archetypes::CreateSamus(Mesh * idleMesh, Mesh * runMesh, SpriteSource* standing, SpriteSource* idle,
+	SpriteSource* run, SpriteSource* runShoot, SpriteSource* jump, SpriteSource* jumpRoll,
+	SpriteSource* roll)
 {
 	//initilize all components
 	Transform* transform = new Transform(0.0f, 0.0f);
 	transform->SetScale(Vector2D(100.0f, 100.0f));
 
 	Sprite* sprite = new Sprite();
-	sprite->SetMesh(mesh);
-	sprite->SetSpriteSource(spriteSource);
+	sprite->SetMesh(idleMesh);
+	sprite->SetSpriteSource(standing);
 
 	Physics* physics = new Physics();
 	ColliderRectangle* colliderRectangle =
 		new ColliderRectangle(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
 
-	Behaviors::PlayerController* playerController = new Behaviors::PlayerController();
+	Behaviors::PlayerController* playerController = 
+		new Behaviors::PlayerController(idleMesh, runMesh, standing, idle, run, runShoot, jump, jumpRoll, roll);
 	Behaviors::CameraFollow* cameraFollow = new Behaviors::CameraFollow();
 
 	//create object add all the components

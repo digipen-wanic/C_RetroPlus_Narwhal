@@ -25,8 +25,8 @@
 #include "Registers.h"
 
 // Initial game state
-#include "Level1.h"
-#include "Level2.h"
+//#include "Level1.h"
+//#include "Level2.h"
 #include "MainLevel.h"
 
 //------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prevInstance, _In
 	Registers::RegisterComponents();
 	
 	// Game engine goes!
-	Engine::GetInstance().Start(800, 600, 200);
+	Engine::GetInstance().Start(1024, 960, 200);
 
 	return 0;
 }

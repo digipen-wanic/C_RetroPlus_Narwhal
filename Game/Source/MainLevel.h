@@ -72,6 +72,18 @@ namespace Levels
 		unsigned columnsMonkey;
 		unsigned rowsMonkey;
 
+		//Samus
+		Mesh* samusIdleMesh;
+		Mesh* samusRunMesh;
+
+		SpriteSource* samusStanding;
+		SpriteSource* samusIdle;
+		SpriteSource* samusRun;
+		SpriteSource* samusRunShoot;
+		SpriteSource* samusJump;
+		SpriteSource* samusJumpRoll;
+		SpriteSource* samusRoll;
+
 		// Tilemap
 		Tilemap* dataMap;
 		Texture* textureMap;

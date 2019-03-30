@@ -42,7 +42,9 @@ namespace Archetypes
 	//   spriteSource = The sprite source to use for the object.
 	// Returns:
 	//	 A pointer to the newly constructed game object
-	GameObject * CreateSamus(Mesh * mesh, SpriteSource * spriteSource);
+	GameObject * CreateSamus(Mesh * idleMesh, Mesh * runMesh, SpriteSource* standing, SpriteSource* idle,
+		SpriteSource* run, SpriteSource* runShoot, SpriteSource* jump, SpriteSource* jumpRoll,
+		SpriteSource* roll);
 
 	// Create the ship game object.
 	// Params:

@@ -24,6 +24,9 @@
 #include "Physics.h"
 #include "Space.h"
 #include "Graphics.h"
+#include "Sprite.h"
+#include "Mesh.h"
+#include "SpriteSource.h"
 
 namespace Behaviors
 {
@@ -37,11 +40,15 @@ namespace Behaviors
 		const MapCollision& collision);
 
 	// Constructor
-	PlayerController::PlayerController()
-		: Component("PlayerController"), PlayerWalkSpeed(2.0f * tileUnit),
-		PlayerJumpSpeed(4.0f * tileUnit), gravity(0.0f, -3.0f * tileUnit),
+	PlayerController::PlayerController(Mesh* idleMesh, Mesh* runMesh, SpriteSource* standing, SpriteSource* idle,
+		SpriteSource* run, SpriteSource* runShoot, SpriteSource* jump,
+		SpriteSource* jumpRoll, SpriteSource* roll)
+	: Component("PlayerController"), PlayerWalkSpeed(2.5f * tileUnit),
+		PlayerJumpSpeed(5.0f * tileUnit), gravity(0.0f, -10.0f * tileUnit),
 		maxJumpHeight( 4 * tileUnit ), firingSpeed(0.25), firingTimer(0), 
-		bulletSpeed(tileUnit * 4), onGround(false), jumping(false)
+		bulletSpeed(tileUnit * 4), onGround(false), jumping(false), maxGravity(-4.0),
+		idleMesh(idleMesh), runMesh(runMesh), standing(standing), idle(idle), run(run), runShoot(runShoot), 
+		jump(jump), jumpRoll(jumpRoll), roll(roll)
 	{
 	}
 
@@ -160,14 +167,21 @@ namespace Behaviors
 				if (playerState == PlayerState::idleRt)
 				{
 					playerState = PlayerState::runRt;
-
+					sprite->SetSpriteSource(run);
 				}
 
 				if (playerState == PlayerState::idleRtUp)
 				{
 					playerState = PlayerState::runRtUp;
-
+					sprite->SetSpriteSource(run);
 				}
+
+				//improve!
+				Vector2D scale = transform->GetScale();
+				scale.x = std::abs(scale.x);
+				transform->SetScale(scale);
+
+				sprite->SetMesh(runMesh);
 			}
 		}
 		else if (Input::GetInstance().CheckHeld(VK_LEFT))
@@ -176,17 +190,24 @@ namespace Behaviors
 
 			if (onGround)
 			{
-				if (playerState == PlayerState::idleRt)
+				if (playerState == PlayerState::idleLt)
 				{
 					playerState = PlayerState::runLt;
-
+					sprite->SetSpriteSource(run);
 				}
 
 				if (playerState == PlayerState::idleRtUp)
 				{
-					playerState = PlayerState::runLtUp;
-
+					playerState = PlayerState::runRtUp;
+					sprite->SetSpriteSource(run);
 				}
+
+				//Improve!
+				Vector2D scale = transform->GetScale();
+				scale.x = - std::abs( scale.x);
+				transform->SetScale( scale );
+
+				//sprite->SetMesh(runMesh);
 			}
 		}
 		else
@@ -196,14 +217,16 @@ namespace Behaviors
 				if (playerState == PlayerState::runLt)
 				{
 					playerState = PlayerState::idleLt;
-
+					sprite->SetSpriteSource(idle);
 				}
 
 				if (playerState == PlayerState::runRt)
 				{
-					playerState = PlayerState::idleLt;
-
+					playerState = PlayerState::idleRt;
+					sprite->SetSpriteSource(idle);
 				}
+
+				//sprite->SetMesh(idleMesh);
 			}
 		}
 
@@ -212,7 +235,7 @@ namespace Behaviors
 			if (playerState == PlayerState::idleLt)
 			{
 				playerState = PlayerState::idleLtUp;
-
+				//sprite->SetSpriteSource(run);
 			}
 
 			if (playerState == PlayerState::runLt)
@@ -239,25 +262,25 @@ namespace Behaviors
 			if (playerState == PlayerState::idleLtUp)
 			{
 				playerState = PlayerState::idleLt;
-
+				sprite->SetSpriteSource(idle);
 			}
 
 			if (playerState == PlayerState::runLtUp)
 			{
 				playerState = PlayerState::runLt;
-
+				sprite->SetSpriteSource(run);
 			}
 
 			if (playerState == PlayerState::idleRtUp)
 			{
 				playerState = PlayerState::idleRt;
-
+				sprite->SetSpriteSource(idle);
 			}
 
 			if (playerState == PlayerState::runRtUp)
 			{
 				playerState = PlayerState::runRt;
-
+				sprite->SetSpriteSource(run);
 			}
 		}
 
@@ -272,7 +295,7 @@ namespace Behaviors
 		//jump movement
 		if (jumping == true)
 		{
-			if (Input::GetInstance().CheckHeld(VK_SPACE))
+			if (Input::GetInstance().CheckHeld('X'))
 			{
 				if (transform->GetTranslation().y > jumpStartY + maxJumpHeight)
 				{
@@ -280,6 +303,7 @@ namespace Behaviors
 				}
 
 				move.y = PlayerJumpSpeed;	
+				physics->SetVelocity(move);
 			}
 			else if (transform->GetTranslation().y > jumpStartY + maxJumpHeight / 2)
 			{
@@ -289,13 +313,19 @@ namespace Behaviors
 		//gravity
 		else
 		{
-			move.y = gravity.y;
+			//move.y = gravity.y;
+			physics->AddForce(gravity);
+
+			if (move.y >= maxGravity)
+			{
+				move.y = maxGravity;
+			}
 		}	
 
 		physics->SetVelocity(move);
 
 		//jump start logic
-		if (Input::GetInstance().CheckTriggered(VK_SPACE))
+		if (Input::GetInstance().CheckTriggered('X'))
 		{
 			if (onGround == true)
 			{
@@ -306,37 +336,37 @@ namespace Behaviors
 				if (playerState == PlayerState::idleLt)
 				{
 					playerState = PlayerState::jumpLt;
-
+					sprite->SetSpriteSource(jump);
 				}
 
 				if (playerState == PlayerState::idleLtUp)
 				{
 					playerState = PlayerState::jumpLtUp;
-
+					sprite->SetSpriteSource(jump);
 				}
 
 				if (playerState == PlayerState::runLt || playerState == PlayerState::runLtUp)
 				{
 					playerState = PlayerState::jumpLtRoll;
-
+					sprite->SetSpriteSource(jumpRoll);
 				}
 
 				if (playerState == PlayerState::idleRt)
 				{
 					playerState = PlayerState::idleRt;
-
+					sprite->SetSpriteSource(jump);
 				}
 
 				if (playerState == PlayerState::idleRtUp)
 				{
 					playerState = PlayerState::jumpRtUp;
-
+					sprite->SetSpriteSource(jump);
 				}
 
 				if (playerState == PlayerState::runRt || playerState == PlayerState::runRtUp)
 				{
 					playerState = PlayerState::jumpRtRoll;
-
+					sprite->SetSpriteSource(jumpRoll);
 				}
 			}
 		}
@@ -345,7 +375,7 @@ namespace Behaviors
 	// Shoot projectiles when enter is pressed
 	void PlayerController::Shoot()
 	{
-		if (Input::GetInstance().CheckTriggered(VK_RETURN))
+		if (Input::GetInstance().CheckTriggered('Z'))
 		{
 			//initiliaze working data
 			GameObject* bullet = new GameObject(*bulletArchetype);
@@ -356,11 +386,13 @@ namespace Behaviors
 			if (playerState == PlayerState::jumpLtRoll)
 			{
 				playerState = PlayerState::jumpLt;
+				sprite->SetSpriteSource(jump);
 			}
 
 			if (playerState == PlayerState::jumpRtRoll)
 			{
 				playerState = PlayerState::jumpRt;
+				sprite->SetSpriteSource(jump);
 			}
 
 			if (playerState == PlayerState::idleLt || playerState == PlayerState::runLt || playerState == PlayerState::jumpLt)

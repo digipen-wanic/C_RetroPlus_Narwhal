@@ -24,6 +24,9 @@
 
 class Transform;
 class Physics;
+class Mesh;
+class Sprite;
+class SpriteSource;
 struct MapCollision;
 
 //------------------------------------------------------------------------------
@@ -63,7 +66,9 @@ namespace Behaviors
 		//------------------------------------------------------------------------------
 
 		// Constructor
-		PlayerController();
+		PlayerController(Mesh* idleMesh, Mesh* runMesh, SpriteSource* standing, SpriteSource* idle,
+			SpriteSource* run, SpriteSource* runShoot, SpriteSource* jump,
+			SpriteSource* jumpRoll, SpriteSource* roll);
 
 		// Clone a component and return a pointer to the cloned component.
 		// Returns:
@@ -118,11 +123,24 @@ namespace Behaviors
 		//world data
 		float tileUnit = 100.0f;
 
+		//animation
+		Mesh* idleMesh;
+		Mesh* runMesh;
+
+		SpriteSource* standing;
+		SpriteSource* idle;
+		SpriteSource* run;
+		SpriteSource* runShoot;
+		SpriteSource* jump;
+		SpriteSource* jumpRoll;
+		SpriteSource* roll;
+
 		// Movement properties
 		float PlayerWalkSpeed;
 		float PlayerJumpSpeed;
 		float maxJumpHeight;
 		Vector2D gravity;
+		float maxGravity;
 
 		//shooting properties
 		float firingSpeed;
@@ -133,6 +151,7 @@ namespace Behaviors
 		// Components
 		Transform* transform;
 		Physics* physics;
+		Sprite* sprite;
 
 		// Misc
 		float jumpStartY;
