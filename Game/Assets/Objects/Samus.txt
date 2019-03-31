@@ -1,11 +1,11 @@
 Samus
 {
-	numComponents : 6
+	numComponents : 7
 	Transform
 	{
-		translation : { 0, 0 }
+		translation : { 400, -200 }
 		rotation : 0
-		scale : { 100, 100 }
+		scale : { 100, 200 }
 	}
 	Physics
 	{
@@ -19,9 +19,12 @@ Samus
 		color : { 1 , 1 , 1 , 1 }
 		zDepth : 0
 	}
+	Animation
+	{
+	}
 	Behaviors::PlayerController
 	{
-		PlayerWalkSpeed : 250
+		PlayerWalkSpeed : 300
 		PlayerJumpSpeed : 500
 		gravity : { 0, -1000 }
 	}
@@ -30,6 +33,6 @@ Samus
 	}
 	ColliderRectangle
 	{
-		extents : { 50, 50 }
+		extents : { 50, 100 }
 	}
 }

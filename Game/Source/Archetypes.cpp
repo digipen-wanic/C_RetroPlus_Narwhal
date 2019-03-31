@@ -55,24 +55,24 @@ file Archetypes.h.
 	//   spriteSource = The sprite source to use for the object.
 	// Returns:
 	//	 A pointer to the newly constructed game object
-GameObject * Archetypes::CreateSamus(Mesh * idleMesh, Mesh * runMesh, SpriteSource* standing, SpriteSource* idle,
-	SpriteSource* run, SpriteSource* runShoot, SpriteSource* jump, SpriteSource* jumpRoll,
-	SpriteSource* roll)
+GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing)
 {
 	//initilize all components
-	Transform* transform = new Transform(0.0f, 0.0f);
-	transform->SetScale(Vector2D(100.0f, 100.0f));
+	Transform* transform = new Transform(400.0f, -200.0f);
+	transform->SetScale(Vector2D(100.0f, 200.0f));
 
 	Sprite* sprite = new Sprite();
-	sprite->SetMesh(idleMesh);
+	sprite->SetMesh(standingMesh);
 	sprite->SetSpriteSource(standing);
+
+	Animation* animation = new Animation();
 
 	Physics* physics = new Physics();
 	ColliderRectangle* colliderRectangle =
 		new ColliderRectangle(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
 
 	Behaviors::PlayerController* playerController = 
-		new Behaviors::PlayerController(idleMesh, runMesh, standing, idle, run, runShoot, jump, jumpRoll, roll);
+		new Behaviors::PlayerController();
 	Behaviors::CameraFollow* cameraFollow = new Behaviors::CameraFollow();
 
 	//create object add all the components
@@ -80,6 +80,7 @@ GameObject * Archetypes::CreateSamus(Mesh * idleMesh, Mesh * runMesh, SpriteSour
 	samusObject->AddComponent(transform);
 	samusObject->AddComponent(physics);
 	samusObject->AddComponent(sprite);
+	samusObject->AddComponent(animation);
 	samusObject->AddComponent(playerController);
 	samusObject->AddComponent(cameraFollow);
 	samusObject->AddComponent(colliderRectangle);

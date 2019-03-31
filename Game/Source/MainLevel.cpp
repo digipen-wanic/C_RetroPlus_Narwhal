@@ -52,14 +52,27 @@ namespace Levels
 
 		samusIdleMesh = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
 		samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
+		samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 
 		samusStanding = GetSpace()->GetResourceManager().GetSpriteSource("SamusStanding");
-		samusIdle = GetSpace()->GetResourceManager().GetSpriteSource("SamusIdle");
-		samusRun = GetSpace()->GetResourceManager().GetSpriteSource("SamusRun");
-		samusRunShoot = GetSpace()->GetResourceManager().GetSpriteSource("SamusRunShoot");
-		samusJump = GetSpace()->GetResourceManager().GetSpriteSource("SamusJump");
-		samusJumpRoll = GetSpace()->GetResourceManager().GetSpriteSource("SamusJumpRoll");
-		samusRoll = GetSpace()->GetResourceManager().GetSpriteSource("SamusRoll");
+		GetSpace()->GetResourceManager().GetSpriteSource("SamusIdle");
+		GetSpace()->GetResourceManager().GetSpriteSource("SamusIdleUp");
+		GetSpace()->GetResourceManager().GetSpriteSource("SamusRun");
+		GetSpace()->GetResourceManager().GetSpriteSource("SamusRunUp");
+		GetSpace()->GetResourceManager().GetSpriteSource("SamusRunShoot");
+		GetSpace()->GetResourceManager().GetSpriteSource("SamusJump");
+		GetSpace()->GetResourceManager().GetSpriteSource("SamusJumpRoll");
+		GetSpace()->GetResourceManager().GetSpriteSource("SamusRoll");
+
+		GetSpace()->GetResourceManager().AddMesh("SamusStanding", samusIdleMesh);
+		GetSpace()->GetResourceManager().AddMesh("SamusIdle", samusIdleMesh);
+		GetSpace()->GetResourceManager().AddMesh("SamusIdleUp", samusIdleMesh);
+		GetSpace()->GetResourceManager().AddMesh("SamusRun", samusRunMesh);
+		GetSpace()->GetResourceManager().AddMesh("SamusRunUp", samusRunMesh);
+		GetSpace()->GetResourceManager().AddMesh("SamusRunShoot", samusRunMesh);
+		GetSpace()->GetResourceManager().AddMesh("SamusJump", samusRunMesh);
+		GetSpace()->GetResourceManager().AddMesh("SamusJumpRoll", samusJumpRollMesh);
+		GetSpace()->GetResourceManager().AddMesh("SamusRoll", samusJumpRollMesh);
 
 		Tilemap* tilemapBuffer = new Tilemap();
 		Parser parser("Assets/Levels/MainLevel.txt", std::fstream::in);
@@ -81,6 +94,8 @@ namespace Levels
 	
 		//load sounds
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
+		soundManager->SetEffectsVolume(0.1f);
+
 		//soundManager->AddMusic("Asteroid_Field.mp3");
 		soundManager->AddEffect("EnemyDeathFX.wav");
 		soundManager->AddEffect("EnemyHitFX.wav");
@@ -102,9 +117,9 @@ namespace Levels
 
 		GetSpace()->GetObjectManager().AddObject(*Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap));
 
-		GameObject* samus = Archetypes::CreateSamus(samusIdleMesh, samusRunMesh, samusStanding, samusIdle,
-			samusRun, samusRunShoot, samusJump, samusJumpRoll, samusRoll);
-			//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
+		GameObject* samus = Archetypes::CreateSamus(samusIdleMesh, samusStanding);
+
+		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
 		GetSpace()->GetObjectManager().AddObject(*samus);
 

@@ -27,8 +27,11 @@ class Physics;
 class Mesh;
 class Sprite;
 class SpriteSource;
+class Animation;
+class ColliderRectangle;
 struct MapCollision;
 class SoundManager;
+class ResourceManager;
 
 //------------------------------------------------------------------------------
 // Public Structures:
@@ -56,7 +59,10 @@ namespace Behaviors
 		jumpRtUp,
 
 		jumpLtRoll,
-		jumpRtRoll
+		jumpRtRoll,
+
+		rollLt,
+		rollRt,
 	};
 
 	class PlayerController : public Component
@@ -67,9 +73,7 @@ namespace Behaviors
 		//------------------------------------------------------------------------------
 
 		// Constructor
-		PlayerController(Mesh* idleMesh, Mesh* runMesh, SpriteSource* standing, SpriteSource* idle,
-			SpriteSource* run, SpriteSource* runShoot, SpriteSource* jump,
-			SpriteSource* jumpRoll, SpriteSource* roll);
+		PlayerController();
 
 		// Clone a component and return a pointer to the cloned component.
 		// Returns:
@@ -124,18 +128,6 @@ namespace Behaviors
 		//world data
 		float tileUnit = 100.0f;
 
-		//animation
-		Mesh* idleMesh;
-		Mesh* runMesh;
-
-		SpriteSource* standing;
-		SpriteSource* idle;
-		SpriteSource* run;
-		SpriteSource* runShoot;
-		SpriteSource* jump;
-		SpriteSource* jumpRoll;
-		SpriteSource* roll;
-
 		// Movement properties
 		float PlayerWalkSpeed;
 		float PlayerJumpSpeed;
@@ -153,13 +145,17 @@ namespace Behaviors
 		Transform* transform;
 		Physics* physics;
 		Sprite* sprite;
+		Animation* animation;
+		ColliderRectangle* colliderRect;
 
 		// Misc
 		float jumpStartY;
 		bool onGround;
 		bool jumping;
+
 		PlayerState playerState;
 		SoundManager* soundManager;
+		ResourceManager* resourceManager;
 	};
 }
 

@@ -76,14 +76,8 @@ namespace Levels
 		//Samus
 		Mesh* samusIdleMesh;
 		Mesh* samusRunMesh;
-
+		Mesh* samusJumpRollMesh;
 		SpriteSource* samusStanding;
-		SpriteSource* samusIdle;
-		SpriteSource* samusRun;
-		SpriteSource* samusRunShoot;
-		SpriteSource* samusJump;
-		SpriteSource* samusJumpRoll;
-		SpriteSource* samusRoll;
 
 		// Tilemap
 		Tilemap* dataMap;

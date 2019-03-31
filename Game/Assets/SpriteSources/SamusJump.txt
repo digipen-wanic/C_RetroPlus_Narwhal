@@ -1,0 +1,8 @@
+SamusJump
+{
+  numRows : 2
+  numCols : 2
+  frameCount : 3
+  frameStart : 0
+  texture : SamusIdle.png
+}

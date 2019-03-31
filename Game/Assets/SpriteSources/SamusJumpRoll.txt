@@ -4,5 +4,5 @@ SamusJumpRoll
   numCols : 3
   frameCount : 4
   frameStart : 0
-  texture : Jump.png
+  texture : JumpRoll.png
 }

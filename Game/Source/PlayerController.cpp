@@ -19,6 +19,7 @@
 
 #include "GameObject.h"
 #include "Collider.h"
+#include "ColliderRectangle.h"
 #include "Input.h"
 #include "Transform.h"
 #include "Physics.h"
@@ -27,6 +28,7 @@
 
 #include "Sprite.h"
 #include "Mesh.h"
+#include "Animation.h"
 #include "SpriteSource.h"
 
 #include <SoundManager.h>
@@ -44,15 +46,12 @@ namespace Behaviors
 		const MapCollision& collision);
 
 	// Constructor
-	PlayerController::PlayerController(Mesh* idleMesh, Mesh* runMesh, SpriteSource* standing, SpriteSource* idle,
-		SpriteSource* run, SpriteSource* runShoot, SpriteSource* jump,
-		SpriteSource* jumpRoll, SpriteSource* roll)
-	: Component("PlayerController"), PlayerWalkSpeed(2.5f * tileUnit),
+	PlayerController::PlayerController()
+	: Component("PlayerController"), PlayerWalkSpeed(3.0f * tileUnit),
 		PlayerJumpSpeed(5.0f * tileUnit), gravity(0.0f, -10.0f * tileUnit),
-		maxJumpHeight( 4 * tileUnit ), firingSpeed(0.25), firingTimer(0), 
+		maxJumpHeight( 5 * tileUnit ), firingSpeed(0.25), firingTimer(0), 
 		bulletSpeed(tileUnit * 4), onGround(false), jumping(false), maxGravity(-4.0),
-		idleMesh(idleMesh), runMesh(runMesh), standing(standing), idle(idle), run(run), runShoot(runShoot), 
-		jump(jump), jumpRoll(jumpRoll), roll(roll)
+		playerState(PlayerState::idleRt)
 	{
 	}
 
@@ -83,16 +82,21 @@ namespace Behaviors
 	// Initialize this component (happens at object creation).
 	void PlayerController::Initialize()
 	{
-		transform = static_cast<Transform*>( GetOwner()->GetComponent("Transform") );
-		physics = static_cast<Physics*>( GetOwner()->GetComponent("Physics") );
+		transform = GetOwner()->GetComponent<Transform>();
+		physics = GetOwner()->GetComponent<Physics>();
+		sprite = GetOwner()->GetComponent<Sprite>();
+		animation = GetOwner()->GetComponent<Animation>();
+		resourceManager = &GetOwner()->GetSpace()->GetResourceManager();
 
 		Collider* collider = static_cast<Collider*>( GetOwner()->GetComponent("Collider") );
+		colliderRect = GetOwner()->GetComponent<ColliderRectangle>();
 
 		collider->SetMapCollisionHandler( PlayerMapCollisionHandler );
 		collider->SetCollisionHandler( PlayerCollisionHandler );
 	
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
-	
+		Graphics::GetInstance().GetCurrentCamera().SetFOV(180.0f);
+
 	}
 
 	// Fixed update function for this component.
@@ -103,6 +107,7 @@ namespace Behaviors
 		UNREFERENCED_PARAMETER(dt);
 		MoveHorizontal();
 		MoveVertical();
+		//Shoot();
 
 		Graphics& graphics = Graphics::GetInstance();
 
@@ -117,11 +122,27 @@ namespace Behaviors
 	void PlayerMapCollisionHandler(GameObject& object,
 		const MapCollision& collision)
 	{
-		PlayerController* player = static_cast<PlayerController*>(object.GetComponent("PlayerController"));
+		PlayerController* player = object.GetComponent<PlayerController>();
 
-		if (collision.bottom)
+		if (collision.bottom && player->jumping == false)
 		{
 			player->onGround = true;
+
+			if (player->playerState == PlayerState::jumpLt || player->playerState == PlayerState::jumpLtUp || player->playerState == PlayerState::jumpLtRoll)
+			{
+				player->playerState = PlayerState::idleLt;
+				player->sprite->SetSpriteSource(player->resourceManager->GetSpriteSource("SamusIdle"));
+				player->sprite->SetMesh(player->resourceManager->GetMesh("SamusIdle"));
+
+				std::cout << "ln 134" << std::endl;
+			}
+
+			if (player->playerState == PlayerState::jumpRt || player->playerState == PlayerState::jumpRtUp || player->playerState == PlayerState::jumpRtRoll)
+			{
+				player->playerState = PlayerState::idleRt;
+				player->sprite->SetSpriteSource(player->resourceManager->GetSpriteSource("SamusIdle"));
+				player->sprite->SetMesh(player->resourceManager->GetMesh("SamusIdle"));
+			}
 		}
 
 		if (collision.top)
@@ -167,57 +188,96 @@ namespace Behaviors
 
 		if (Input::GetInstance().CheckHeld(VK_RIGHT))
 		{
+			//add delay
+			//soundManager->PlaySound("PlayerRun2FX.wav");
+
 			move.x += PlayerWalkSpeed;
 
 			if (onGround)
 			{
-				soundManager->PlaySound("PlayerRun2FX.wav");
-
-				if (playerState == PlayerState::idleRt)
+				if (playerState == PlayerState::idleRt || playerState == PlayerState::idleLt)
 				{
 					playerState = PlayerState::runRt;
-					sprite->SetSpriteSource(run);
+					sprite->SetSpriteSource( resourceManager->GetSpriteSource("SamusRun") );
+					sprite->SetMesh( resourceManager->GetMesh("SamusRun"));
+					animation->Play(0.08f, true);
 				}
 
-				if (playerState == PlayerState::idleRtUp)
+				if (playerState == PlayerState::idleRtUp || playerState == PlayerState::idleLtUp)
 				{
 					playerState = PlayerState::runRtUp;
-					sprite->SetSpriteSource(run);
+					sprite->SetSpriteSource( resourceManager->GetSpriteSource("SamusRunUp") );
+					sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
+					animation->Play(0.08f, true);
 				}
 
-				//improve!
-				Vector2D scale = transform->GetScale();
-				scale.x = std::abs(scale.x);
-				transform->SetScale(scale);
+				//don't change sprite
+				if (playerState == PlayerState::jumpRt || playerState == PlayerState::jumpLt)
+				{
+					playerState = PlayerState::jumpRt;
+				}
 
-				sprite->SetMesh(runMesh);
+				if (playerState == PlayerState::jumpRtUp || playerState == PlayerState::jumpLtUp)
+				{
+					playerState = PlayerState::jumpRtUp;
+				}
+
+				if (playerState == PlayerState::jumpRtRoll || playerState == PlayerState::jumpLtRoll)
+				{
+					playerState = PlayerState::jumpRtRoll;
+				}
 			}
+
+			//improve!
+			Vector2D scale = transform->GetScale();
+			scale.x = std::abs(scale.x);
+			transform->SetScale(scale);
 		}
 		else if (Input::GetInstance().CheckHeld(VK_LEFT))
 		{
+			//add delay
+			//soundManager->PlaySound("PlayerRun2FX.wav");
+
 			move.x -= PlayerWalkSpeed;
 
 			if (onGround)
 			{
-				if (playerState == PlayerState::idleLt)
+				if (playerState == PlayerState::idleRt || playerState == PlayerState::idleLt)
 				{
 					playerState = PlayerState::runLt;
-					sprite->SetSpriteSource(run);
+					sprite->SetSpriteSource( resourceManager->GetSpriteSource("SamusRun") );
+					sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
+					animation->Play(0.08f, true);
 				}
 
-				if (playerState == PlayerState::idleRtUp)
+				if (playerState == PlayerState::idleLtUp || playerState == PlayerState::idleLtUp)
 				{
-					playerState = PlayerState::runRtUp;
-					sprite->SetSpriteSource(run);
+					playerState = PlayerState::runLtUp;
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
+					animation->Play(0.08f, true);
 				}
 
-				//Improve!
-				Vector2D scale = transform->GetScale();
-				scale.x = - std::abs( scale.x);
-				transform->SetScale( scale );
+				if (playerState == PlayerState::jumpRt || playerState == PlayerState::jumpLt)
+				{
+					playerState = PlayerState::jumpLt;
+				}
 
-				//sprite->SetMesh(runMesh);
+				if (playerState == PlayerState::jumpRtUp || playerState == PlayerState::jumpLtUp)
+				{
+					playerState = PlayerState::jumpLtUp;
+				}
+
+				if (playerState == PlayerState::jumpRtRoll || playerState == PlayerState::jumpLtRoll)
+				{
+					playerState = PlayerState::jumpLtRoll;
+				}
 			}
+
+			//Improve!
+			Vector2D scale = transform->GetScale();
+			scale.x = -std::abs(scale.x);
+			transform->SetScale(scale);
 		}
 		else
 		{
@@ -226,16 +286,30 @@ namespace Behaviors
 				if (playerState == PlayerState::runLt)
 				{
 					playerState = PlayerState::idleLt;
-					sprite->SetSpriteSource(idle);
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdle"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusIdle"));
+				}
+
+				if (playerState == PlayerState::runLtUp)
+				{
+					playerState = PlayerState::idleLtUp;
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdle"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusIdle"));
 				}
 
 				if (playerState == PlayerState::runRt)
 				{
 					playerState = PlayerState::idleRt;
-					sprite->SetSpriteSource(idle);
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdle"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusIdle"));
 				}
 
-				//sprite->SetMesh(idleMesh);
+				if (playerState == PlayerState::runRtUp)
+				{
+					playerState = PlayerState::idleRtUp;
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdle"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusIdle"));
+				}
 			}
 		}
 
@@ -244,25 +318,56 @@ namespace Behaviors
 			if (playerState == PlayerState::idleLt)
 			{
 				playerState = PlayerState::idleLtUp;
-				//sprite->SetSpriteSource(run);
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdleUp"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusIdleUp"));
 			}
 
 			if (playerState == PlayerState::runLt)
 			{
 				playerState = PlayerState::runLtUp;
-
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
+				animation->Play(0.08f, true);
 			}
 	
 			if (playerState == PlayerState::idleRt)
 			{
 				playerState = PlayerState::idleRtUp;
-			
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdleUp"));
+
+				sprite->SetMesh(resourceManager->GetMesh("SamusIdleUp"));
 			}
 
 			if (playerState == PlayerState::runRt)
 			{
 				playerState = PlayerState::runRtUp;
-			
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
+				animation->Play(0.08f, true);
+			}
+
+			if (playerState == PlayerState::rollLt)
+			{
+				playerState = PlayerState::idleLt;
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdle"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusIdle"));
+
+				Vector2D scale = transform->GetScale();
+				scale.y *= 2;
+				transform->SetScale(scale);
+				colliderRect->SetExtents(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));				
+			}
+
+			if (playerState == PlayerState::rollRt)
+			{
+				playerState = PlayerState::idleRt;
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdle"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusIdle"));
+
+				Vector2D scale = transform->GetScale();
+				scale.y *= 2;
+				transform->SetScale(scale);
+				colliderRect->SetExtents(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
 			}
 		}
 
@@ -271,25 +376,63 @@ namespace Behaviors
 			if (playerState == PlayerState::idleLtUp)
 			{
 				playerState = PlayerState::idleLt;
-				sprite->SetSpriteSource(idle);
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdle"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusIdle"));
 			}
 
 			if (playerState == PlayerState::runLtUp)
 			{
 				playerState = PlayerState::runLt;
-				sprite->SetSpriteSource(run);
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
+				animation->Play(0.08f, true);
 			}
 
 			if (playerState == PlayerState::idleRtUp)
 			{
 				playerState = PlayerState::idleRt;
-				sprite->SetSpriteSource(idle);
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusIdle"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusIdle"));
 			}
 
 			if (playerState == PlayerState::runRtUp)
 			{
 				playerState = PlayerState::runRt;
-				sprite->SetSpriteSource(run);
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
+				animation->Play(0.08f, true);
+			}
+		}
+
+		if (Input::GetInstance().CheckTriggered(VK_DOWN))
+		{
+			if (playerState == PlayerState::idleLt )
+			{
+				playerState = PlayerState::rollLt;
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRoll"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusRoll"));
+				animation->Play(0.08f, true);
+
+				Vector2D scale = transform->GetScale();
+				scale.y /= 2;
+				transform->SetScale(scale);
+				colliderRect->SetExtents(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
+				
+				//transform->SetTranslation( transform->GetTranslation() + Vector2D(0.0f, 0.5f) );
+			}
+
+			if (playerState == PlayerState::idleRt)
+			{
+				playerState = PlayerState::rollRt;
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRoll"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusRoll"));
+				animation->Play(0.08f, true);
+
+				Vector2D scale = transform->GetScale();
+				scale.y /= 2;
+				transform->SetScale(scale);
+				colliderRect->SetExtents(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
+				//transform->SetTranslation(transform->GetTranslation() + Vector2D(0.0f, 0.5f));
 			}
 		}
 
@@ -314,7 +457,7 @@ namespace Behaviors
 				move.y = PlayerJumpSpeed;	
 				physics->SetVelocity(move);
 			}
-			else if (transform->GetTranslation().y > jumpStartY + maxJumpHeight / 2)
+			else if (transform->GetTranslation().y > jumpStartY + maxJumpHeight * 2 / 5)
 			{
 				jumping = false;
 			}
@@ -336,8 +479,12 @@ namespace Behaviors
 		//jump start logic
 		if (Input::GetInstance().CheckTriggered('X'))
 		{
-			if (onGround == true)
+			if (onGround == true && jumping == false && 
+				playerState != PlayerState::rollLt && playerState != PlayerState::rollRt)
 			{
+				//FMOD::Channel* jumpSound = 
+				//soundManager->PlaySound("PlayerJump.wav");
+
 				onGround = false;
 				jumping = true;
 				jumpStartY = transform->GetTranslation().y;
@@ -345,37 +492,51 @@ namespace Behaviors
 				if (playerState == PlayerState::idleLt)
 				{
 					playerState = PlayerState::jumpLt;
-					sprite->SetSpriteSource(jump);
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
+					animation->Play(0.08f, false);
 				}
 
 				if (playerState == PlayerState::idleLtUp)
 				{
 					playerState = PlayerState::jumpLtUp;
-					sprite->SetSpriteSource(jump);
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
+					animation->Play(0.08f, false);
 				}
 
 				if (playerState == PlayerState::runLt || playerState == PlayerState::runLtUp)
 				{
 					playerState = PlayerState::jumpLtRoll;
-					sprite->SetSpriteSource(jumpRoll);
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJumpRoll"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusJumpRoll"));
+					animation->Play(0.08f, true);
+
+					std::cout << "ln 424" << std::endl;
 				}
 
 				if (playerState == PlayerState::idleRt)
 				{
-					playerState = PlayerState::idleRt;
-					sprite->SetSpriteSource(jump);
+					playerState = PlayerState::jumpRt;
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
+					animation->Play(0.08f, true);
 				}
 
 				if (playerState == PlayerState::idleRtUp)
 				{
 					playerState = PlayerState::jumpRtUp;
-					sprite->SetSpriteSource(jump);
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
+					animation->Play(0.08f, true);
 				}
 
 				if (playerState == PlayerState::runRt || playerState == PlayerState::runRtUp)
 				{
 					playerState = PlayerState::jumpRtRoll;
-					sprite->SetSpriteSource(jumpRoll);
+					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJumpRoll"));
+					sprite->SetMesh(resourceManager->GetMesh("SamusJumpRoll"));
+					animation->Play(0.08f, true);
 				}
 			}
 		}
@@ -398,13 +559,15 @@ namespace Behaviors
 			if (playerState == PlayerState::jumpLtRoll)
 			{
 				playerState = PlayerState::jumpLt;
-				sprite->SetSpriteSource(jump);
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
 			}
 
 			if (playerState == PlayerState::jumpRtRoll)
 			{
 				playerState = PlayerState::jumpRt;
-				sprite->SetSpriteSource(jump);
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
+				sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
 			}
 
 			if (playerState == PlayerState::idleLt || playerState == PlayerState::runLt || playerState == PlayerState::jumpLt)
