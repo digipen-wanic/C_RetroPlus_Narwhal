@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	MainLevel.h
+// File Name:	StartScreen.h
 // Author(s):	Nicole Smith
 // Project:		BetaFramework
 // Course:		WANIC VGP2 2018-2019
@@ -28,7 +28,6 @@ class Texture;
 class SpriteSource;
 class Mesh;
 class GameObject;
-class Tilemap;
 
 //------------------------------------------------------------------------------
 // Public Structures:
@@ -36,7 +35,7 @@ class Tilemap;
 
 namespace Levels
 {
-	class MainLevel : public Level
+	class StartScreen : public Level
 	{
 	public:
 		//------------------------------------------------------------------------------
@@ -44,7 +43,7 @@ namespace Levels
 		//------------------------------------------------------------------------------
 
 		// Creates an instance of Level 2.
-		MainLevel();
+		StartScreen();
 
 		// Load the resources associated with Level 2.
 		void Load() override;
@@ -73,18 +72,11 @@ namespace Levels
 		//unsigned columnsMonkey;
 		//unsigned rowsMonkey;
 
-		//Samus
-		Mesh* samusIdleMesh;
-		SpriteSource* samusStanding;
-		SpriteSource* samusBullet;
+		//Text image
+		Mesh* bgMesh;
+		SpriteSource* bgSpriteSource;
+		Texture* bgTexture;
 
-		// Tilemap
-		Tilemap* dataMap;
-		Texture* textureMap;
-		SpriteSource* spriteSourceMap;
-		Mesh* meshMap;
-		unsigned columnsMap;
-		unsigned rowsMap;
 
 		//Sound manager
 		SoundManager* soundManager;
