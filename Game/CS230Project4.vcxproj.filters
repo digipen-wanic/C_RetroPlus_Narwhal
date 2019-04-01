@@ -61,6 +61,9 @@
     <ClCompile Include="Source\SamusBullet.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StartScreen.cpp">
+      <Filter>Game\Metroid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\stdafx.h">
@@ -103,6 +106,9 @@
       <Filter>Game\Metroid</Filter>
     </ClInclude>
     <ClInclude Include="Source\SamusBullet.h">
+      <Filter>Game\Metroid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StartScreen.h">
       <Filter>Game\Metroid</Filter>
     </ClInclude>
   </ItemGroup>
