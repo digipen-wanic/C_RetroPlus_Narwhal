@@ -24,8 +24,14 @@
 
 class Transform;
 class Physics;
+class Mesh;
+class Sprite;
+class SpriteSource;
+class Animation;
+class ColliderRectangle;
 struct MapCollision;
 class SoundManager;
+class ResourceManager;
 
 //------------------------------------------------------------------------------
 // Public Structures:
@@ -53,7 +59,10 @@ namespace Behaviors
 		jumpRtUp,
 
 		jumpLtRoll,
-		jumpRtRoll
+		jumpRtRoll,
+
+		rollLt,
+		rollRt,
 	};
 
 	class PlayerController : public Component
@@ -104,13 +113,16 @@ namespace Behaviors
 		//------------------------------------------------------------------------------
 
 		// Moves horizontally based on input
-		void MoveHorizontal();
+		void MoveHorizontal(float dt);
 
 		// Moves vertically based on input
 		void MoveVertical();
 
-		// Moves vertically based on input
-		void Shoot();
+		// shooting logic
+		void Shoot(float dt);
+
+		// fire a single shot
+		void Fire();
 
 		//------------------------------------------------------------------------------
 		// Private Variables:
@@ -124,6 +136,7 @@ namespace Behaviors
 		float PlayerJumpSpeed;
 		float maxJumpHeight;
 		Vector2D gravity;
+		float maxGravity;
 
 		//shooting properties
 		float firingSpeed;
@@ -134,13 +147,22 @@ namespace Behaviors
 		// Components
 		Transform* transform;
 		Physics* physics;
+		Sprite* sprite;
+		Animation* animation;
+		ColliderRectangle* colliderRect;
+
+		//sound
+		float footstepInterval;
+		float footstepTimer;
 
 		// Misc
 		float jumpStartY;
 		bool onGround;
 		bool jumping;
+
 		PlayerState playerState;
 		SoundManager* soundManager;
+		ResourceManager* resourceManager;
 	};
 }
 

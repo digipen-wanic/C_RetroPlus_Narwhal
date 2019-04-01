@@ -27,6 +27,7 @@
 #include "MeshHelper.h"
 #include "Texture.h"
 #include <Engine.h>
+#include <Graphics.h>
 #include "CameraFollow.h"
 #include <Parser.h>
 
@@ -38,7 +39,7 @@ namespace Levels
 
 	// Creates an instance of Level 2.
 	MainLevel::MainLevel()
-		: Level("MainLevel"), columnsMonkey(3), rowsMonkey(5), columnsMap(3), rowsMap(4)
+		: Level("MainLevel"), columnsMap(3), rowsMap(4)
 	{
 	}
 
@@ -47,11 +48,43 @@ namespace Levels
 	{
 		std::cout << "MainLevel::Load" << std::endl;
 
-		textureMonkey = Texture::CreateTextureFromFile("Monkey.png");
-		spriteSourceMonkey = new SpriteSource(textureMonkey, "Monkey", columnsMonkey, rowsMonkey);
+		//textureMonkey = Texture::CreateTextureFromFile("Monkey.png");
+		//spriteSourceMonkey = new SpriteSource(textureMonkey, "Monkey", columnsMonkey, rowsMonkey);
 
-		meshMonkey = CreateQuadMesh(Vector2D(0.33333f, 0.2f), Vector2D(0.5, 0.5));
+		//graphics
+		samusIdleMesh = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
+		samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
+		samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 
+		ResourceManager& resourceManager = GetSpace()->GetResourceManager();
+		samusStanding = resourceManager.GetSpriteSource("SamusStanding");
+		resourceManager.GetSpriteSource("SamusIdle");
+		resourceManager.GetSpriteSource("SamusIdleUp");
+		resourceManager.GetSpriteSource("SamusRun");
+		resourceManager.GetSpriteSource("SamusRunUp");
+		resourceManager.GetSpriteSource("SamusRunShoot");
+		resourceManager.GetSpriteSource("SamusJump");
+		resourceManager.GetSpriteSource("SamusJumpRoll");
+		resourceManager.GetSpriteSource("SamusRoll");
+
+		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
+
+		resourceManager.AddMesh("SamusStanding", samusIdleMesh);
+		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
+		resourceManager.AddMesh("SamusIdleUp", samusIdleMesh);
+		resourceManager.AddMesh("SamusRun", samusRunMesh);
+		resourceManager.AddMesh("SamusRunUp", samusRunMesh);
+		resourceManager.AddMesh("SamusRunShoot", samusRunMesh);
+		resourceManager.AddMesh("SamusJump", samusRunMesh);
+		resourceManager.AddMesh("SamusJumpRoll", samusJumpRollMesh);
+		resourceManager.AddMesh("SamusRoll", samusJumpRollMesh);
+
+		resourceManager.AddMesh("SamusBullet", samusIdleMesh);
+
+		//bullet archetype
+		GetSpace()->GetObjectManager().AddArchetype( *Archetypes::CreateSamusBulletArchetype(samusIdleMesh, samusBullet) );
+
+		//tilemap
 		Tilemap* tilemapBuffer = new Tilemap();
 		Parser parser("Assets/Levels/MainLevel.txt", std::fstream::in);
 		tilemapBuffer->Deserialize(parser);
@@ -72,6 +105,8 @@ namespace Levels
 	
 		//load sounds
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
+		//soundManager->SetEffectsVolume(0.01f);
+
 		//soundManager->AddMusic("Asteroid_Field.mp3");
 		soundManager->AddEffect("EnemyDeathFX.wav");
 		soundManager->AddEffect("EnemyHitFX.wav");
@@ -84,6 +119,8 @@ namespace Levels
 		soundManager->AddEffect("PlayerJump.wav");
 		soundManager->AddEffect("PlayerRun2FX.wav");
 
+		//misc
+		Graphics::GetInstance().GetCurrentCamera().SetFOV(180.0f);
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -92,10 +129,13 @@ namespace Levels
 		std::cout << "Level2::Initialize" << std::endl;
 
 		GetSpace()->GetObjectManager().AddObject(*Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap));
-		GameObject* monkey = GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
-		monkey->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
-		GetSpace()->GetObjectManager().AddObject(*monkey);
-		
+
+		GameObject* samus = Archetypes::CreateSamus(samusIdleMesh, samusStanding);
+
+		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
+		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
+		GetSpace()->GetObjectManager().AddObject(*samus);
+
 		//play music
 		//musicChannel = soundManager->PlaySound("");
 	}
@@ -128,9 +168,9 @@ namespace Levels
 		//unload sounds
 		soundManager->Shutdown();
 
-		delete meshMonkey;
-		delete textureMonkey;
-		delete spriteSourceMonkey;
+		//delete meshMonkey;
+		//delete textureMonkey;
+		//delete spriteSourceMonkey;
 
 		delete dataMap;
 		delete meshMap;

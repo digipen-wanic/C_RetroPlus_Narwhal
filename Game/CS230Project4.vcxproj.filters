@@ -31,15 +31,6 @@
     <ClCompile Include="Source\TimedDeath.cpp">
       <Filter>Game\Behaviors</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Level2.cpp">
-      <Filter>Game\Levels</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Level1.cpp">
-      <Filter>Game\Levels</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Level3.cpp">
-      <Filter>Game\Levels</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ColorChange.cpp">
       <Filter>Game\Behaviors</Filter>
     </ClCompile>
@@ -58,9 +49,6 @@
     <ClCompile Include="Source\PlayerProjectile.cpp">
       <Filter>Game\Behaviors</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Omega.cpp">
-      <Filter>Game\Levels</Filter>
-    </ClCompile>
     <ClCompile Include="Source\PlayerController.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
@@ -68,6 +56,9 @@
       <Filter>Game\Metroid</Filter>
     </ClCompile>
     <ClCompile Include="Source\MainLevel.cpp">
+      <Filter>Game\Metroid</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SamusBullet.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,15 +74,6 @@
     </ClInclude>
     <ClInclude Include="Source\TimedDeath.h">
       <Filter>Game\Behaviors</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Level2.h">
-      <Filter>Game\Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Level1.h">
-      <Filter>Game\Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Level3.h">
-      <Filter>Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="Source\ColorChange.h">
       <Filter>Game\Behaviors</Filter>
@@ -111,9 +93,6 @@
     <ClInclude Include="Source\PlayerProjectile.h">
       <Filter>Game\Behaviors</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Omega.h">
-      <Filter>Game\Levels</Filter>
-    </ClInclude>
     <ClInclude Include="Source\PlayerController.h">
       <Filter>Game\Metroid</Filter>
     </ClInclude>
@@ -121,6 +100,9 @@
       <Filter>Game\Metroid</Filter>
     </ClInclude>
     <ClInclude Include="Source\MainLevel.h">
+      <Filter>Game\Metroid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SamusBullet.h">
       <Filter>Game\Metroid</Filter>
     </ClInclude>
   </ItemGroup>

@@ -67,11 +67,18 @@ namespace Levels
 		//------------------------------------------------------------------------------
 
 		// Monkey
-		Mesh* meshMonkey;
-		Texture* textureMonkey;
-		SpriteSource* spriteSourceMonkey;
-		unsigned columnsMonkey;
-		unsigned rowsMonkey;
+		//Mesh* meshMonkey;
+		//Texture* textureMonkey;
+		//SpriteSource* spriteSourceMonkey;
+		//unsigned columnsMonkey;
+		//unsigned rowsMonkey;
+
+		//Samus
+		Mesh* samusIdleMesh;
+		Mesh* samusRunMesh;
+		Mesh* samusJumpRollMesh;
+		SpriteSource* samusStanding;
+		SpriteSource* samusBullet;
 
 		// Tilemap
 		Tilemap* dataMap;
