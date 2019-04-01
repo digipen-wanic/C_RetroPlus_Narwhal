@@ -2,7 +2,7 @@ SamusJump
 {
   numRows : 2
   numCols : 2
-  frameCount : 3
+  frameCount : 0
   frameStart : 0
-  texture : SamusIdle.png
+  texture : Jump.png
 }
