@@ -117,6 +117,22 @@ bool ColliderTilemap::IsCollidingWith(const Collider& other) const
 
 	return false;
 }
+const Tilemap* ColliderTilemap::GetTilemap() const
+{
+	return map;
+}
+
+Vector2D ColliderTilemap::GetTileIndices(Vector2D translation) const
+{
+	Vector2D point(translation.x, translation.y);
+
+	point = transform->GetInverseMatrix() * point;
+
+	float column = point.x + 0.5f;
+	float row = -point.y + 0.5f;
+
+	return Vector2D(column, row);
+}
 
 // Sets the tilemap to use for this collider.
 // Params:

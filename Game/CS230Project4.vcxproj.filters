@@ -61,6 +61,9 @@
     <ClCompile Include="Source\SamusBullet.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Enemy.cpp">
+      <Filter>Game\Behaviors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\stdafx.h">
@@ -104,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="Source\SamusBullet.h">
       <Filter>Game\Metroid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
+      <Filter>Game\Behaviors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
