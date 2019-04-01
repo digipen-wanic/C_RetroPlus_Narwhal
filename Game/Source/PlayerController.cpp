@@ -49,9 +49,9 @@ namespace Behaviors
 	PlayerController::PlayerController()
 	: Component("PlayerController"), PlayerWalkSpeed(3.0f * tileUnit),
 		PlayerJumpSpeed(5.0f * tileUnit), gravity(0.0f, -10.0f * tileUnit),
-		maxJumpHeight( 5 * tileUnit ), firingSpeed(0.25), firingTimer(0), 
-		bulletSpeed(tileUnit * 4), onGround(false), jumping(false), maxGravity(-4.0),
-		playerState(PlayerState::idleRt)
+		maxJumpHeight( 5 * tileUnit ), firingSpeed(0.2f), firingTimer(0), 
+		bulletSpeed(tileUnit * 6), onGround(false), jumping(false), maxGravity(-4.0f),
+		playerState(PlayerState::idleRt), footstepInterval(0.15f), footstepTimer(0.0f)
 	{
 	}
 
@@ -95,8 +95,8 @@ namespace Behaviors
 		collider->SetCollisionHandler( PlayerCollisionHandler );
 	
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
-		Graphics::GetInstance().GetCurrentCamera().SetFOV(180.0f);
 
+		bulletArchetype = GetOwner()->GetSpace()->GetObjectManager().GetArchetypeByName("samusBullet");
 	}
 
 	// Fixed update function for this component.
@@ -104,15 +104,9 @@ namespace Behaviors
 	//   dt = The (fixed) change in time since the last step.
 	void PlayerController::Update(float dt)
 	{
-		UNREFERENCED_PARAMETER(dt);
-		MoveHorizontal();
-		MoveVertical();
-		//Shoot();
-
-		Graphics& graphics = Graphics::GetInstance();
-
-		Camera& camera = graphics.GetCurrentCamera();
-		camera.SetTranslation(transform->GetTranslation());
+		MoveHorizontal(dt);
+		MoveVertical();	
+		Shoot(dt);
 	}
 
 	// Map collision handler for Player objects.
@@ -181,16 +175,25 @@ namespace Behaviors
 	//==================================================================-
 
 	// Moves horizontally based on input
-	void PlayerController::MoveHorizontal()
+	void PlayerController::MoveHorizontal(float dt)
 	{
 		Vector2D move = physics->GetVelocity();
 		move.x = 0.0f;
 
+		//foot steps
+		if (onGround && playerState != PlayerState::rollLt && playerState != PlayerState::rollRt &&
+			(Input::GetInstance().CheckHeld(VK_RIGHT) || Input::GetInstance().CheckHeld(VK_LEFT)))
+		{
+			footstepTimer += dt;
+			if (footstepTimer >= footstepInterval)
+			{
+				soundManager->PlaySound("PlayerRun2FX.wav")->setVolume(0.1f);
+				footstepTimer = 0;
+			}
+		}
+
 		if (Input::GetInstance().CheckHeld(VK_RIGHT))
 		{
-			//add delay
-			//soundManager->PlaySound("PlayerRun2FX.wav");
-
 			move.x += PlayerWalkSpeed;
 
 			if (onGround)
@@ -483,7 +486,7 @@ namespace Behaviors
 				playerState != PlayerState::rollLt && playerState != PlayerState::rollRt)
 			{
 				//FMOD::Channel* jumpSound = 
-				//soundManager->PlaySound("PlayerJump.wav");
+				soundManager->PlaySound("PlayerJump.wav")->setVolume(0.2f);
 
 				onGround = false;
 				jumping = true;
@@ -543,58 +546,83 @@ namespace Behaviors
 	}
 
 	// Shoot projectiles when enter is pressed
-	void PlayerController::Shoot()
+	void PlayerController::Shoot(float dt)
 	{
-		if (Input::GetInstance().CheckTriggered('Z'))
+		//Shooting
+		if (playerState != PlayerState::rollLt && playerState != PlayerState::rollRt)
 		{
-			//initiliaze working data
-
-			soundManager->PlaySound("PlayerFire.wav");
-
-			GameObject* bullet = new GameObject(*bulletArchetype);
-			Transform* bulletTransform = static_cast<Transform*>(bullet->GetComponent("Transform"));
-			Physics* bulletPhysics = static_cast<Physics*>(bullet->GetComponent("Physics"));
-			Vector2D shootDirection;
-
-			if (playerState == PlayerState::jumpLtRoll)
+			if (Input::GetInstance().CheckTriggered('Z'))
 			{
-				playerState = PlayerState::jumpLt;
-				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
-				sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
+				Fire();
 			}
 
-			if (playerState == PlayerState::jumpRtRoll)
+			if (Input::GetInstance().CheckHeld('Z'))
 			{
-				playerState = PlayerState::jumpRt;
-				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
-				sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
+				firingTimer += dt;
+
+				if (firingTimer >= firingSpeed)
+				{
+					firingTimer = 0;
+					Fire();
+				}
 			}
 
-			if (playerState == PlayerState::idleLt || playerState == PlayerState::runLt || playerState == PlayerState::jumpLt)
+			if (Input::GetInstance().CheckReleased('Z'))
 			{
-				shootDirection = Vector2D(-1, 0);
+				firingTimer = -0.2f;
 			}
-
-			if (playerState == PlayerState::idleRt || playerState == PlayerState::runRt || playerState == PlayerState::jumpRt)
-			{
-				shootDirection = Vector2D(1, 0);
-			}
-
-			if (playerState == PlayerState::idleLtUp || playerState == PlayerState::runLtUp || playerState == PlayerState::jumpLtUp ||
-				playerState == PlayerState::idleRtUp || playerState == PlayerState::runRtUp || playerState == PlayerState::jumpRtUp)
-			{
-				shootDirection = Vector2D(0, 1);
-			}
-			
-
-			//adjust bullet data
-			bulletTransform->SetTranslation(transform->GetTranslation() + shootDirection.Normalized() * transform->GetScale().x / 2);
-			bulletTransform->SetRotation(transform->GetRotation());
-			bulletPhysics->SetOldTranslation(bulletTransform->GetTranslation());
-			bulletPhysics->SetVelocity(shootDirection * bulletSpeed);
-			//projectile->SetSpawner(this);
-
-			GetOwner()->GetSpace()->GetObjectManager().AddObject(*bullet);
 		}
+	}
+
+	void PlayerController::Fire()
+	{
+		//initiliaze working data
+
+		soundManager->PlaySound("PlayerFire.wav")->setVolume(0.2f);
+
+		GameObject* bullet = new GameObject(*bulletArchetype);
+		Transform* bulletTransform = bullet->GetComponent<Transform>();
+		Physics* bulletPhysics = bullet->GetComponent<Physics>();
+		Vector2D shootDirection;
+
+		if (playerState == PlayerState::jumpLtRoll)
+		{
+			playerState = PlayerState::jumpLt;
+			sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
+			sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
+		}
+
+		if (playerState == PlayerState::jumpRtRoll)
+		{
+			playerState = PlayerState::jumpRt;
+			sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJump"));
+			sprite->SetMesh(resourceManager->GetMesh("SamusJump"));
+		}
+
+		if (playerState == PlayerState::idleLt || playerState == PlayerState::runLt || playerState == PlayerState::jumpLt)
+		{
+			shootDirection = Vector2D(-1, 0);
+		}
+
+		if (playerState == PlayerState::idleRt || playerState == PlayerState::runRt || playerState == PlayerState::jumpRt)
+		{
+			shootDirection = Vector2D(1, 0);
+		}
+
+		if (playerState == PlayerState::idleLtUp || playerState == PlayerState::runLtUp || playerState == PlayerState::jumpLtUp ||
+			playerState == PlayerState::idleRtUp || playerState == PlayerState::runRtUp || playerState == PlayerState::jumpRtUp)
+		{
+			shootDirection = Vector2D(0, 1);
+		}
+		
+
+		//adjust bullet data
+		bulletTransform->SetTranslation(transform->GetTranslation() + Vector2D( 0, transform->GetScale().y / 4) + shootDirection.Normalized() * transform->GetScale().x / 2);
+		bulletTransform->SetRotation(transform->GetRotation());
+		bulletPhysics->SetOldTranslation(bulletTransform->GetTranslation());
+		bulletPhysics->SetVelocity(shootDirection * bulletSpeed + Vector2D( physics->GetVelocity().x, 0.0f) );
+		//projectile->SetSpawner(this);
+
+		GetOwner()->GetSpace()->GetObjectManager().AddObject(*bullet);
 	}
 }

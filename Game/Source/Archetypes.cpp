@@ -42,6 +42,7 @@ file Archetypes.h.
 
 //metroid
 #include "PlayerController.h"
+#include "samusBullet.h"
 #include "CameraFollow.h"
 
 
@@ -90,6 +91,45 @@ GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing
 	return samusObject;
 }
 
+
+// Create the player bullet game object.
+	// Params:
+	//   mesh  = The mesh to use for the object's sprite.
+	//   spriteSource = The sprite source to use for the object.
+	// Returns:
+	//	 A pointer to the newly constructed game object
+GameObject* Archetypes::CreateSamusBulletArchetype(Mesh* mesh, SpriteSource* spriteSource)
+{
+	//initilize all components
+	Transform* transform = new Transform(0.0f, 0.0f);
+	transform->SetScale(Vector2D(50.0f, 50.0f));
+
+	Sprite* sprite = new Sprite();
+	sprite->SetMesh(mesh);
+	sprite->SetSpriteSource(spriteSource);
+
+	Physics* physics = new Physics();
+
+	ColliderCircle* collider = new ColliderCircle(transform->GetScale().x * 0.5f);
+
+	Behaviors::TimedDeath* timedDeath = new Behaviors::TimedDeath(0.5f);
+	//Behaviors::ScreenWrap* screenWrap = new Behaviors::ScreenWrap();
+	Behaviors::SamusBullet* samusBullet = new Behaviors::SamusBullet();
+
+	//create object add all the components
+	GameObject* bullet = new GameObject("samusBullet");
+	bullet->AddComponent(transform);
+	bullet->AddComponent(physics);
+	bullet->AddComponent(sprite);
+	bullet->AddComponent(collider);
+	bullet->AddComponent(timedDeath);
+	bullet->AddComponent(samusBullet);
+
+	//GameObjectFactory::GetInstance().SaveObjectToFile(bullet);
+
+	return bullet;
+
+}
 
 // Create a game object that uses the Ship texture.
 // Returns:

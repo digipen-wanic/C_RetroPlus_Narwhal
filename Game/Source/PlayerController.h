@@ -113,13 +113,16 @@ namespace Behaviors
 		//------------------------------------------------------------------------------
 
 		// Moves horizontally based on input
-		void MoveHorizontal();
+		void MoveHorizontal(float dt);
 
 		// Moves vertically based on input
 		void MoveVertical();
 
-		// Moves vertically based on input
-		void Shoot();
+		// shooting logic
+		void Shoot(float dt);
+
+		// fire a single shot
+		void Fire();
 
 		//------------------------------------------------------------------------------
 		// Private Variables:
@@ -147,6 +150,10 @@ namespace Behaviors
 		Sprite* sprite;
 		Animation* animation;
 		ColliderRectangle* colliderRect;
+
+		//sound
+		float footstepInterval;
+		float footstepTimer;
 
 		// Misc
 		float jumpStartY;
