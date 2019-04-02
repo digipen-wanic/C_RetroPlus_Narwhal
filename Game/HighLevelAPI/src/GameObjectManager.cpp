@@ -49,7 +49,7 @@ void GameObjectManager::Update(float dt)
 	{
 		VariableUpdate(dt);
 		FixedUpdate(dt);
-		CheckCollisions();
+		//CheckCollisions();
 	}
 
 	DestroyObjects();
@@ -215,6 +215,8 @@ void GameObjectManager::FixedUpdate(float dt)
 
 		timeAccumulator -= 1/fixedUpdateDt;
 	}	
+
+	CheckCollisions();
 }
 
 // Destroy any objects marked for destruction.

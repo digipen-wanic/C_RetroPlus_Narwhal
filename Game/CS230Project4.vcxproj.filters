@@ -68,9 +68,7 @@
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Health.cpp">
-      <Filter>Game\Metroid</Filter>
-    </ClCompile>
+    <ClCompile Include="Source\Health.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\stdafx.h">
@@ -122,8 +120,6 @@
     <ClInclude Include="Source\Enemy.h">
       <Filter>Game\Metroid</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Health.h">
-      <Filter>Game\Metroid</Filter>
-    </ClInclude>
+    <ClInclude Include="Source\Health.h" />
   </ItemGroup>
 </Project>

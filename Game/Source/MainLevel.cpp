@@ -78,9 +78,9 @@ namespace Levels
 		resourceManager.AddMesh("SamusRun", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusRunUp", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusRunShoot", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
-		resourceManager.AddMesh("SamusJump", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusJump", CreateQuadMesh(Vector2D( 1.0f , 1.0f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusJumpRoll", CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5)));
-		resourceManager.AddMesh("SamusRoll", CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusRoll", CreateQuadMesh(Vector2D(1.0f / 4.0f, 1.0f / 4.0f), Vector2D(0.5, 0.5)));
 
 
 		resourceManager.AddMesh("crawlerMesh", crawlerMesh);
@@ -155,6 +155,7 @@ namespace Levels
 	void MainLevel::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
+		
 		
 		//press enter/start
 		if (Input::GetInstance().CheckTriggered(VK_RETURN))
