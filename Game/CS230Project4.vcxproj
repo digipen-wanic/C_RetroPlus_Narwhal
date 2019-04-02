@@ -111,6 +111,7 @@ xcopy fmod\lib\fmodstudio64.dll "$(OutDir)" /Y</Command>
     <ClCompile Include="Source\CameraFollow.cpp" />
     <ClCompile Include="Source\DoorBehavior.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
+    <ClCompile Include="Source\Health.cpp" />
     <ClCompile Include="Source\MainLevel.cpp" />
     <ClCompile Include="Source\ColorChange.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -135,6 +136,7 @@ xcopy fmod\lib\fmodstudio64.dll "$(OutDir)" /Y</Command>
     <ClInclude Include="Source\ColorChange.h" />
     <ClInclude Include="Source\DoorBehavior.h" />
     <ClInclude Include="Source\Enemy.h" />
+    <ClInclude Include="Source\Health.h" />
     <ClInclude Include="Source\MainLevel.h" />
     <ClInclude Include="Source\MonkeyMovement.h" />
     <ClInclude Include="Source\PlayerController.h" />
