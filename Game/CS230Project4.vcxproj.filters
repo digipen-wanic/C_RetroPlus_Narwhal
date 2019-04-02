@@ -61,6 +61,13 @@
     <ClCompile Include="Source\SamusBullet.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StartScreen.cpp" />
+    <ClCompile Include="Source\DoorBehavior.cpp">
+      <Filter>Game\Metroid</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy.cpp">
+      <Filter>Game\Metroid</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Health.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
@@ -106,6 +113,13 @@
       <Filter>Game\Metroid</Filter>
     </ClInclude>
     <ClInclude Include="Source\SamusBullet.h">
+      <Filter>Game\Metroid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StartScreen.h" />
+    <ClInclude Include="Source\DoorBehavior.h">
+      <Filter>Game\Metroid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
       <Filter>Game\Metroid</Filter>
     </ClInclude>
     <ClInclude Include="Source\Health.h">
