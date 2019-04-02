@@ -51,8 +51,8 @@ namespace Behaviors
 	// Update function for this component.
 		// Params:
 		//   dt = The (fixed) change in time since the last step.
-	void Update(float dt)
+	void Health::Update(float dt)
 	{
-		
+		UNREFERENCED_PARAMETER(dt);
 	}
 }
