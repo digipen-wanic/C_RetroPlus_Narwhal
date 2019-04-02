@@ -30,6 +30,7 @@
 #include "Mesh.h"
 #include "Animation.h"
 #include "SpriteSource.h"
+#include "StartScreen.h"
 
 #include <SoundManager.h>
 #include <Engine.h>
@@ -167,6 +168,11 @@ namespace Behaviors
 		if (other.GetName()._Equal("Enemy"))
 		{
 			object.GetSpace()->RestartLevel();
+		}
+
+		if (other.GetName() == "Door")
+		{
+			object.GetSpace()->SetLevel(new Levels::StartScreen);
 		}
 	}
 
