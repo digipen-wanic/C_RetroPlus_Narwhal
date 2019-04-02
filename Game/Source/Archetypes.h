@@ -66,6 +66,8 @@ namespace Archetypes
 	//	 A pointer to the newly constructed game object
 	GameObject* CreateBulletArchetype(Mesh* mesh);
 
+	GameObject* CreateCrawlerEnemy(Mesh* mesh, SpriteSource* spriteSource, GameObject* tm);
+
 	// Create the monkey game object.
 	// Params:
 	//   mesh  = The mesh to use for the object's sprite.

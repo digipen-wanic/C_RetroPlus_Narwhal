@@ -34,6 +34,7 @@ file Archetypes.h.
 #include "Sprite.h"
 #include "SpriteTilemap.h"
 #include "SpriteSource.h"
+#include "Enemy.h"
 #include <Graphics.h>
 #include "Physics.h"
 #include "Transform.h"
@@ -91,6 +92,41 @@ GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing
 	return samusObject;
 }
 
+
+// Create the enemy game object.
+// Params:
+//   mesh  = The mesh to use for the object's sprite.
+//   spriteSource = The sprite source to use for the sprite.
+// Returns:
+//	 A pointer to the newly constructed game object
+GameObject* Archetypes::CreateCrawlerEnemy(Mesh* mesh, SpriteSource* spriteSource, GameObject* tm)
+{
+	GameObject* enemy = new GameObject("Enemy");
+
+	Transform* t = new Transform(-150, -100);
+	t->SetScale(Vector2D(100.0f, 100.0f));
+	enemy->AddComponent(t);
+
+	Sprite* s = new Sprite();
+	s->SetMesh(mesh);
+	s->SetSpriteSource(spriteSource);
+	s->SetColor(Colors::Green);
+	enemy->AddComponent(s);
+
+	Animation* animation = new Animation();
+	enemy->AddComponent(animation);
+
+	Physics* p = new Physics();
+	enemy->AddComponent(p);
+
+	ColliderRectangle* cc = new ColliderRectangle(Vector2D(50.0f, 50.0f));
+	enemy->AddComponent(cc);
+
+	Behaviors::Enemy* e = new Behaviors::Enemy(tm);
+	enemy->AddComponent(e);
+
+	return enemy;
+}
 
 // Create the player bullet game object.
 	// Params:
