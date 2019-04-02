@@ -76,7 +76,7 @@ GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing
 
 	Behaviors::PlayerController* playerController = 
 		new Behaviors::PlayerController();
-	Behaviors::Health* health = new Behaviors::Health(99.0f, 30.0f);
+	Behaviors::Health* health = new Behaviors::Health(99.0f, 30.0f, true);
 	Behaviors::CameraFollow* cameraFollow = new Behaviors::CameraFollow();
 
 	//create object add all the components
@@ -189,7 +189,7 @@ GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler)
 
 	ColliderRectangle* collider = new ColliderRectangle( Vector2D( transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f) );
 
-	Behaviors::Health* health = new Behaviors::Health(10.0f, 10.0f);
+	Behaviors::Health* health = new Behaviors::Health(10.0f, 10.0f, false);
 
 	//create object add all the components
 	GameObject* crawlerEnemy = new GameObject("Crawler");

@@ -2,6 +2,8 @@
 
 #include <stdafx.h>
 #include "Health.h"
+#include "GameObject.h"
+#include "Sprite.h"
 
 namespace Behaviors
 {
@@ -10,9 +12,9 @@ namespace Behaviors
 	//------------------------------------------------------------------------------
 
 	// Constructor
-	Health::Health(float maxHealth, float startingHealth, bool isPlayer)
+	Health::Health(float maxHealth, float startingHealth, bool isPlayer, float hitRecoveryTime)
 		: Component("Health"), maxHealth(maxHealth), health(startingHealth),
-		isPlayer(isPlayer), hit(false)
+		isPlayer(isPlayer), hitTimer(0), hitRecoveryTime(hitRecoveryTime)
 	{
 	}
 
@@ -34,18 +36,38 @@ namespace Behaviors
 		UNREFERENCED_PARAMETER(parser);
 	}
 
+	// Initialize this component (happens at object creation).
+	void Health::Initialize()
+	{
+		sprite = GetOwner()->GetComponent<Sprite>();
+	}
+
 	//returns if dead
 	bool Health::adjustHealth(float addition)
 	{
-		health += addition;
-
-		if (health >= 0.0f)
+		if (hitTimer <= 0.0f)
 		{
-			health = 0.0f;
-			return true;
+			health += addition;
+			hitTimer += hitRecoveryTime;
+			
+
+			if (health <= 0.0f)
+			{
+				health = 0.0f;
+				return true;
+			}
+
+			if (isPlayer)
+			{
+				sprite->SetAlpha(0.5f);
+			}
+			else 
+			{
+				sprite->SetColor(Colors::Red);
+			}
 		}
 
-		return true;
+		return false;
 	}
 
 	// Update function for this component.
@@ -53,6 +75,29 @@ namespace Behaviors
 		//   dt = The (fixed) change in time since the last step.
 	void Health::Update(float dt)
 	{
-		UNREFERENCED_PARAMETER(dt);
+		if (hitTimer > 0.0f)
+		{
+			hitTimer -= dt;
+
+			if (isPlayer && static_cast<int>(hitTimer * 100) % 2 == 0)
+			{
+				sprite->SetAlpha(0.0f);
+			}
+			else
+			{
+				sprite->SetAlpha(0.5f);
+			}
+		}
+		else
+		{
+			if (isPlayer)
+			{
+				sprite->SetAlpha(1.0f);
+			}
+			else
+			{
+				sprite->SetColor(Colors::White);
+			}
+		}
 	}
 }
