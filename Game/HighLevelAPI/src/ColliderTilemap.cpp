@@ -19,6 +19,8 @@
 // Systems
 #include <Engine.h>
 #include <Shapes2D.h>
+#include <Graphics.h>
+#include <DebugDraw.h>
 
 // Components
 #include "GameObject.h" // GetTransform
@@ -181,6 +183,8 @@ bool ColliderTilemap::IsSideColliding(const BoundingRectangle& rectangle, Rectan
 	float y1 = rectangle.center.y - rectangle.extents.y * (2.0f / 3.0f);
 	float y2 = rectangle.center.y + rectangle.extents.y * (2.0f / 3.0f);
 
+	
+
 	const unsigned numHotspots = 2;
 	Vector2D hotspots[numHotspots];
 
@@ -205,6 +209,10 @@ bool ColliderTilemap::IsSideColliding(const BoundingRectangle& rectangle, Rectan
 	default:
 		break;
 	}
+
+	DebugDraw::GetInstance().AddCircle(hotspots[0], 10.0f, Graphics::GetInstance().GetCurrentCamera(), Colors::Green);
+	DebugDraw::GetInstance().AddCircle(hotspots[1], 10.0f, Graphics::GetInstance().GetCurrentCamera(), Colors::Green);
+
 
 	for (unsigned i = 0; i < numHotspots; ++i)
 	{

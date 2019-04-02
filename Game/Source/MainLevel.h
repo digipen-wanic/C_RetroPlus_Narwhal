@@ -79,6 +79,8 @@ namespace Levels
 		SpriteSource* samusBullet;
 		SpriteSource* crawlerSpriteSource;
 
+		Mesh* crawlerMesh;
+
 		// Tilemap
 		Tilemap* dataMap;
 		Texture* textureMap;

@@ -119,6 +119,7 @@ namespace Behaviors
 		const MapCollision& collision)
 	{
 		PlayerController* player = object.GetComponent<PlayerController>();
+		std::cout << "Bottom: " << collision.bottom << " Top: " << collision.top << " Left: " << collision.left << " right: " << collision.left << std::endl;
 
 		if (collision.bottom && player->jumping == false)
 		{
@@ -131,6 +132,8 @@ namespace Behaviors
 				player->sprite->SetMesh(player->resourceManager->GetMesh("SamusIdle"));
 
 				std::cout << "ln 134" << std::endl;
+
+				
 			}
 
 			if (player->playerState == PlayerState::jumpRt || player->playerState == PlayerState::jumpRtUp || player->playerState == PlayerState::jumpRtRoll)
@@ -138,6 +141,7 @@ namespace Behaviors
 				player->playerState = PlayerState::idleRt;
 				player->sprite->SetSpriteSource(player->resourceManager->GetSpriteSource("SamusIdle"));
 				player->sprite->SetMesh(player->resourceManager->GetMesh("SamusIdle"));
+
 			}
 		}
 
