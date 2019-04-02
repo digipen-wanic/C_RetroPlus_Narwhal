@@ -23,7 +23,7 @@ namespace Behaviors
 		//------------------------------------------------------------------------------
 
 		// Constructor
-		Health( float maxHealth, float startingHealth );
+		Health( float maxHealth, float startingHealth, bool isPlayer = false);
 
 		// Return a new copy of the component.
 		Component* Clone() const;
@@ -33,6 +33,11 @@ namespace Behaviors
 
 		// Loads object data from a file.
 		virtual void Deserialize(Parser& parser) override;
+
+		// Update function for this component.
+		// Params:
+		//   dt = The (fixed) change in time since the last step.
+		void Update(float dt) override;
 
 		//returns if dead
 		bool adjustHealth(float addition);
@@ -45,5 +50,7 @@ namespace Behaviors
 		// data
 		float health;
 		float maxHealth;
+		bool isPlayer;
+		bool hit;
 	};
 }
