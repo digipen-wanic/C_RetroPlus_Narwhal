@@ -1,32 +1,6 @@
-﻿  stdafx.cpp
-  Animation.cpp
-  Collider.cpp
-  ColliderCircle.cpp
-  ColliderLine.cpp
-  ColliderPoint.cpp
-  ColliderRectangle.cpp
-  ColliderTilemap.cpp
-  Component.cpp
-  GameObject.cpp
+﻿  ColliderTilemap.cpp
   GameObjectFactory.cpp
-  GameObjectManager.cpp
-  Intersection2D.cpp
-  Level.cpp
-  Matrix2DStudent.cpp
-  MeshHelper.cpp
-  Parser.cpp
-  Physics.cpp
-  Serializable.cpp
-  SoundManager.cpp
-  Space.cpp
-  Generating Code...
-  Compiling...
-  Sprite.cpp
-  SpriteSource.cpp
-  SpriteTilemap.cpp
-  Tilemap.cpp
-  Transform.cpp
   Generating Code...
 fmodstudioL64_vc.lib(fmodstudioL64.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in fmodL64_vc.lib(fmodL64.dll); second definition ignored
 fmodstudioL64_vc.lib(fmodstudioL64.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
-  HighLevelAPI.vcxproj -> C:\Users\jakob.mcfarland\Documents\GitHub\C_RetroPlus_Narwhal\Game\HighLevelAPI\\lib\BetaHigh_x64_D.lib
+  HighLevelAPI.vcxproj -> C:\Users\bills\Documents\GitHub\C_RetroPlus_Narwhal\Game\HighLevelAPI\\lib\BetaHigh_x64_D.lib

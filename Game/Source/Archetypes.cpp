@@ -60,7 +60,7 @@ file Archetypes.h.
 GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing)
 {
 	//initilize all components
-	Transform* transform = new Transform(400.0f, -200.0f);
+	Transform* transform = new Transform(25.0f * 100.0f, 7.0f * -100.0f);
 	transform->SetScale(Vector2D(100.0f, 200.0f));
 
 	Sprite* sprite = new Sprite();
@@ -507,7 +507,7 @@ GameObject* Archetypes::CreateArenaArchetype()
 GameObject* Archetypes::CreateDoorObject(Mesh * mesh, SpriteSource * spriteSource)
 {
 	//initilize all components
-	Transform* transform = new Transform(100.0f, 50.0f);
+	Transform* transform = new Transform(71.0f * 100.0f, - 2.0f * 100.0f);
 	transform->SetScale(Vector2D(50.0f, 100.0f));
 
 	Sprite* sprite = new Sprite();

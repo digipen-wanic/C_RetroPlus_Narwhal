@@ -48,14 +48,15 @@ namespace Levels
 	{
 		std::cout << "MainLevel::Load" << std::endl;
 
-		//textureMonkey = Texture::CreateTextureFromFile("Monkey.png");
-		//spriteSourceMonkey = new SpriteSource(textureMonkey, "Monkey", columnsMonkey, rowsMonkey);
-
 		//graphics
 		samusIdleMesh = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
-		samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
-		samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
+
+		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
+		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
+
+		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
+		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 
 		ResourceManager& resourceManager = GetSpace()->GetResourceManager();
 		samusStanding = resourceManager.GetSpriteSource("SamusStanding");
@@ -71,18 +72,20 @@ namespace Levels
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
 		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
 
-		resourceManager.AddMesh("SamusStanding", samusIdleMesh);
+		resourceManager.AddMesh("SamusStanding", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
-		resourceManager.AddMesh("SamusIdleUp", samusIdleMesh);
-		resourceManager.AddMesh("SamusRun", samusRunMesh);
-		resourceManager.AddMesh("SamusRunUp", samusRunMesh);
-		resourceManager.AddMesh("SamusRunShoot", samusRunMesh);
-		resourceManager.AddMesh("SamusJump", samusRunMesh);
-		resourceManager.AddMesh("SamusJumpRoll", samusJumpRollMesh);
-		resourceManager.AddMesh("SamusRoll", samusJumpRollMesh);
+		resourceManager.AddMesh("SamusIdleUp", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusRun", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusRunUp", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusRunShoot", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusJump", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusJumpRoll", CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusRoll", CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5)));
 
-		resourceManager.AddMesh("SamusBullet", samusIdleMesh);
+
 		resourceManager.AddMesh("crawlerMesh", crawlerMesh);
+
+		resourceManager.AddMesh("SamusBullet", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
 
 		//bullet archetype
 		GetSpace()->GetObjectManager().AddArchetype( *Archetypes::CreateSamusBulletArchetype(samusIdleMesh, samusBullet) );
@@ -103,7 +106,6 @@ namespace Levels
 
 		textureMap = Texture::CreateTextureFromFile("TilemapMetroid.png");
 		spriteSourceMap = new SpriteSource(textureMap, "Map", columnsMap, rowsMap);
-
 		meshMap = CreateQuadMesh(Vector2D(1.0f / columnsMap, 1.0f / rowsMap), Vector2D(0.5, 0.5));
 	
 		//load sounds
@@ -178,7 +180,6 @@ namespace Levels
 		//delete meshMonkey;
 		//delete textureMonkey;
 		//delete spriteSourceMonkey;
-
 		delete dataMap;
 		delete meshMap;
 		delete textureMap;

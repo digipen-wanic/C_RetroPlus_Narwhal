@@ -83,7 +83,8 @@ public:
 	// Params:
 	//   parser = The parser for the file we want to write to.
 	virtual void Serialize(Parser& parser) const;
-
+	const Tilemap* GetTilemap() const;
+	Vector2D GetTileIndices(Vector2D translation) const;
 private:
 	//------------------------------------------------------------------------------
 	// Private Functions:
@@ -123,7 +124,7 @@ private:
 	// Returns:
 	//   The center of the next tile for the given position on the given side.
 	float GetNextTileCenter(RectangleSide side, float sidePosition) const;
-
+	
 	//------------------------------------------------------------------------------
 	// Private Variables:
 	//------------------------------------------------------------------------------
