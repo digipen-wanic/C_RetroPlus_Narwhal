@@ -25,10 +25,12 @@
 class Transform;
 class Physics;
 class Mesh;
+class Crawler;
 class Sprite;
 class SpriteSource;
 class Animation;
 class ColliderRectangle;
+class Health;
 struct MapCollision;
 class SoundManager;
 class ResourceManager;

@@ -55,6 +55,7 @@ namespace Levels
 		samusIdleMesh = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
 		samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
+		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
 
 		ResourceManager& resourceManager = GetSpace()->GetResourceManager();
 		samusStanding = resourceManager.GetSpriteSource("SamusStanding");
@@ -68,6 +69,7 @@ namespace Levels
 		resourceManager.GetSpriteSource("SamusRoll");
 
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
+		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
 
 		resourceManager.AddMesh("SamusStanding", samusIdleMesh);
 		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
@@ -80,6 +82,7 @@ namespace Levels
 		resourceManager.AddMesh("SamusRoll", samusJumpRollMesh);
 
 		resourceManager.AddMesh("SamusBullet", samusIdleMesh);
+		resourceManager.AddMesh("crawlerMesh", crawlerMesh);
 
 		//bullet archetype
 		GetSpace()->GetObjectManager().AddArchetype( *Archetypes::CreateSamusBulletArchetype(samusIdleMesh, samusBullet) );
@@ -120,7 +123,8 @@ namespace Levels
 		soundManager->AddEffect("PlayerRun2FX.wav");
 
 		//misc
-		Graphics::GetInstance().GetCurrentCamera().SetFOV(180.0f);
+		Graphics::GetInstance().SetDepthEnabled(true);
+		Graphics::GetInstance().GetCurrentCamera().SetFOV(75.0f);
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -131,10 +135,13 @@ namespace Levels
 		GetSpace()->GetObjectManager().AddObject(*Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap));
 
 		GameObject* samus = Archetypes::CreateSamus(samusIdleMesh, samusStanding);
+		GetSpace()->GetObjectManager().AddObject(*samus);
+
+		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource);
+		GetSpace()->GetObjectManager().AddObject( *crawler );
 
 		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
-		GetSpace()->GetObjectManager().AddObject(*samus);
 
 		//play music
 		//musicChannel = soundManager->PlaySound("");

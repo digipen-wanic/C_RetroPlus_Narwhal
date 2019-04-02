@@ -25,6 +25,7 @@
 #include "Physics.h"
 #include "Space.h"
 #include "Graphics.h"
+#include "Health.h"
 
 #include "Sprite.h"
 #include "Mesh.h"
@@ -47,7 +48,7 @@ namespace Behaviors
 
 	// Constructor
 	PlayerController::PlayerController()
-	: Component("PlayerController"), PlayerWalkSpeed(3.0f * tileUnit),
+	: Component("PlayerController"), PlayerWalkSpeed(3.5f * tileUnit),
 		PlayerJumpSpeed(5.0f * tileUnit), gravity(0.0f, -10.0f * tileUnit),
 		maxJumpHeight( 5 * tileUnit ), firingSpeed(0.2f), firingTimer(0), 
 		bulletSpeed(tileUnit * 6), onGround(false), jumping(false), maxGravity(-4.0f),
@@ -152,22 +153,28 @@ namespace Behaviors
 	void PlayerCollisionHandler(GameObject& object, GameObject& other)
 	{
 		//if the object is named collectable, destroy it
-		if (other.GetName()._Equal("Collectable") )
+		if (other.GetName()._Equal("Crawler") )
 		{
-			other.Destroy();
+			Health* health = object.GetComponent<Health>();
+
+			if ( health->adjustHealth(-8.0f) )
+			{
+				//lose
+				object.GetSpace()->RestartLevel();
+			}
 		}
 
-		//if the object is named hazard, kill the player
-		if (other.GetName()._Equal("Hazard"))
-		{
-			object.GetSpace()->RestartLevel();
-		}
-
-		//if the object is named enemy, kill the player
-		if (other.GetName()._Equal("Enemy"))
-		{
-			object.GetSpace()->RestartLevel();
-		}
+		////if the object is named hazard, kill the player
+		//if (other.GetName()._Equal("Hazard"))
+		//{
+		//	object.GetSpace()->RestartLevel();
+		//}
+		//
+		////if the object is named enemy, kill the player
+		//if (other.GetName()._Equal("Enemy"))
+		//{
+		//	object.GetSpace()->RestartLevel();
+		//}
 	}
 
 	//==================================================================-
@@ -201,7 +208,7 @@ namespace Behaviors
 				playerState = PlayerState::runRt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 			}
 
 			if (playerState == PlayerState::idleRtUp || playerState == PlayerState::idleLtUp)
@@ -209,7 +216,7 @@ namespace Behaviors
 				playerState = PlayerState::runRtUp;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 			}
 
 			//don't change sprite
@@ -245,7 +252,7 @@ namespace Behaviors
 				playerState = PlayerState::runLt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 			}
 
 			if (playerState == PlayerState::idleLtUp || playerState == PlayerState::idleLtUp)
@@ -253,7 +260,7 @@ namespace Behaviors
 				playerState = PlayerState::runLtUp;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 			}
 
 			if (playerState == PlayerState::jumpRt || playerState == PlayerState::jumpLt)
@@ -321,7 +328,7 @@ namespace Behaviors
 				playerState = PlayerState::runLtUp;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 			}
 	
 			if (playerState == PlayerState::idleRt)
@@ -337,7 +344,7 @@ namespace Behaviors
 				playerState = PlayerState::runRtUp;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 			}
 
 			if (playerState == PlayerState::rollLt)
@@ -379,7 +386,7 @@ namespace Behaviors
 				playerState = PlayerState::runLt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 			}
 
 			if (playerState == PlayerState::idleRtUp)
@@ -394,7 +401,7 @@ namespace Behaviors
 				playerState = PlayerState::runRt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 			}
 		}
 
@@ -405,7 +412,7 @@ namespace Behaviors
 				playerState = PlayerState::rollLt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRoll"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRoll"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 
 				Vector2D scale = transform->GetScale();
 				scale.y /= 2;
@@ -420,7 +427,7 @@ namespace Behaviors
 				playerState = PlayerState::rollRt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRoll"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRoll"));
-				animation->Play(0.08f, true);
+				animation->Play(0.07f, true);
 
 				Vector2D scale = transform->GetScale();
 				scale.y /= 2;
@@ -504,7 +511,7 @@ namespace Behaviors
 					playerState = PlayerState::jumpLtRoll;
 					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJumpRoll"));
 					sprite->SetMesh(resourceManager->GetMesh("SamusJumpRoll"));
-					animation->Play(0.08f, true);
+					animation->Play(0.07f, true);
 
 					std::cout << "ln 424" << std::endl;
 				}
@@ -530,7 +537,7 @@ namespace Behaviors
 					playerState = PlayerState::jumpRtRoll;
 					sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusJumpRoll"));
 					sprite->SetMesh(resourceManager->GetMesh("SamusJumpRoll"));
-					animation->Play(0.08f, true);
+					animation->Play(0.07f, true);
 				}
 			}
 		}

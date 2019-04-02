@@ -52,6 +52,17 @@ namespace Archetypes
 	//	 A pointer to the newly constructed game object
 	GameObject * CreateSamusBulletArchetype(Mesh* mesh, SpriteSource* spriteSource);
 
+	// Create the player game object.
+	// Params:
+	//   mesh  = The mesh to use for the object's sprite.
+	//   spriteSource = The sprite source to use for the object.
+	// Returns:
+	//	 A pointer to the newly constructed game object
+	GameObject * CreateCrawler(Mesh * mesh, SpriteSource* crawler);
+
+
+
+
 	// Create the ship game object.
 	// Params:
 	//   mesh  = The mesh to use for the object's sprite.
