@@ -1,0 +1,8 @@
+Crawler
+{
+	numRows : 2
+	numCols : 1
+	frameCount : 2
+	frameStart : 0
+	texture : Crawler.png
+}

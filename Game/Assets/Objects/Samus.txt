@@ -1,6 +1,6 @@
 Samus
 {
-	numComponents : 7
+	numComponents : 8
 	Transform
 	{
 		translation : { 2500, -700 }
@@ -24,9 +24,12 @@ Samus
 	}
 	Behaviors::PlayerController
 	{
-		PlayerWalkSpeed : 300
+		PlayerWalkSpeed : 350
 		PlayerJumpSpeed : 500
 		gravity : { 0, -1000 }
+	}
+	Behaviors::Health
+	{
 	}
 	Behaviors::CameraFollow
 	{

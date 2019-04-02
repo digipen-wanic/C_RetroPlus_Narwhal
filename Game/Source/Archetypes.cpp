@@ -45,6 +45,7 @@ file Archetypes.h.
 #include "PlayerController.h"
 #include "samusBullet.h"
 #include "CameraFollow.h"
+#include "Health.h"
 
 
 //==================================================================-
@@ -75,6 +76,7 @@ GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing
 
 	Behaviors::PlayerController* playerController = 
 		new Behaviors::PlayerController();
+	Behaviors::Health* health = new Behaviors::Health(99.0f, 30.0f);
 	Behaviors::CameraFollow* cameraFollow = new Behaviors::CameraFollow();
 
 	//create object add all the components
@@ -84,6 +86,7 @@ GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing
 	samusObject->AddComponent(sprite);
 	samusObject->AddComponent(animation);
 	samusObject->AddComponent(playerController);
+	samusObject->AddComponent(health);
 	samusObject->AddComponent(cameraFollow);
 	samusObject->AddComponent(colliderRectangle);
 
@@ -164,8 +167,45 @@ GameObject* Archetypes::CreateSamusBulletArchetype(Mesh* mesh, SpriteSource* spr
 	//GameObjectFactory::GetInstance().SaveObjectToFile(bullet);
 
 	return bullet;
-
 }
+
+// Create the player game object.
+// Params:
+//   mesh  = The mesh to use for the object's sprite.
+//   spriteSource = The sprite source to use for the object.
+// Returns:
+//	 A pointer to the newly constructed game object
+GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler)
+{
+	//initilize all components
+	Transform* transform = new Transform(3000.0f, -700.0f);
+	transform->SetScale(Vector2D(100.0f, 100.0f));
+
+	Sprite* sprite = new Sprite();
+	sprite->SetMesh(mesh);
+	sprite->SetSpriteSource(crawler);
+
+	Physics* physics = new Physics();
+
+	ColliderRectangle* collider = new ColliderRectangle( Vector2D( transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f) );
+
+	Behaviors::Health* health = new Behaviors::Health(10.0f, 10.0f);
+
+	//create object add all the components
+	GameObject* crawlerEnemy = new GameObject("Crawler");
+	crawlerEnemy->AddComponent(transform);
+	crawlerEnemy->AddComponent(physics);
+	crawlerEnemy->AddComponent(health);
+	crawlerEnemy->AddComponent(sprite);
+	crawlerEnemy->AddComponent(collider);
+
+	//GameObjectFactory::GetInstance().SaveObjectToFile(bullet);
+
+	return crawlerEnemy;
+}
+
+
+
 
 // Create a game object that uses the Ship texture.
 // Returns:
@@ -503,7 +543,7 @@ GameObject* Archetypes::CreateArenaArchetype()
 GameObject* Archetypes::CreateDoorObject(Mesh * mesh, SpriteSource * spriteSource)
 {
 	//initilize all components
-	Transform* transform = new Transform(100.0f, 50.0f);
+	Transform* transform = new Transform(71.0f * 100.0f, - 2.0f * 100.0f);
 	transform->SetScale(Vector2D(50.0f, 100.0f));
 
 	Sprite* sprite = new Sprite();

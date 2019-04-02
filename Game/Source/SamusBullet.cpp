@@ -14,8 +14,7 @@ file SamusBullet.h.
 
 #include "stdafx.h"
 #include "SamusBullet.h"
-#include "PlayerShip.h"
-#include "Asteroid.h"
+#include "Health.h"
 
 #include <Space.h>
 #include <Parser.h>
@@ -94,11 +93,18 @@ namespace Behaviors
 	//   other = The other object.
 	void CollisionHandlerBullet(GameObject& bullet, GameObject& other)
 	{
-		if (other.GetName() == "Asteroid")
+		if (other.GetName() == "Bat" || other.GetName() == "Crawler")
 		{
 			//bullet.GetComponent<SamusBullet>()->player->IncreaseScore( other.GetComponent<Asteroid>()->GetPointValue());
 
 			bullet.Destroy();
+
+			Health* otherHealth = other.GetComponent<Health>();
+
+			if (otherHealth->adjustHealth(-5.0f))
+			{
+				other.Destroy();
+			}
 		}
 	}
 
