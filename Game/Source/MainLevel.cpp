@@ -126,7 +126,7 @@ namespace Levels
 
 		//misc
 		Graphics::GetInstance().SetDepthEnabled(true);
-		Graphics::GetInstance().GetCurrentCamera().SetFOV(75.0f);
+		Graphics::GetInstance().GetCurrentCamera().SetFOV(76.0f);
 	}
 
 	// Initialize the memory associated with Level 2.

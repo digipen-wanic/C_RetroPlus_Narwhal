@@ -64,12 +64,12 @@ namespace Behaviors
 	{
 		UNREFERENCED_PARAMETER(dt);
 		Vector2D target = playerTransform->GetTranslation();
-		
+
 		//get tilemap dimensions
-		float top = mapTransform->GetTranslation().y + (mapTransform->GetScale().y / 2.0f);
-		float left = mapTransform->GetTranslation().x - (mapTransform->GetScale().x / 2.0f);
-		float bottom = top - (mapTransform->GetScale().y * tilemap->GetHeight());
-		float right = left + (mapTransform->GetScale().x * (tilemap->GetWidth()));
+		float top = -tilemap->GetMinIndexY() * (mapTransform->GetScale().y) + mapTransform->GetTranslation().y;
+		float left = tilemap->GetMinIndexX() * (mapTransform->GetScale().x) + mapTransform->GetTranslation().x;
+		float bottom = -(tilemap->GetMaxIndexY() - 1.0f) * (mapTransform->GetScale().y) + mapTransform->GetTranslation().y;
+		float right = tilemap->GetMaxIndexX() * (mapTransform->GetScale().x) + mapTransform->GetTranslation().x;
 
 		//decrease bounds to fit screen
 		top -= Graphics::GetInstance().GetScreenWorldDimensions().extents.y;
