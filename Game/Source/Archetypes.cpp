@@ -34,7 +34,7 @@ file Archetypes.h.
 #include "Sprite.h"
 #include "SpriteTilemap.h"
 #include "SpriteSource.h"
-#include "Enemy.h"
+#include "CrawlerEnemy.h"
 #include <Graphics.h>
 #include "Physics.h"
 #include "Transform.h"
@@ -96,40 +96,7 @@ GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing
 }
 
 
-// Create the enemy game object.
-// Params:
-//   mesh  = The mesh to use for the object's sprite.
-//   spriteSource = The sprite source to use for the sprite.
-// Returns:
-//	 A pointer to the newly constructed game object
-GameObject* Archetypes::CreateCrawlerEnemy(Mesh* mesh, SpriteSource* spriteSource, GameObject* tm)
-{
-	GameObject* enemy = new GameObject("Enemy");
 
-	Transform* t = new Transform(-150, -100);
-	t->SetScale(Vector2D(100.0f, 100.0f));
-	enemy->AddComponent(t);
-
-	Sprite* s = new Sprite();
-	s->SetMesh(mesh);
-	s->SetSpriteSource(spriteSource);
-	s->SetColor(Colors::Green);
-	enemy->AddComponent(s);
-
-	Animation* animation = new Animation();
-	enemy->AddComponent(animation);
-
-	Physics* p = new Physics();
-	enemy->AddComponent(p);
-
-	ColliderRectangle* cc = new ColliderRectangle(Vector2D(50.0f, 50.0f));
-	enemy->AddComponent(cc);
-
-	Behaviors::Enemy* e = new Behaviors::Enemy(tm);
-	enemy->AddComponent(e);
-
-	return enemy;
-}
 
 // Create the player bullet game object.
 	// Params:
@@ -175,8 +142,9 @@ GameObject* Archetypes::CreateSamusBulletArchetype(Mesh* mesh, SpriteSource* spr
 //   spriteSource = The sprite source to use for the object.
 // Returns:
 //	 A pointer to the newly constructed game object
-GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler)
+GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameObject* tm)
 {
+
 	//initilize all components
 	Transform* transform = new Transform(3000.0f, -700.0f);
 	transform->SetScale(Vector2D(100.0f, 100.0f));
@@ -190,9 +158,11 @@ GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler)
 	ColliderRectangle* collider = new ColliderRectangle( Vector2D( transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f) );
 
 	Behaviors::Health* health = new Behaviors::Health(10.0f, 10.0f);
-
+	Behaviors::CrawlerEnemy* e = new Behaviors::CrawlerEnemy(tm);
 	//create object add all the components
-	GameObject* crawlerEnemy = new GameObject("Crawler");
+	GameObject* crawlerEnemy = new GameObject("Crawler");	
+	crawlerEnemy->AddComponent(e);
+
 	crawlerEnemy->AddComponent(transform);
 	crawlerEnemy->AddComponent(physics);
 	crawlerEnemy->AddComponent(health);

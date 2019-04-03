@@ -52,9 +52,6 @@
     <ClCompile Include="Source\PlayerController.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
-    <ClCompile Include="Source\CameraFollow.cpp">
-      <Filter>Game\Metroid</Filter>
-    </ClCompile>
     <ClCompile Include="Source\MainLevel.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
@@ -65,10 +62,9 @@
     <ClCompile Include="Source\DoorBehavior.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy.cpp">
-      <Filter>Game\Metroid</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Health.cpp">
+    <ClCompile Include="Source\Health.cpp" />
+    <ClCompile Include="Source\CameraFollow.cpp" />
+    <ClCompile Include="Source\CrawlerEnemy.cpp">
       <Filter>Game\Metroid</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,10 +115,8 @@
     <ClInclude Include="Source\DoorBehavior.h">
       <Filter>Game\Metroid</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy.h">
-      <Filter>Game\Metroid</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Health.h">
+    <ClInclude Include="Source\Health.h" />
+    <ClInclude Include="Source\CrawlerEnemy.h">
       <Filter>Game\Metroid</Filter>
     </ClInclude>
   </ItemGroup>

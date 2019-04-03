@@ -119,7 +119,7 @@ namespace Behaviors
 		const MapCollision& collision)
 	{
 		PlayerController* player = object.GetComponent<PlayerController>();
-		std::cout << "Bottom: " << collision.bottom << " Top: " << collision.top << " Left: " << collision.left << " right: " << collision.left << std::endl;
+//		std::cout << "Bottom: " << collision.bottom << " Top: " << collision.top << " Left: " << collision.left << " right: " << collision.left << std::endl;
 
 		if (collision.bottom && player->jumping == false)
 		{
