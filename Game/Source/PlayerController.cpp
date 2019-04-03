@@ -134,7 +134,6 @@ namespace Behaviors
 	{
 		PlayerController* player = object.GetComponent<PlayerController>();
 
-
 		if (collision.bottom && player->jumping == false)
 		{
 			player->onGround = true;

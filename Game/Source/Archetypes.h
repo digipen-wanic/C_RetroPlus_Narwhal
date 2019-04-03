@@ -58,7 +58,7 @@ namespace Archetypes
 	//   spriteSource = The sprite source to use for the object.
 	// Returns:
 	//	 A pointer to the newly constructed game object
-	GameObject * CreateCrawler(Mesh * mesh, SpriteSource* crawler);
+	GameObject * CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameObject* tm);
 
 
 
@@ -76,8 +76,6 @@ namespace Archetypes
 	// Returns:
 	//	 A pointer to the newly constructed game object
 	GameObject* CreateBulletArchetype(Mesh* mesh);
-
-	GameObject* CreateCrawlerEnemy(Mesh* mesh, SpriteSource* spriteSource, GameObject* tm);
 
 	// Create the monkey game object.
 	// Params:

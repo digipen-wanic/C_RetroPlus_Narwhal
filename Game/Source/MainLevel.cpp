@@ -140,10 +140,16 @@ namespace Levels
 		GetSpace()->GetObjectManager().AddObject(*Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap));
 
 		GameObject* samus = Archetypes::CreateSamus(samusStandingMesh, samusStanding);
+
 		GetSpace()->GetObjectManager().AddObject(*samus);
 
-		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource);
+		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject);
 		GetSpace()->GetObjectManager().AddObject( *crawler );
+		crawler->GetComponent<Transform>()->SetTranslation(Vector2D(2850,75));
+
+		GameObject* crawler2 = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject);
+		GetSpace()->GetObjectManager().AddObject(*crawler2);
+		crawler2->GetComponent<Transform>()->SetTranslation(Vector2D(2250, 75));
 
 		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
