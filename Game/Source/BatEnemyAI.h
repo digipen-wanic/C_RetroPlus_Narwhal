@@ -29,6 +29,7 @@
 // Forward Declarations:
 //------------------------------------------------------------------------------
 
+class Transform;
 class Sprite;
 struct MapCollision;
 
@@ -42,7 +43,7 @@ namespace Behaviors
 	{
 		StateIdle,
 		StateAttack,
-		State
+		StateLanded
 	};
 
 	class BatEnemyAI : public Component
@@ -53,7 +54,7 @@ namespace Behaviors
 		//------------------------------------------------------------------------------
 
 		// Constructor
-		BatEnemyAI();
+		BatEnemyAI( Transform* playerTransform, float range, float attackSpeed, float deathTime);
 
 		// Return a new copy of the component.
 		Component* Clone() const;
@@ -66,36 +67,35 @@ namespace Behaviors
 		//   dt = The (fixed) change in time since the last step.
 		void Update(float dt) override;
 
-		// Sets the next state of the enemy.
-		// Params:
-		//   nextState = The next state the enemy should be in.
-		void SetState(unsigned nextState);
-
 		// Collision handler for enemy.
 		// Params:
 		//   object = The enemy.
 		//   other  = The object the monkey is colliding with.
 		friend void EnemyCollisionHandler(GameObject& object, GameObject& other);
 
-		// Map collision handler for Monkey objects.
+		// Map collision handler for enemy objects.
 		// Params:
-		//   object = The monkey object.
-		//   collision = Which sides the monkey collided on.
+		//   object = The enemy object.
+		//   collision = Which sides the enemy collided on.
 		friend void EnemyMapCollisionHandler(GameObject& object,
 			const MapCollision& collision);
 
+		unsigned currentState;  // The current state of the enemy. Ex: idle, wander, chase
 
 	private:
 		//------------------------------------------------------------------------------
 		// Private Variables:
 		//------------------------------------------------------------------------------
 
-		unsigned currentState;  // The current state of the enemy. Ex: idle, wander, chase
-		unsigned nextState;		// The next state of the enemy.
-		unsigned innerState; // The inner state of the current state. Ex: enter, update, exit
 		Transform* transform;
 		Transform* playerTransform;
 		Physics* physics;
+
+		float range;
+		Vector2D attackVelocity;
+
+		float deathTimer;
+		float deathTime;
 		//float timer; // Used for delaying state changes, etc.
 		//float stateChangeTime; // Amount of time to wait before changing states.
 	};

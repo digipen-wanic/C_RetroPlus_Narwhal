@@ -182,6 +182,17 @@ namespace Behaviors
 			}
 		}
 
+		if (other.GetName()._Equal("Bat"))
+		{
+			Health* health = object.GetComponent<Health>();
+
+			if (health->adjustHealth(-8.0f))
+			{
+				//lose
+				object.GetSpace()->RestartLevel();
+			}
+		}
+
 		if (other.GetName() == "Door")
 		{
 			object.GetSpace()->SetLevel(new Levels::StartScreen);
