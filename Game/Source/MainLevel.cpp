@@ -82,7 +82,7 @@ namespace Levels
 		resourceManager.AddMesh("SamusRunShoot", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusJump", CreateQuadMesh(Vector2D( 1.0f , 1.0f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusJumpRoll", CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5)));
-		resourceManager.AddMesh("SamusRoll", CreateQuadMesh(Vector2D(1.0f / 4.0f, 1.0f / 4.0f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusRoll", CreateQuadMesh(Vector2D(1.0f / 2.0f, 1.0f / 2.0f), Vector2D(0.5, 0.5)));
 
 
 		resourceManager.AddMesh("crawlerMesh", crawlerMesh);
@@ -112,9 +112,9 @@ namespace Levels
 	
 		//load sounds
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
-		//soundManager->SetEffectsVolume(0.01f);
 
-		//soundManager->AddMusic("Asteroid_Field.mp3");
+		//soundManager->AddMusic("LevelMusic2.wav");
+		soundManager->AddEffect("StartMusic4.wav");
 		soundManager->AddEffect("EnemyDeathFX.wav");
 		soundManager->AddEffect("EnemyHitFX.wav");
 		soundManager->AddEffect("EnergyPickUpFX.wav");
@@ -126,10 +126,13 @@ namespace Levels
 		soundManager->AddEffect("PlayerJump.wav");
 		soundManager->AddEffect("PlayerRun2FX.wav");
 
+		soundManager->SetEffectsVolume(0.2f);
+
 		//misc
 		Graphics::GetInstance().SetDepthEnabled(true);
 		Graphics::GetInstance().GetCurrentCamera().SetFOV(76.0f);
 		Graphics::GetInstance().GetCurrentCamera().SetTranslation(Vector2D(25.0f * 100.0f, 7.0f * -100.0f));
+
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -158,6 +161,7 @@ namespace Levels
 
 		//play music
 		//musicChannel = soundManager->PlaySound("");
+		soundManager->PlaySound("StartMusic4.wav")->setVolume(0.2f);
 
 	}
 

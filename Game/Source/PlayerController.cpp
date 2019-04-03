@@ -100,7 +100,7 @@ namespace Behaviors
 
 		bulletArchetype = GetOwner()->GetSpace()->GetObjectManager().GetArchetypeByName("samusBullet");
 
-		animation->Play(0.05f, false);
+		animation->Play(0.07f, false);
 	}
 
 	// Fixed update function for this component.
