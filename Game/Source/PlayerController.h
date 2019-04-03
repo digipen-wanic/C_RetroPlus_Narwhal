@@ -65,6 +65,8 @@ namespace Behaviors
 
 		rollLt,
 		rollRt,
+
+		waiting,
 	};
 
 	class PlayerController : public Component
