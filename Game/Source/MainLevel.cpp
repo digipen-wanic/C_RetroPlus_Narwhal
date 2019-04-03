@@ -30,6 +30,7 @@
 #include <Graphics.h>
 #include "CameraFollow.h"
 #include <Parser.h>
+#include "PlayerController.h"
 
 namespace Levels
 {
@@ -57,6 +58,7 @@ namespace Levels
 
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
+		samusStandingMesh = CreateQuadMesh(Vector2D(1.0f / 12.0f, 1.0f / 7.0f), Vector2D(0.5, 0.5));
 
 		ResourceManager& resourceManager = GetSpace()->GetResourceManager();
 		samusStanding = resourceManager.GetSpriteSource("SamusStanding");
@@ -72,7 +74,7 @@ namespace Levels
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
 		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
 
-		resourceManager.AddMesh("SamusStanding", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
+		resourceManager.AddMesh("SamusStanding", samusStandingMesh);
 		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
 		resourceManager.AddMesh("SamusIdleUp", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusRun", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
@@ -127,6 +129,7 @@ namespace Levels
 		//misc
 		Graphics::GetInstance().SetDepthEnabled(true);
 		Graphics::GetInstance().GetCurrentCamera().SetFOV(76.0f);
+		Graphics::GetInstance().GetCurrentCamera().SetTranslation(Vector2D(25.0f * 100.0f, 7.0f * -100.0f));
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -136,17 +139,24 @@ namespace Levels
 
 		GetSpace()->GetObjectManager().AddObject(*Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap));
 
-		GameObject* samus = Archetypes::CreateSamus(samusIdleMesh, samusStanding);
+		GameObject* samus = Archetypes::CreateSamus(samusStandingMesh, samusStanding);
+
 		GetSpace()->GetObjectManager().AddObject(*samus);
 
-		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource);
+		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject);
 		GetSpace()->GetObjectManager().AddObject( *crawler );
+		crawler->GetComponent<Transform>()->SetTranslation(Vector2D(2850,75));
+
+		GameObject* crawler2 = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject);
+		GetSpace()->GetObjectManager().AddObject(*crawler2);
+		crawler2->GetComponent<Transform>()->SetTranslation(Vector2D(2250, 75));
 
 		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
 
 		//play music
 		//musicChannel = soundManager->PlaySound("");
+
 	}
 
 	// Update Level 2.
@@ -155,7 +165,6 @@ namespace Levels
 	void MainLevel::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
-		
 		
 		//press enter/start
 		if (Input::GetInstance().CheckTriggered(VK_RETURN))

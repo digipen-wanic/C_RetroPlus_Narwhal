@@ -1,3 +1,10 @@
-﻿  MainLevel.cpp
-c:\users\bills\documents\github\c_retroplus_narwhal\game\source\mainlevel.cpp(136): error C2664: 'GameObject *Archetypes::CreateCrawlerEnemy(Mesh *,SpriteSource *,GameObject *)': cannot convert argument 3 from 'Tilemap *' to 'GameObject *'
-  c:\users\bills\documents\github\c_retroplus_narwhal\game\source\mainlevel.cpp(136): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+﻿  CrawlerEnemy.cpp
+  CS230Project4.vcxproj -> C:\Users\bills\Documents\GitHub\C_RetroPlus_Narwhal\Game\\x64\Debug\BetaFramework.exe
+  glfw\lib\x64\glfw3.dll
+  1 File(s) copied
+  fmod\lib\fmodL64.dll
+  1 File(s) copied
+  fmod\lib\fmodstudioL64.dll
+  1 File(s) copied
+  LowLevelAPI\lib\BetaLow_x64_D.pdb
+  1 File(s) copied
