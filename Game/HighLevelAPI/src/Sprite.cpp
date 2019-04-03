@@ -96,6 +96,8 @@ void Sprite::Draw(const Vector2D& offset)
 
 	if (spriteSource)
 	{
+		if (GetOwner()->GetName() == "Samus")
+			std::cout << "UV (" << frameIndex << "): " << spriteSource->GetUV(frameIndex) << std::endl;
 		Graphics::GetInstance().SetTexture(spriteSource->GetTexture(), spriteSource->GetUV(frameIndex));
 	}
 	else
@@ -135,7 +137,7 @@ float Sprite::GetAlpha() const
 //   frameIndex = New frame index for the sprite (0 .. frame count).
 void Sprite::SetFrame(unsigned int frameIndex_)
 {
-	if (frameIndex < spriteSource->GetFrameCountTexture())
+	if (frameIndex_ < spriteSource->GetFrameCountTexture())
 	{
 		frameIndex = frameIndex_;
 	}

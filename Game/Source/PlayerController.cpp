@@ -53,7 +53,7 @@ namespace Behaviors
 		PlayerJumpSpeed(5.0f * tileUnit), gravity(0.0f, -10.0f * tileUnit),
 		maxJumpHeight( 5 * tileUnit ), firingSpeed(0.2f), firingTimer(0), 
 		bulletSpeed(tileUnit * 6), onGround(false), jumping(false), maxGravity(-4.0f),
-		playerState(PlayerState::idleRt), footstepInterval(0.15f), footstepTimer(0.0f)
+		playerState(PlayerState::waiting), footstepInterval(0.15f), footstepTimer(0.0f)
 	{
 	}
 
@@ -99,6 +99,8 @@ namespace Behaviors
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
 
 		bulletArchetype = GetOwner()->GetSpace()->GetObjectManager().GetArchetypeByName("samusBullet");
+
+		animation->Play(0.05f, false);
 	}
 
 	// Fixed update function for this component.
@@ -106,9 +108,21 @@ namespace Behaviors
 	//   dt = The (fixed) change in time since the last step.
 	void PlayerController::Update(float dt)
 	{
-		MoveHorizontal(dt);
-		MoveVertical();	
-		Shoot(dt);
+		if (!animation->IsDone() && playerState == PlayerState::waiting)
+		{
+			std::cout << "Samus animating" << std::endl;
+		}
+		else if (playerState == PlayerState::waiting)
+		{
+			playerState = PlayerState::idleRt;
+		}
+		else
+		{
+			MoveHorizontal(dt);
+			MoveVertical();
+			Shoot(dt);
+		}
+
 	}
 
 	// Map collision handler for Player objects.
@@ -119,7 +133,6 @@ namespace Behaviors
 		const MapCollision& collision)
 	{
 		PlayerController* player = object.GetComponent<PlayerController>();
-//		std::cout << "Bottom: " << collision.bottom << " Top: " << collision.top << " Left: " << collision.left << " right: " << collision.left << std::endl;
 
 		if (collision.bottom && player->jumping == false)
 		{
