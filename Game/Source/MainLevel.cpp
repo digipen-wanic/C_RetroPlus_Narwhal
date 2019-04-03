@@ -137,7 +137,9 @@ namespace Levels
 	{
 		std::cout << "Level2::Initialize" << std::endl;
 
-		GetSpace()->GetObjectManager().AddObject(*Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap));
+		GameObject* tileMapObject = Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap);
+
+		GetSpace()->GetObjectManager().AddObject( *tileMapObject );
 
 		GameObject* samus = Archetypes::CreateSamus(samusStandingMesh, samusStanding);
 

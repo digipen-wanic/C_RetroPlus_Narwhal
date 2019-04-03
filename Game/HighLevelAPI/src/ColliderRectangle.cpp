@@ -76,7 +76,8 @@ const Vector2D& ColliderRectangle::GetExtents() const
 //   extents = The new extents of the rectangle.
 void ColliderRectangle::SetExtents(const Vector2D& extents_)
 {
-	extents = extents_;
+	extents.x = std::abs( extents_.x );
+	extents.y = std::abs(extents_.y);
 }
 
 // Check for collision between a circle and another arbitrary collider.
