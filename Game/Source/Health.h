@@ -13,6 +13,8 @@ This is the specification file for the class level3
 
 #include "Component.h" // base class
 
+class Sprite;
+
 namespace Behaviors
 {
 	class Health : public Component
@@ -23,7 +25,7 @@ namespace Behaviors
 		//------------------------------------------------------------------------------
 
 		// Constructor
-		Health( float maxHealth, float startingHealth, bool isPlayer = false);
+		Health( float maxHealth, float startingHealth, bool isPlayer, float hitRecoveryTime = 0.5f);
 
 		// Return a new copy of the component.
 		Component* Clone() const;
@@ -33,6 +35,9 @@ namespace Behaviors
 
 		// Loads object data from a file.
 		virtual void Deserialize(Parser& parser) override;
+
+		// Initialize this component (happens at object creation).
+		void Initialize();
 
 		// Update function for this component.
 		// Params:
@@ -51,6 +56,9 @@ namespace Behaviors
 		float health;
 		float maxHealth;
 		bool isPlayer;
-		bool hit;
+		float hitTimer;
+		float hitRecoveryTime;
+
+		Sprite* sprite;
 	};
 }

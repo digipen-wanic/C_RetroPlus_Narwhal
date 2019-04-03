@@ -1,7 +1,7 @@
 SamusRoll
 {
   numRows : 2
-  numCols : 3
+  numCols : 2
   frameCount : 4
   frameStart : 0
   texture : Roll.png

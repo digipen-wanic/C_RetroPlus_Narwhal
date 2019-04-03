@@ -1,8 +1,8 @@
 SamusStanding
 {
-  numRows : 1
-  numCols : 1
-  frameCount : 1
+  numRows : 7
+  numCols : 6
+  frameCount : 38
   frameStart : 0
   texture : SamusStanding.png
 }
