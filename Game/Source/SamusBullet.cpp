@@ -17,6 +17,8 @@ file SamusBullet.h.
 #include "Health.h"
 
 #include <Space.h>
+#include <GameObject.h>
+#include "Transform.h"
 #include <Parser.h>
 #include <Engine.h>
 #include <ColliderCircle.h>
@@ -103,6 +105,10 @@ namespace Behaviors
 
 			if (otherHealth->adjustHealth(-5.0f))
 			{
+				GameObject* healthArchetype = new GameObject( *other.GetSpace()->GetObjectManager().GetArchetypeByName("HealthPickup") );
+				healthArchetype->GetComponent<Transform>()->SetTranslation( other.GetComponent<Transform>()->GetTranslation());
+				other.GetSpace()->GetObjectManager().AddObject(*healthArchetype);
+
 				other.Destroy();
 			}
 		}

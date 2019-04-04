@@ -187,7 +187,6 @@ GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameO
 //	 A pointer to the newly constructed game object
 GameObject * Archetypes::CreateBat(Mesh * mesh, SpriteSource* bat, GameObject* player)
 {
-
 	//initilize all components
 	Transform* transform = new Transform(4000.0f, -700.0f);
 	transform->SetScale(Vector2D(100.0f, 200.0f));
@@ -203,7 +202,7 @@ GameObject * Archetypes::CreateBat(Mesh * mesh, SpriteSource* bat, GameObject* p
 	ColliderRectangle* collider = new ColliderRectangle(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
 
 	Behaviors::Health* health = new Behaviors::Health(10.0f, 10.0f, false);
-	Behaviors::BatEnemyAI* e = new Behaviors::BatEnemyAI( player->GetComponent<Transform>(), 350.0f, 500.0f, 2.0f);
+	Behaviors::BatEnemyAI* e = new Behaviors::BatEnemyAI( player->GetComponent<Transform>(), 350.0f, 400.0f, 2.0f);
 	//create object add all the components
 	GameObject* batEnemy = new GameObject("Bat");
 	batEnemy->AddComponent(e);
@@ -219,6 +218,56 @@ GameObject * Archetypes::CreateBat(Mesh * mesh, SpriteSource* bat, GameObject* p
 
 	return batEnemy;
 }
+
+// Create the player game object.
+	// Params:
+	//   mesh  = The mesh to use for the object's sprite.
+	//   spriteSource = The sprite source to use for the object.
+	// Returns:
+	//	 A pointer to the newly constructed game object
+GameObject * Archetypes::CreateHealthPickup(Mesh * mesh, SpriteSource* spriteSource)
+{
+	//initilize all components
+	Transform* transform = new Transform();
+	transform->SetScale(Vector2D(50.0f, 50.0f));
+
+	Sprite* sprite = new Sprite();
+	sprite->SetMesh(mesh);
+	sprite->SetSpriteSource(spriteSource);
+
+	Animation* animation = new Animation();
+
+	ColliderCircle* collider = new ColliderCircle(transform->GetScale().x * 0.5f);
+
+	Behaviors::Health* health = new Behaviors::Health(10.0f, 10.0f, false);
+	//create object add all the components
+	GameObject* pickup = new GameObject("HealthPickup");
+
+	pickup->AddComponent(transform);
+	pickup->AddComponent(health);
+	pickup->AddComponent(sprite);
+	pickup->AddComponent(collider);
+	pickup->AddComponent(animation);
+
+	//GameObjectFactory::GetInstance().SaveObjectToFile(bullet);
+
+	return pickup;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Create a game object that uses the Ship texture.

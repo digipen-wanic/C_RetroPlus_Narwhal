@@ -144,9 +144,7 @@ namespace Behaviors
 				player->sprite->SetSpriteSource(player->resourceManager->GetSpriteSource("SamusIdle"));
 				player->sprite->SetMesh(player->resourceManager->GetMesh("SamusIdle"));
 
-				//std::cout << "ln 134" << std::endl;
-
-				
+				//std::cout << "ln 134" << std::endl;			
 			}
 
 			if (player->playerState == PlayerState::jumpRt || player->playerState == PlayerState::jumpRtUp || player->playerState == PlayerState::jumpRtRoll)
@@ -191,6 +189,13 @@ namespace Behaviors
 				//lose
 				object.GetSpace()->RestartLevel();
 			}
+		}
+
+		if (other.GetName()._Equal("HealthPickup"))
+		{
+			Health* health = object.GetComponent<Health>();
+
+			health->adjustHealth(5.0f);
 		}
 
 		if (other.GetName() == "Door")
@@ -367,6 +372,16 @@ namespace Behaviors
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
 				animation->Play(0.07f, true);
+			}
+
+			if (playerState == PlayerState::jumpLt)
+			{
+				playerState = PlayerState::jumpLtUp;
+			}
+
+			if (playerState == PlayerState::jumpRt)
+			{
+				playerState = PlayerState::jumpRtUp;
 			}
 
 			if (playerState == PlayerState::rollLt)

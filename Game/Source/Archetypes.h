@@ -68,6 +68,14 @@ namespace Archetypes
 	//	 A pointer to the newly constructed game object
 	GameObject * CreateBat(Mesh * mesh, SpriteSource* bat, GameObject* player);
 
+	// Create the player game object.
+	// Params:
+	//   mesh  = The mesh to use for the object's sprite.
+	//   spriteSource = The sprite source to use for the object.
+	// Returns:
+	//	 A pointer to the newly constructed game object
+	GameObject * CreateHealthPickup(Mesh * mesh, SpriteSource* spriteSource);
+
 
 
 	// Create the ship game object.
