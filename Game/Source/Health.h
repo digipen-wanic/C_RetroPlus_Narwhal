@@ -47,6 +47,9 @@ namespace Behaviors
 		//returns if dead
 		bool adjustHealth(float addition);
 
+		//get health
+		float GetHealth() const;
+
 	private:
 		//------------------------------------------------------------------------------
 		// Private Variables:

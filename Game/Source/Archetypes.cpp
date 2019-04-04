@@ -40,6 +40,7 @@ file Archetypes.h.
 #include "Physics.h"
 #include "Transform.h"
 #include "TileMap.h"
+#include <SpriteText.h>
 #include <Animation.h>
 
 //metroid
@@ -252,20 +253,33 @@ GameObject * Archetypes::CreateHealthPickup(Mesh * mesh, SpriteSource* spriteSou
 	//GameObjectFactory::GetInstance().SaveObjectToFile(bullet);
 
 	return pickup;
-
-
-
 }
 
+// Create the player game object.
+// Params:
+//   mesh  = The mesh to use for the object's sprite.
+//   spriteSource = The sprite source to use for the object.
+// Returns:
+//	 A pointer to the newly constructed game object
+GameObject * Archetypes::CreateHealthDisplay()
+{
+	//initilize all components
+	Transform* transform = new Transform();
+	transform->SetTranslation(Vector2D(-300.0f, 300.0f));
+	transform->SetScale(Vector2D(100.0f, 100.0f));
 
+	SpriteText* spriteText = new SpriteText();
 
+	//create object add all the components
+	GameObject* display = new GameObject("HealthDisplay");
 
+	display->AddComponent(transform);
+	display->AddComponent(spriteText);
 
+	//GameObjectFactory::GetInstance().SaveObjectToFile(bullet);
 
-
-
-
-
+	return display;
+}
 
 
 

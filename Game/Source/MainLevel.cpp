@@ -57,6 +57,7 @@ namespace Levels
 		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
 		batMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		doorMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
+		Mesh* healthMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
@@ -76,6 +77,7 @@ namespace Levels
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
 		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
 		batSpriteSource = resourceManager.GetSpriteSource("Scree");
+		SpriteSource* healthSpriteSource = resourceManager.GetSpriteSource("Scree");
 
 		resourceManager.AddMesh("SamusStanding", samusStandingMesh);
 		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
@@ -89,11 +91,14 @@ namespace Levels
 
 		resourceManager.AddMesh("crawlerMesh", crawlerMesh);
 		resourceManager.AddMesh("batMesh", batMesh);
+		resourceManager.AddMesh("healthMesh", healthMesh);
 
 		resourceManager.AddMesh("SamusBullet", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
 
 		//bullet archetype
 		GetSpace()->GetObjectManager().AddArchetype( *Archetypes::CreateSamusBulletArchetype(samusIdleMesh, samusBullet) );
+
+		GetSpace()->GetObjectManager().AddArchetype( *Archetypes::CreateHealthPickup(healthMesh, healthSpriteSource));
 
 		//tilemap
 		Tilemap* tilemapBuffer = new Tilemap();
@@ -146,12 +151,14 @@ namespace Levels
 		GameObjectManager& gameObjectManager = GetSpace()->GetObjectManager();
 
 		GameObject* tileMapObject = Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap);
-
 		gameObjectManager.AddObject( *tileMapObject );
 
 		GameObject* samus = Archetypes::CreateSamus(samusStandingMesh, samusStanding);
-
 		gameObjectManager.AddObject(*samus);
+
+		GameObject* healthDisplay = Archetypes::CreateHealthDisplay();
+		healthDisplay->SetParent( samus );
+		gameObjectManager.AddObject(*healthDisplay);
 
 		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject,0);
 		GetSpace()->GetObjectManager().AddObject( *crawler );
