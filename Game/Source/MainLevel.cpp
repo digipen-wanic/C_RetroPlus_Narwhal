@@ -40,7 +40,7 @@ namespace Levels
 
 	// Creates an instance of Level 2.
 	MainLevel::MainLevel()
-		: Level("MainLevel"), columnsMap(3), rowsMap(4)
+		: Level("MainLevel"), columnsMap(3), rowsMap(4), isDone(false), isPlaying(false)
 	{
 	}
 
@@ -56,6 +56,7 @@ namespace Levels
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
 		doorMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
+		batMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
 
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
@@ -74,6 +75,7 @@ namespace Levels
 
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
 		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
+		batSpriteSource = resourceManager.GetSpriteSource("Scree");
 
 		resourceManager.AddMesh("SamusStanding", samusStandingMesh);
 		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
@@ -83,10 +85,10 @@ namespace Levels
 		resourceManager.AddMesh("SamusRunShoot", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusJump", CreateQuadMesh(Vector2D( 1.0f , 1.0f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusJumpRoll", CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5)));
-		resourceManager.AddMesh("SamusRoll", CreateQuadMesh(Vector2D(1.0f / 4.0f, 1.0f / 4.0f), Vector2D(0.5, 0.5)));
-
+		resourceManager.AddMesh("SamusRoll", CreateQuadMesh(Vector2D(1.0f / 2.0f, 1.0f / 2.0f), Vector2D(0.5, 0.5)));
 
 		resourceManager.AddMesh("crawlerMesh", crawlerMesh);
+		resourceManager.AddMesh("batMesh", batMesh);
 
 		resourceManager.AddMesh("SamusBullet", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
 
@@ -113,9 +115,9 @@ namespace Levels
 	
 		//load sounds
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
-		//soundManager->SetEffectsVolume(0.01f);
 
-		//soundManager->AddMusic("Asteroid_Field.mp3");
+		soundManager->AddMusic("LevelMusicMP3.mp3");
+		soundManager->AddEffect("StartMusic4.wav");
 		soundManager->AddEffect("EnemyDeathFX.wav");
 		soundManager->AddEffect("EnemyHitFX.wav");
 		soundManager->AddEffect("EnergyPickUpFX.wav");
@@ -127,10 +129,13 @@ namespace Levels
 		soundManager->AddEffect("PlayerJump.wav");
 		soundManager->AddEffect("PlayerRun2FX.wav");
 
+		soundManager->SetEffectsVolume(0.2f);
+
 		//misc
 		Graphics::GetInstance().SetDepthEnabled(true);
 		Graphics::GetInstance().GetCurrentCamera().SetFOV(76.0f);
 		Graphics::GetInstance().GetCurrentCamera().SetTranslation(Vector2D(25.0f * 100.0f, 7.0f * -100.0f));
+
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -138,13 +143,15 @@ namespace Levels
 	{
 		std::cout << "Level2::Initialize" << std::endl;
 
+		GameObjectManager& gameObjectManager = GetSpace()->GetObjectManager();
+
 		GameObject* tileMapObject = Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap);
 
-		GetSpace()->GetObjectManager().AddObject( *tileMapObject );
+		gameObjectManager.AddObject( *tileMapObject );
 
 		GameObject* samus = Archetypes::CreateSamus(samusStandingMesh, samusStanding);
 
-		GetSpace()->GetObjectManager().AddObject(*samus);
+		gameObjectManager.AddObject(*samus);
 
 		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject,0);
 		GetSpace()->GetObjectManager().AddObject( *crawler );
@@ -166,11 +173,18 @@ namespace Levels
 		GetSpace()->GetObjectManager().AddObject(*door);
 		door->GetComponent<Transform>()->SetTranslation(Vector2D(6400, -300));
 
+		GameObject* bat1 = Archetypes::CreateBat(batMesh, batSpriteSource, samus);
+		gameObjectManager.AddObject(*bat1);
+		bat1->GetComponent<Transform>()->SetTranslation(Vector2D(4250, 75));
+
 		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
 
 		//play music
 		//musicChannel = soundManager->PlaySound("");
+		effectChannel = soundManager->PlaySound("StartMusic4.wav");
+		effectChannel->setVolume(0.2f);
+		
 
 	}
 
@@ -180,7 +194,19 @@ namespace Levels
 	void MainLevel::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
-		
+
+		if (!isPlaying)
+		{
+			effectChannel->isPlaying(&isDone);
+			if (isDone != true)
+			{
+				musicChannel = soundManager->PlaySound("LevelMusicMP3");
+				musicChannel->setVolume(0.5f);
+				isPlaying = true;
+				std::cout << "play music" << std::endl;
+			}
+		}
+
 		//press enter/start
 		if (Input::GetInstance().CheckTriggered(VK_RETURN))
 		{
@@ -189,6 +215,7 @@ namespace Levels
 		}
 		else if (Input::GetInstance().CheckTriggered('1'))
 		{
+			musicChannel->stop();
 			GetSpace()->RestartLevel();
 		}
 

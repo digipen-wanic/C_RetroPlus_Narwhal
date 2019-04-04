@@ -24,8 +24,8 @@ Samus
 	}
 	Behaviors::PlayerController
 	{
-		PlayerWalkSpeed : 350
-		PlayerJumpSpeed : 500
+		PlayerWalkSpeed : 500
+		PlayerJumpSpeed : 650
 		gravity : { 0, -1000 }
 	}
 	Behaviors::Health

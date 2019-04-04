@@ -78,9 +78,14 @@ namespace Levels
 		SpriteSource* samusStanding;
 		SpriteSource* samusBullet;
 		SpriteSource* crawlerSpriteSource;
+		SpriteSource* batSpriteSource;
 		Mesh* samusStandingMesh;
 		Mesh* crawlerMesh;
+
 		Mesh* doorMesh;
+
+		Mesh* batMesh;
+
 		// Tilemap
 		Tilemap* dataMap;
 		Texture* textureMap;
@@ -91,7 +96,10 @@ namespace Levels
 
 		//Sound manager
 		SoundManager* soundManager;
+		FMOD::Channel* effectChannel;
 		FMOD::Channel* musicChannel;
+		bool isDone;
+		bool isPlaying;
 	};
 }
 

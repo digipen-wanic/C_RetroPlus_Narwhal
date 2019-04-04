@@ -46,7 +46,7 @@ file Archetypes.h.
 #include "samusBullet.h"
 #include "CameraFollow.h"
 #include "Health.h"
-
+#include "BatEnemyAI.h"
 
 //==================================================================-
 // Public Functions:
@@ -153,6 +153,8 @@ GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameO
 	sprite->SetMesh(mesh);
 	sprite->SetSpriteSource(crawler);
 
+	Animation* animation = new Animation();
+
 	Physics* physics = new Physics();
 
 	ColliderRectangle* collider = new ColliderRectangle(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
@@ -168,6 +170,7 @@ GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameO
 	crawlerEnemy->AddComponent(health);
 	crawlerEnemy->AddComponent(sprite);
 	crawlerEnemy->AddComponent(collider);
+	crawlerEnemy->AddComponent(animation);
 
 	//GameObjectFactory::GetInstance().SaveObjectToFile(bullet);
 
@@ -175,6 +178,46 @@ GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameO
 }
 
 
+// Create the player game object.
+// Params:
+//   mesh  = The mesh to use for the object's sprite.
+//   spriteSource = The sprite source to use for the object.
+// Returns:
+//	 A pointer to the newly constructed game object
+GameObject * Archetypes::CreateBat(Mesh * mesh, SpriteSource* bat, GameObject* player)
+{
+
+	//initilize all components
+	Transform* transform = new Transform(4000.0f, -700.0f);
+	transform->SetScale(Vector2D(100.0f, 200.0f));
+
+	Sprite* sprite = new Sprite();
+	sprite->SetMesh(mesh);
+	sprite->SetSpriteSource(bat);
+
+	Animation* animation = new Animation();
+
+	Physics* physics = new Physics();
+
+	ColliderRectangle* collider = new ColliderRectangle(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
+
+	Behaviors::Health* health = new Behaviors::Health(10.0f, 10.0f, false);
+	Behaviors::BatEnemyAI* e = new Behaviors::BatEnemyAI( player->GetComponent<Transform>(), 300.0f, 300.0f, 2.0f);
+	//create object add all the components
+	GameObject* batEnemy = new GameObject("Bat");
+	batEnemy->AddComponent(e);
+
+	batEnemy->AddComponent(transform);
+	batEnemy->AddComponent(physics);
+	batEnemy->AddComponent(health);
+	batEnemy->AddComponent(sprite);
+	batEnemy->AddComponent(collider);
+	batEnemy->AddComponent(animation);
+
+	//GameObjectFactory::GetInstance().SaveObjectToFile(bullet);
+
+	return batEnemy;
+}
 
 
 // Create a game object that uses the Ship texture.

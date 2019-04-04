@@ -1,0 +1,8 @@
+TitleScreen
+{
+  numRows : 12
+  numCols : 10
+  frameCount : 111
+  frameStart : 0
+  texture : TitleAnimation.png
+}

@@ -213,10 +213,9 @@ void GameObjectManager::FixedUpdate(float dt)
 			gameObjectActiveList[i]->FixedUpdate(1/fixedUpdateDt);
 		}
 
+		CheckCollisions();
 		timeAccumulator -= 1/fixedUpdateDt;
 	}	
-
-	CheckCollisions();
 }
 
 // Destroy any objects marked for destruction.

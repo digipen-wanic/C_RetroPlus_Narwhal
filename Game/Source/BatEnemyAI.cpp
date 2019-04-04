@@ -20,6 +20,10 @@
 
 namespace Behaviors
 {
+	void BatCollisionHandler(GameObject& object, GameObject& other);
+	void BatMapCollisionHandler(GameObject& object,
+		const MapCollision& collision);
+
 	// Constructor
 	BatEnemyAI::BatEnemyAI( Transform* playerTransform_, float range_, float attackSpeed, float deathTime_)
 		: Component("Bat"), currentState( States::StateIdle ), playerTransform(playerTransform_),
@@ -30,7 +34,7 @@ namespace Behaviors
 	// Return a new copy of the component.
 	Component* BatEnemyAI::Clone() const
 	{
-
+		return new BatEnemyAI(*this);
 	}
 
 	// Initialize data for this object.
@@ -39,6 +43,10 @@ namespace Behaviors
 		transform = GetOwner()->GetComponent<Transform>();
 		physics = GetOwner()->GetComponent<Physics>();
 
+		Collider* collider = static_cast<Collider*>( GetOwner()->GetComponent("Collider") );
+
+		collider->SetMapCollisionHandler(BatMapCollisionHandler);
+		collider->SetCollisionHandler(BatCollisionHandler);
 	}
 
 	// Update function for this component.
@@ -55,10 +63,21 @@ namespace Behaviors
 				physics->SetVelocity( attackVelocity );
 			}
 		}
-		//else if (currentState == States::StateAttack)
-		//{
+		else if (currentState == States::StateAttack)
+		{
+			Vector2D pos = transform->GetTranslation();
+			if (transform->GetTranslation().x - playerTransform->GetTranslation().x < 0.0f)
+			{
+				pos.x += 6.0f;
+			}
 
-		//}
+			if (transform->GetTranslation().x - playerTransform->GetTranslation().x > 0.0f)
+			{
+				pos.x -= 6.0f;
+			}
+			transform->SetTranslation(pos);
+
+		}
 		else if (currentState == States::StateLanded)
 		{
 			deathTimer += dt;
@@ -74,21 +93,23 @@ namespace Behaviors
 	// Params:
 	//   object = The enemy.
 	//   other  = The object the monkey is colliding with.
-	void EnemyCollisionHandler(GameObject& object, GameObject& other)
+	void BatCollisionHandler(GameObject& object, GameObject& other)
 	{
-		
+		UNREFERENCED_PARAMETER(object);
+		UNREFERENCED_PARAMETER(other);
 	}
 
 	// Map collision handler for enemy objects.
 	// Params:
 	//   object = The enemy object.
 	//   collision = Which sides the enemy collided on.
-	void EnemyMapCollisionHandler(GameObject& object,
+	void BatMapCollisionHandler(GameObject& object,
 		const MapCollision& collision)
 	{
 		if ( collision.bottom )
 		{
 			object.GetComponent<BatEnemyAI>()->currentState = States::StateLanded;
+			
 		}
 	}
 }
