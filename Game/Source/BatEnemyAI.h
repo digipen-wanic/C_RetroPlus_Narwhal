@@ -92,6 +92,7 @@ namespace Behaviors
 		Physics* physics;
 
 		float range;
+		float strafeSpeed;
 		Vector2D attackVelocity;
 
 		float deathTimer;

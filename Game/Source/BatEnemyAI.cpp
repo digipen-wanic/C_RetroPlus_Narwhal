@@ -15,6 +15,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Physics.h"
+#include "Animation.h"
 #include "PlayerController.h"
 #include "ColliderTilemap.h"
 
@@ -27,7 +28,8 @@ namespace Behaviors
 	// Constructor
 	BatEnemyAI::BatEnemyAI( Transform* playerTransform_, float range_, float attackSpeed, float deathTime_)
 		: Component("Bat"), currentState( States::StateIdle ), playerTransform(playerTransform_),
-		range(range_), attackVelocity( Vector2D(0.0f, -attackSpeed) ), deathTime(deathTime_), deathTimer(0)
+		range(range_), attackVelocity( Vector2D(0.0f, -attackSpeed) ), deathTime(deathTime_), deathTimer(0),
+		strafeSpeed(6.0f)
 	{
 	}
 
@@ -61,6 +63,8 @@ namespace Behaviors
 				currentState = States::StateAttack;
 
 				physics->SetVelocity( attackVelocity );
+
+				GetOwner()->GetComponent<Animation>()->Play(0.07f, true);
 			}
 		}
 		else if (currentState == States::StateAttack)
@@ -68,12 +72,12 @@ namespace Behaviors
 			Vector2D pos = transform->GetTranslation();
 			if (transform->GetTranslation().x - playerTransform->GetTranslation().x < 0.0f)
 			{
-				pos.x += 6.0f;
+				pos.x += strafeSpeed;
 			}
 
 			if (transform->GetTranslation().x - playerTransform->GetTranslation().x > 0.0f)
 			{
-				pos.x -= 6.0f;
+				pos.x -= pos.x += strafeSpeed;
 			}
 			transform->SetTranslation(pos);
 

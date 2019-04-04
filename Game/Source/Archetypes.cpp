@@ -202,7 +202,7 @@ GameObject * Archetypes::CreateBat(Mesh * mesh, SpriteSource* bat, GameObject* p
 	ColliderRectangle* collider = new ColliderRectangle(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
 
 	Behaviors::Health* health = new Behaviors::Health(10.0f, 10.0f, false);
-	Behaviors::BatEnemyAI* e = new Behaviors::BatEnemyAI( player->GetComponent<Transform>(), 300.0f, 300.0f, 2.0f);
+	Behaviors::BatEnemyAI* e = new Behaviors::BatEnemyAI( player->GetComponent<Transform>(), 350.0f, 500.0f, 2.0f);
 	//create object add all the components
 	GameObject* batEnemy = new GameObject("Bat");
 	batEnemy->AddComponent(e);
