@@ -71,13 +71,13 @@ namespace Behaviors
 		// Params:
 		//   object = The enemy.
 		//   other  = The object the monkey is colliding with.
-		friend void EnemyCollisionHandler(GameObject& object, GameObject& other);
+		friend void BatCollisionHandler(GameObject& object, GameObject& other);
 
 		// Map collision handler for enemy objects.
 		// Params:
 		//   object = The enemy object.
 		//   collision = Which sides the enemy collided on.
-		friend void EnemyMapCollisionHandler(GameObject& object,
+		friend void BatMapCollisionHandler(GameObject& object,
 			const MapCollision& collision);
 
 		unsigned currentState;  // The current state of the enemy. Ex: idle, wander, chase
