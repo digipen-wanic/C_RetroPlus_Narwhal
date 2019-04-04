@@ -180,6 +180,7 @@ namespace Levels
 			if (isDone != true)
 			{
 				musicChannel = soundManager->PlaySound("LevelMusicMP3");
+				musicChannel->setVolume(0.5f);
 				isPlaying = true;
 				std::cout << "play music" << std::endl;
 			}
