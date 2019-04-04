@@ -237,7 +237,7 @@ namespace Behaviors
 				playerState = PlayerState::runRt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
-				animation->Play(0.07f, true);
+				animation->Play(0.06f, true);
 			}
 
 			if (playerState == PlayerState::idleRtUp || playerState == PlayerState::idleLtUp)
@@ -245,7 +245,7 @@ namespace Behaviors
 				playerState = PlayerState::runRtUp;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
-				animation->Play(0.07f, true);
+				animation->Play(0.06f, true);
 			}
 
 			//don't change sprite
@@ -281,7 +281,7 @@ namespace Behaviors
 				playerState = PlayerState::runLt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
-				animation->Play(0.07f, true);
+				animation->Play(0.06f, true);
 			}
 
 			if (playerState == PlayerState::idleLtUp || playerState == PlayerState::idleLtUp)
@@ -289,7 +289,7 @@ namespace Behaviors
 				playerState = PlayerState::runLtUp;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
-				animation->Play(0.07f, true);
+				animation->Play(0.06f, true);
 			}
 
 			if (playerState == PlayerState::jumpRt || playerState == PlayerState::jumpLt)
