@@ -244,7 +244,7 @@ namespace Behaviors
 				valueOfTopRight = static_cast<ColliderTilemap*>(tilemap->GetComponent("Collider"))->GetTilemap()->GetCellValue(static_cast<int>(tilemapCoords.x), static_cast<int>(tilemapCoords.y));
 				tilemapCoords = GetTileIndicesOfBottomRightCorner(curCoords);
 				valueOfBottomRight = static_cast<ColliderTilemap*>(tilemap->GetComponent("Collider"))->GetTilemap()->GetCellValue(static_cast<int>(tilemapCoords.x), static_cast<int>(tilemapCoords.y));
-				std::cout << "dir " << direction<<std::endl;
+				//std::cout << "dir " << direction<<std::endl;
 				if (distFromWhole.x <= 0.05f && distFromWhole.y <= 0.05f)
 				{
 					if ((valueOfBelow == 0 && ( direction.x == 1.0f || direction.x == -1.0f) && ((valueOfFront != 0 || valueOfBottomLeft != 0 || valueOfBack != 0 && valueOfAbove != 0))))

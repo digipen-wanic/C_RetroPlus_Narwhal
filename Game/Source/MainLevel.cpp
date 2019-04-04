@@ -40,7 +40,7 @@ namespace Levels
 
 	// Creates an instance of Level 2.
 	MainLevel::MainLevel()
-		: Level("MainLevel"), columnsMap(3), rowsMap(4)
+		: Level("MainLevel"), columnsMap(3), rowsMap(4), isDone(false), isPlaying(false)
 	{
 	}
 
@@ -113,7 +113,7 @@ namespace Levels
 		//load sounds
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
 
-		//soundManager->AddMusic("LevelMusic2.wav");
+		soundManager->AddMusic("LevelMusicMP3.mp3");
 		soundManager->AddEffect("StartMusic4.wav");
 		soundManager->AddEffect("EnemyDeathFX.wav");
 		soundManager->AddEffect("EnemyHitFX.wav");
@@ -161,7 +161,9 @@ namespace Levels
 
 		//play music
 		//musicChannel = soundManager->PlaySound("");
-		soundManager->PlaySound("StartMusic4.wav")->setVolume(0.2f);
+		effectChannel = soundManager->PlaySound("StartMusic4.wav");
+		effectChannel->setVolume(0.2f);
+		
 
 	}
 
@@ -171,7 +173,18 @@ namespace Levels
 	void MainLevel::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
-		
+
+		if (!isPlaying)
+		{
+			effectChannel->isPlaying(&isDone);
+			if (isDone != true)
+			{
+				musicChannel = soundManager->PlaySound("LevelMusicMP3");
+				isPlaying = true;
+				std::cout << "play music" << std::endl;
+			}
+		}
+
 		//press enter/start
 		if (Input::GetInstance().CheckTriggered(VK_RETURN))
 		{
@@ -180,6 +193,7 @@ namespace Levels
 		}
 		else if (Input::GetInstance().CheckTriggered('1'))
 		{
+			musicChannel->stop();
 			GetSpace()->RestartLevel();
 		}
 

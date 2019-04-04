@@ -108,12 +108,6 @@ void Animation::FixedUpdate(float dt)
 		// If animation is unfinished or finished and looping, proceed to next frame
 		if (!isDone || isLooping)
 		{
-			if (GetOwner()->GetName() == "Samus")
-			{
-				std::cout << "Set frame to " << frameIndex << std::endl;
-				std::cout << "frame count for texture " << sprite->GetSpriteSource()->GetFrameCountTexture() << std::endl;
-				std::cout << "frame count for animation " << sprite->GetSpriteSource()->GetFrameCount() << std::endl;
-			}
 			sprite->SetFrame(frameIndex);
 		}
 

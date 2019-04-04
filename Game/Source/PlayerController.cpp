@@ -110,7 +110,7 @@ namespace Behaviors
 	{
 		if (!animation->IsDone() && playerState == PlayerState::waiting)
 		{
-			std::cout << "Samus animating" << std::endl;
+			//std::cout << "Samus animating" << std::endl;
 		}
 		else if (playerState == PlayerState::waiting)
 		{
