@@ -112,6 +112,8 @@ namespace Behaviors
 				other.Destroy();
 			}
 		}
+		if (other.GetName() == "Door")
+			bullet.Destroy();
 	}
 
 	// Map collision handler for Player objects.

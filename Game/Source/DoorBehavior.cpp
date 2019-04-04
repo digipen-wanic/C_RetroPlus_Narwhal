@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "Component.h" // base class
 #include "DoorBehavior.h"
+#include <Transform.h>
 #include <Sprite.h>
 #include <Animation.h>
 #include <GameObject.h>
@@ -36,8 +37,8 @@ namespace Behaviors
 	//   collidedColor = The color that the object changes to when colliding.
 	//   collidedColorTime = The amount of time the object will retain the collided color.
 	DoorBehavior::DoorBehavior(float doorOpenTime, float doorCloseTime)
-		:	Component("DoorBehavior"), sprite(sprite), doorOpenTime(doorOpenTime), doorCloseTime(doorCloseTime), timer(0.0f),
-			open(false)
+		:	Component("DoorBehavior"), sprite(sprite), doorOpenTime(doorOpenTime), doorCloseTime(doorCloseTime), timer(0.0f),open(false)
+			
 	{
 	}
 
@@ -60,16 +61,7 @@ namespace Behaviors
 	//   dt = The (fixed) change in time since the last step.
 	void DoorBehavior::Update(float dt)
 	{
-		if (doorOpenTime <= 0)
-		{
-			open = false;
-		}
-		if (open)
-		{
-			//set animation frames
-			GetOwner()->GetComponent<Animation>()->Play(0.15f, false);
-			doorOpenTime -= dt;
-		}
+		UNREFERENCED_PARAMETER(dt);
 	}
 	void DoorBehavior::TransportToLevel()
 	{
@@ -87,7 +79,6 @@ namespace Behaviors
 			if (!object.GetComponent<DoorBehavior>()->open)
 			{
 				object.GetComponent<DoorBehavior>()->open = true;
-				std::cout << "Shot!";
 			}
 		}
 		if (other.GetName() == "Samus")
@@ -95,9 +86,10 @@ namespace Behaviors
 			if (object.GetComponent<DoorBehavior>()->open == true)
 			{
 				object.GetComponent<DoorBehavior>()->TransportToLevel();
-				std::cout << "HERE";
 			}
 		}
+		if(other.GetName() == "Samus")
+			other.GetComponent<Transform>()->SetTranslation(Vector2D(object.GetComponent<Transform>()->GetTranslation().x - .5f * (object.GetComponent<Transform>()->GetScale().x + .5f * (other.GetComponent<Transform>()->GetScale().x)), other.GetComponent<Transform>()->GetTranslation().y));
 	}
 
 }

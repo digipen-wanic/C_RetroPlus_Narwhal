@@ -47,7 +47,7 @@ void Collider::Initialize()
 //	 other = Reference to the second collider component.
 void Collider::CheckCollision(const Collider& other)
 {
-	if (IsCollidingWith(other) || other.IsCollidingWith(*this))
+	if (IsCollidingWith(other))
 	{
 		if (handler != nullptr)
 		{

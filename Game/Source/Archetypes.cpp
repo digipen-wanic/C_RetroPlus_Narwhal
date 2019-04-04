@@ -62,8 +62,8 @@ file Archetypes.h.
 	GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing)
 {
 	//initilize all components
-	Transform* transform = new Transform(25.0f * 100.0f, 7.0f * -100.0f);
-	//Transform* transform = new Transform(Vector2D(6300, -300));
+	//Transform* transform = new Transform(25.0f * 100.0f, 7.0f * -100.0f);
+	Transform* transform = new Transform(Vector2D(6300, -300));
 	transform->SetScale(Vector2D(100.0f, 200.0f));
 
 	Sprite* sprite = new Sprite();

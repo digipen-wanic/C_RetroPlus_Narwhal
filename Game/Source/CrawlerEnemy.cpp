@@ -63,6 +63,10 @@ namespace Behaviors
 		case 1:
 			direction = Vector2D(0,1);
 			break;
+		case 2:
+			direction = Vector2D(0,-1);
+			inverted = 1;
+			break;
 		}
 	}
 	// Constructor
@@ -78,6 +82,10 @@ namespace Behaviors
 		case 1:
 			direction = Vector2D(0, 1);
 			inverted = 0;
+			break;
+		case 2:
+			direction = Vector2D(0, -1);
+			inverted = 1;
 			break;
 		}
 	}
@@ -270,8 +278,8 @@ namespace Behaviors
 				{
 					if ((valueOfBelow == 0 && ( direction.x == 1.0f || direction.x == -1.0f) && ((valueOfFront != 0 || valueOfBottomLeft != 0 || valueOfBack != 0 && valueOfAbove != 0))))
 					{
-						direction = Vector2D(0.0f, -1.0f);
-						transform->SetRotation((float)(-M_PI/2));
+							direction = Vector2D(0.0f, -1.0f);
+							transform->SetRotation((float)(-M_PI / 2));
 					}
 					if (valueOfBack == 0 && (((valueOfBelow != 0 || (valueOfTopLeft != 0 && valueOfBottomLeft== 0 && (valueOfAbove == 0 || valueOfFront != 0)) || (valueOfAbove != 0 && valueOfTopRight != 0 && valueOfFront != 0) ) && (direction.y == -1.0f ||  (direction.y == 1.0f && (valueOfTopRight != 0)))) ))
 					{
@@ -292,7 +300,7 @@ namespace Behaviors
 
 					}
 				}
-				physics->SetVelocity(Vector2D(direction.x * 100, direction.y * 100));
+				physics->SetVelocity(Vector2D(direction.x * 200, direction.y * 200));
 				break;
 			case InnerStateExit:
 				currentState = nextState;
