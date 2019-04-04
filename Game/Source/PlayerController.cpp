@@ -49,8 +49,8 @@ namespace Behaviors
 
 	// Constructor
 	PlayerController::PlayerController()
-	: Component("PlayerController"), PlayerWalkSpeed(3.5f * tileUnit),
-		PlayerJumpSpeed(5.0f * tileUnit), gravity(0.0f, -10.0f * tileUnit),
+	: Component("PlayerController"), PlayerWalkSpeed(5.0f * tileUnit),
+		PlayerJumpSpeed(6.5f * tileUnit), gravity(0.0f, -10.0f * tileUnit),
 		maxJumpHeight( 5 * tileUnit ), firingSpeed(0.2f), firingTimer(0), 
 		bulletSpeed(tileUnit * 6), onGround(false), jumping(false), maxGravity(-4.0f),
 		playerState(PlayerState::waiting), footstepInterval(0.15f), footstepTimer(0.0f)

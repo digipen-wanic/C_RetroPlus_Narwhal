@@ -55,6 +55,7 @@ namespace Levels
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
+		batMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
 
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
@@ -73,6 +74,7 @@ namespace Levels
 
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
 		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
+		batSpriteSource = resourceManager.GetSpriteSource("Scree");
 
 		resourceManager.AddMesh("SamusStanding", samusStandingMesh);
 		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
@@ -84,8 +86,8 @@ namespace Levels
 		resourceManager.AddMesh("SamusJumpRoll", CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusRoll", CreateQuadMesh(Vector2D(1.0f / 2.0f, 1.0f / 2.0f), Vector2D(0.5, 0.5)));
 
-
 		resourceManager.AddMesh("crawlerMesh", crawlerMesh);
+		resourceManager.AddMesh("batMesh", batMesh);
 
 		resourceManager.AddMesh("SamusBullet", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
 
@@ -140,21 +142,27 @@ namespace Levels
 	{
 		std::cout << "Level2::Initialize" << std::endl;
 
+		GameObjectManager& gameObjectManager = GetSpace()->GetObjectManager();
+
 		GameObject* tileMapObject = Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap);
 
-		GetSpace()->GetObjectManager().AddObject( *tileMapObject );
+		gameObjectManager.AddObject( *tileMapObject );
 
 		GameObject* samus = Archetypes::CreateSamus(samusStandingMesh, samusStanding);
 
-		GetSpace()->GetObjectManager().AddObject(*samus);
+		gameObjectManager.AddObject(*samus);
 
 		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject);
-		GetSpace()->GetObjectManager().AddObject( *crawler );
+		gameObjectManager.AddObject( *crawler );
 		crawler->GetComponent<Transform>()->SetTranslation(Vector2D(2850,75));
 
 		GameObject* crawler2 = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject);
-		GetSpace()->GetObjectManager().AddObject(*crawler2);
+		gameObjectManager.AddObject(*crawler2);
 		crawler2->GetComponent<Transform>()->SetTranslation(Vector2D(2250, 75));
+
+		GameObject* bat1 = Archetypes::CreateBat(batMesh, batSpriteSource, samus);
+		gameObjectManager.AddObject(*bat1);
+		bat1->GetComponent<Transform>()->SetTranslation(Vector2D(4250, 75));
 
 		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
