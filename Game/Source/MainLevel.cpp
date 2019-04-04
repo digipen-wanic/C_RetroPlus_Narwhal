@@ -199,13 +199,29 @@ namespace Levels
 		{
 			//pause
 			soundManager->PlaySound("PauseFX2.wav")->setVolume(0.2f);
+
+			if (!GetSpace()->IsPaused())
+			{
+				GetSpace()->SetPaused(true);
+				musicChannel->setPaused(true);
+			}
+			else {
+				GetSpace()->SetPaused(false);
+				musicChannel->setPaused(false);
+			}
 		}
 		else if (Input::GetInstance().CheckTriggered('1'))
 		{
-			musicChannel->stop();
+			
 			GetSpace()->RestartLevel();
 		}
 
+	}
+
+	void MainLevel::Shutdown()
+	{
+		musicChannel->stop();
+		isPlaying = false;
 	}
 
 	// Unload the resources associated with Level 2.
