@@ -3,7 +3,7 @@ Samus
 	numComponents : 8
 	Transform
 	{
-		translation : { 2500, -700 }
+		translation : { 6300, -300 }
 		rotation : 0
 		scale : { 100, 200 }
 	}

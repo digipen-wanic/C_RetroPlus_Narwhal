@@ -71,7 +71,10 @@ namespace Behaviors
 			doorOpenTime -= dt;
 		}
 	}
-
+	void DoorBehavior::TransportToLevel()
+	{
+		std::cout << "ITS GO TIME!!!" << std::endl;
+	}
 	// Collision handler for ColorChange objects.
 	// Params:
 	//   object = The first object.
@@ -84,6 +87,13 @@ namespace Behaviors
 			if (!object.GetComponent<DoorBehavior>()->open)
 			{
 				object.GetComponent<DoorBehavior>()->open = true;
+			}
+		}
+		if (other.GetName() == "Samus")
+		{
+			if (object.GetComponent<DoorBehavior>()->open == true)
+			{
+				object.GetComponent<DoorBehavior>()->TransportToLevel();
 			}
 		}
 	}

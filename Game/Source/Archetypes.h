@@ -58,7 +58,7 @@ namespace Archetypes
 	//   spriteSource = The sprite source to use for the object.
 	// Returns:
 	//	 A pointer to the newly constructed game object
-	GameObject * CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameObject* tm);
+	GameObject * CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameObject* tm, int startDir);
 
 
 

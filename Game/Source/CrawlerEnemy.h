@@ -51,10 +51,10 @@ namespace Behaviors
 		//------------------------------------------------------------------------------
 
 		// Constructor
-		CrawlerEnemy();
+		CrawlerEnemy(int startdir);
 
 		// Constructor
-		CrawlerEnemy(GameObject* t);
+		CrawlerEnemy(GameObject* t, int startdir);
 
 		// Return a new copy of the component.
 		Component* Clone() const;
@@ -113,6 +113,7 @@ namespace Behaviors
 		Transform* playerTransform;
 		Physics* physics;
 		bool colliding;
+		int inverted; //	 = no, 1 = yes
 		float collisionTimer;
 		GameObject* tilemap;
 		Vector2D cellValue;

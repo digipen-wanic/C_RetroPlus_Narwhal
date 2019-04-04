@@ -80,7 +80,7 @@ namespace Levels
 		SpriteSource* crawlerSpriteSource;
 		Mesh* samusStandingMesh;
 		Mesh* crawlerMesh;
-
+		Mesh* doorMesh;
 		// Tilemap
 		Tilemap* dataMap;
 		Texture* textureMap;
