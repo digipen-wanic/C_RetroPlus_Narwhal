@@ -47,6 +47,7 @@ namespace Levels
 	{
 		//load sounds
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
+		soundManager->AddMusic("TitleThemeMP3.mp3");
 
 		bgMesh = CreateQuadMesh(Vector2D(1.0f / 10.0f, 1.0f / 12.0f), Vector2D(0.5, 0.5));
 
@@ -73,6 +74,8 @@ namespace Levels
 		GetSpace()->GetObjectManager().AddObject(*bg);
 
 		animation->Play(0.1f, true);
+		musicChannel = soundManager->PlaySound("TitleThemeMP3");
+		musicChannel->setVolume(0.09f);
 	}
 
 	// Update Level 2.

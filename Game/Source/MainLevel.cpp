@@ -129,7 +129,7 @@ namespace Levels
 		soundManager->AddEffect("PlayerJump.wav");
 		soundManager->AddEffect("PlayerRun2FX.wav");
 
-		soundManager->SetEffectsVolume(0.2f);
+		soundManager->SetEffectsVolume(0.3f);
 
 		//misc
 		Graphics::GetInstance().SetDepthEnabled(true);
@@ -183,7 +183,7 @@ namespace Levels
 		//play music
 		//musicChannel = soundManager->PlaySound("");
 		effectChannel = soundManager->PlaySound("StartMusic4.wav");
-		effectChannel->setVolume(0.2f);
+		effectChannel->setVolume(0.3f);
 		
 
 	}
@@ -201,7 +201,7 @@ namespace Levels
 			if (isDone != true)
 			{
 				musicChannel = soundManager->PlaySound("LevelMusicMP3");
-				musicChannel->setVolume(0.5f);
+				musicChannel->setVolume(0.8f);
 				isPlaying = true;
 				std::cout << "play music" << std::endl;
 			}

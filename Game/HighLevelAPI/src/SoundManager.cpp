@@ -197,7 +197,7 @@ FMOD::Channel* SoundManager::PlayEffect(FMOD::Sound* sound) const
 {
 	FMOD::Channel* channel;
 
-	system->playSound( sound, nullptr, false, &channel );
+	system->playSound( sound, effectsChannelGroup, false, &channel );
 
 	return channel;
 }
