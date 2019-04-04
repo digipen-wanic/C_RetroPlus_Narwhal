@@ -52,16 +52,34 @@ namespace Behaviors
 	};
 
 	// Constructor
-	CrawlerEnemy::CrawlerEnemy()
-		:Component("CrawlerEnemy"), direction(1, 0), currentState(StateIdle), nextState(StateIdle), innerState(InnerStateEnter), colliding(false)
+	CrawlerEnemy::CrawlerEnemy(int startdir)
+		:Component("CrawlerEnemy"), currentState(StateIdle), nextState(StateIdle), innerState(InnerStateEnter), colliding(false)
 	{
-
+		switch (startdir)
+		{
+		case 0:
+			direction = Vector2D(1, 0);
+			break;
+		case 1:
+			direction = Vector2D(0,1);
+			break;
+		}
 	}
 	// Constructor
-	CrawlerEnemy::CrawlerEnemy(GameObject* t)
+	CrawlerEnemy::CrawlerEnemy(GameObject* t, int startdir)
 		: Component("CrawlerEnemy"), direction(1, 0), currentState(StateIdle), nextState(StateIdle), innerState(InnerStateEnter), tilemap(t)
 	{
-
+		switch (startdir)
+		{
+		case 0:
+			direction = Vector2D(1, 0);
+			inverted = 0;
+			break;
+		case 1:
+			direction = Vector2D(0, 1);
+			inverted = 0;
+			break;
+		}
 	}
 
 	// Return a new copy of the component.
@@ -255,18 +273,19 @@ namespace Behaviors
 						direction = Vector2D(0.0f, -1.0f);
 						transform->SetRotation((float)(-M_PI/2));
 					}
-					if (valueOfBack == 0 && (((valueOfBelow != 0 || (valueOfTopLeft != 0 && valueOfBottomLeft== 0) || valueOfAbove != 0) && direction.y == -1.0f &&  direction.y != 1.0f) && valueOfTopRight == 0))
+					if (valueOfBack == 0 && (((valueOfBelow != 0 || (valueOfTopLeft != 0 && valueOfBottomLeft== 0 && (valueOfAbove == 0 || valueOfFront != 0)) || (valueOfAbove != 0 && valueOfTopRight != 0 && valueOfFront != 0) ) && (direction.y == -1.0f ||  (direction.y == 1.0f && (valueOfTopRight != 0)))) ))
 					{
 						direction = Vector2D(-1.0f, 0.0f);
 						transform->SetRotation((float)(-M_PI));
 					}
-					if (valueOfAbove == 0 && ((((valueOfBack != 0 || valueOfTopRight != 0) || valueOfFront != 0)  && direction.x == -1.0f) || (direction.x == 1.0f && valueOfFront != 0 || valueOfTopRight != 0 && (valueOfBelow == 0 ))))
+
+					if (valueOfAbove == 0 && ( ( ( (valueOfBack != 0 || (valueOfTopRight != 0 && valueOfFront == 0 && valueOfBottomRight == 0) || (valueOfTopRight != 0 && valueOfFront != 0 && valueOfBottomRight != 0)) || (valueOfFront != 0 && valueOfTopRight == 0 && valueOfBottomRight == 0))  && (direction.x == -1.0f || direction.x == 1.0f)) 
+						|| (direction.x == 1.0f && (valueOfFront != 0 && valueOfTopRight == 0) || (valueOfTopRight != 0 && valueOfFront == 0)  ) ) )
 					{
 						direction = Vector2D(0.0f, 1.0f);
 						transform->SetRotation((float)(M_PI / 2));
-
 					}
-					if (valueOfFront == 0 && (((valueOfAbove != 0 || valueOfBottomRight != 0 && valueOfTopRight == 0) && direction.y == 1.0f) || (valueOfBelow != 0) && direction.y == -1.0f))
+					if (valueOfFront == 0 && (((valueOfAbove != 0 || valueOfBottomRight != 0 && valueOfTopRight == 0 ) && direction.y == 1.0f) || (valueOfBelow != 0 || valueOfBottomLeft != 0) && (direction.y == 1.0f || (valueOfBack != 0 && valueOfBelow != 0 && valueOfBottomLeft != 0) || (inverted == 1 && direction.y == -1.0f))))
 					{
 						direction = Vector2D(1.0f, 0.0f);
 						transform->SetRotation(0.0f);

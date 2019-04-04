@@ -61,7 +61,8 @@ file Archetypes.h.
 	GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing)
 {
 	//initilize all components
-	Transform* transform = new Transform(25.0f * 100.0f, 7.0f * -100.0f);
+	//Transform* transform = new Transform(25.0f * 100.0f, 7.0f * -100.0f);
+	Transform* transform = new Transform(Vector2D(6300, -300));
 	transform->SetScale(Vector2D(100.0f, 200.0f));
 
 	Sprite* sprite = new Sprite();
@@ -142,9 +143,8 @@ GameObject* Archetypes::CreateSamusBulletArchetype(Mesh* mesh, SpriteSource* spr
 //   spriteSource = The sprite source to use for the object.
 // Returns:
 //	 A pointer to the newly constructed game object
-GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameObject* tm)
+GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameObject* tm, int startDir)
 {
-
 	//initilize all components
 	Transform* transform = new Transform(3000.0f, -700.0f);
 	transform->SetScale(Vector2D(100.0f, 100.0f));
@@ -160,7 +160,7 @@ GameObject * Archetypes::CreateCrawler(Mesh * mesh, SpriteSource* crawler, GameO
 	ColliderRectangle* collider = new ColliderRectangle(Vector2D(transform->GetScale().x * 0.5f, transform->GetScale().y * 0.5f));
 
 	Behaviors::Health* health = new Behaviors::Health(10.0f, 10.0f, false);
-	Behaviors::CrawlerEnemy* e = new Behaviors::CrawlerEnemy(tm);
+	Behaviors::CrawlerEnemy* e = new Behaviors::CrawlerEnemy(tm, startDir);
 	//create object add all the components
 	GameObject* crawlerEnemy = new GameObject("Crawler");
 	crawlerEnemy->AddComponent(e);
@@ -557,7 +557,7 @@ GameObject* Archetypes::CreateDoorObject(Mesh * mesh, SpriteSource * spriteSourc
 {
 	//initilize all components
 	Transform* transform = new Transform(71.0f * 100.0f, -2.0f * 100.0f);
-	transform->SetScale(Vector2D(50.0f, 100.0f));
+	transform->SetScale(Vector2D(100.0f, 200.0f));
 
 	Sprite* sprite = new Sprite();
 	sprite->SetMesh(mesh);

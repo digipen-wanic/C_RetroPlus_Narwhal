@@ -26,6 +26,7 @@
 #include "Archetypes.h"
 #include "Sprite.h"
 #include "Mesh.h"
+#include <Animation.h>
 #include <Transform.h>
 
 //------------------------------------------------------------------------------
@@ -47,27 +48,31 @@ namespace Levels
 		//load sounds
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
 
-		bgMesh = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
+		bgMesh = CreateQuadMesh(Vector2D(1.0f / 10.0f, 1.0f / 12.0f), Vector2D(0.5, 0.5));
 
-		bgTexture = Texture::CreateTextureFromFile("StartBG_Text.png");
-		bgSpriteSource = new SpriteSource(bgTexture, "BG", 1, 1);
+		ResourceManager& resourceManager = GetSpace()->GetResourceManager();
+		bgSpriteSource = resourceManager.GetSpriteSource("TitleScreen");
+
 	}
 
 	// Initialize the memory associated with Level 2.
 	void StartScreen::Initialize()
 	{
-		Transform* transform = new Transform(Vector2D(0.0f, 0.0f), Vector2D(1000.0f, 1000.0f));
+		Transform* transform = new Transform(Vector2D(0.0f, 0.0f), Vector2D(1050.0f, 1000.0f));
 		Sprite* sprite = new Sprite();
 		sprite->SetMesh(bgMesh);
 		sprite->SetSpriteSource(bgSpriteSource);
+		Animation* animation = new Animation();
 
 		GameObject* bg = new GameObject("Bg");
 
 		bg->AddComponent(sprite);
 		bg->AddComponent(transform);
-
+		bg->AddComponent(animation);
 
 		GetSpace()->GetObjectManager().AddObject(*bg);
+
+		animation->Play(0.1f, true);
 	}
 
 	// Update Level 2.
@@ -91,8 +96,6 @@ namespace Levels
 		soundManager->Shutdown();
 
 		delete bgMesh;
-		delete bgSpriteSource;
-		delete bgTexture;
 	}
 }
 
