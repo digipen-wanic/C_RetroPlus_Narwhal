@@ -18,6 +18,7 @@ file Archetypes.h.
 #include "PlayerShip.h"
 #include "PlayerProjectile.h"
 #include "TimedDeath.h"
+#include "DoorBehavior.h"
 #include "ScreenWrap.h"
 #include "ColliderPoint.h"
 #include "ColliderCircle.h"
@@ -61,8 +62,8 @@ file Archetypes.h.
 	GameObject * Archetypes::CreateSamus(Mesh * standingMesh, SpriteSource* standing)
 {
 	//initilize all components
-	//Transform* transform = new Transform(25.0f * 100.0f, 7.0f * -100.0f);
-	Transform* transform = new Transform(Vector2D(6300, -300));
+	Transform* transform = new Transform(25.0f * 100.0f, 7.0f * -100.0f);
+	//Transform* transform = new Transform(Vector2D(6300, -300));
 	transform->SetScale(Vector2D(100.0f, 200.0f));
 
 	Sprite* sprite = new Sprite();
@@ -565,10 +566,11 @@ GameObject* Archetypes::CreateDoorObject(Mesh * mesh, SpriteSource * spriteSourc
 	Animation* animation = new Animation();
 	ColliderRectangle* collider = new ColliderRectangle();
 	collider->SetExtents(transform->GetScale() * 0.5f);
-
+	Behaviors::DoorBehavior* doorBehavior = new Behaviors::DoorBehavior();
 	//create object add all the components
 	GameObject* door = new GameObject("Door");
 	door->AddComponent(transform);
+	door->AddComponent(doorBehavior);
 	door->AddComponent(sprite);
 	door->AddComponent(collider);
 	door->AddComponent(animation);

@@ -82,11 +82,12 @@ namespace Behaviors
 	void DoorCollisionHandler(GameObject& object, GameObject& other)
 	{
 		//if hit by a bullet
-		if (other.GetName() == "Bullet")
+		if (other.GetName() == "samusBullet")
 		{
 			if (!object.GetComponent<DoorBehavior>()->open)
 			{
 				object.GetComponent<DoorBehavior>()->open = true;
+				std::cout << "Shot!";
 			}
 		}
 		if (other.GetName() == "Samus")
@@ -94,6 +95,7 @@ namespace Behaviors
 			if (object.GetComponent<DoorBehavior>()->open == true)
 			{
 				object.GetComponent<DoorBehavior>()->TransportToLevel();
+				std::cout << "HERE";
 			}
 		}
 	}

@@ -123,7 +123,7 @@ namespace Behaviors
 		transform = static_cast<Transform*>(GetOwner()->GetComponent("Transform"));
 		physics = static_cast<Physics*>(GetOwner()->GetComponent("Physics"));
 
-		GetOwner()->GetComponent<Animation>()->Play( 0.07f, true);
+		//GetOwner()->GetComponent<Animation>()->Play( 0.07f, true);
 
 		// Set the collision handlers
 		static_cast<Collider*>(GetOwner()->GetComponent("Collider"))->SetMapCollisionHandler(CrawlerEnemyMapCollisionHandler);

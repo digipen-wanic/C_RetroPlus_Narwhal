@@ -66,7 +66,7 @@ void Animation::Play(float frameDuration_, bool isLooping_)
 	isDone = false;
 	sprite->SetFrame(frameIndex);
 	lastSpriteSource = sprite->GetSpriteSource();
-	std::cout << "Play" << std::endl;
+//	std::cout << "Play" << std::endl;
 }
 
 // Update the animation.

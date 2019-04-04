@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HighLevelAPI", "HighLevelAPI\HighLevelAPI.vcxproj", "{4D019903-DA3D-466B-8863-DE77285C6531}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CS230Project5", "CS230Project4.vcxproj", "{553D497C-DD10-4B3D-9F5A-CC4267744407}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4D019903-DA3D-466B-8863-DE77285C6531} = {4D019903-DA3D-466B-8863-DE77285C6531}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

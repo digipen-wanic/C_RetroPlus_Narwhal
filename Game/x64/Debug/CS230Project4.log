@@ -1,5 +1,5 @@
-﻿  CrawlerEnemy.cpp
-  MainLevel.cpp
+﻿  Archetypes.cpp
+  DoorBehavior.cpp
   Generating Code...
   CS230Project4.vcxproj -> C:\Users\bills\Documents\GitHub\C_RetroPlus_Narwhal\Game\\x64\Debug\BetaFramework.exe
   glfw\lib\x64\glfw3.dll
