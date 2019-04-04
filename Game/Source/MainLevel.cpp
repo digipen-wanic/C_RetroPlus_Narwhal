@@ -55,6 +55,7 @@ namespace Levels
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
+		doorMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
 		batMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
 
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
@@ -152,13 +153,25 @@ namespace Levels
 
 		gameObjectManager.AddObject(*samus);
 
-		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject);
-		gameObjectManager.AddObject( *crawler );
+		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject,0);
+		GetSpace()->GetObjectManager().AddObject( *crawler );
 		crawler->GetComponent<Transform>()->SetTranslation(Vector2D(2850,75));
 
-		GameObject* crawler2 = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject);
-		gameObjectManager.AddObject(*crawler2);
+		GameObject* crawler2 = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject,0);
+		GetSpace()->GetObjectManager().AddObject(*crawler2);
 		crawler2->GetComponent<Transform>()->SetTranslation(Vector2D(2250, 75));
+
+		GameObject* crawler3 = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject,1);
+		GetSpace()->GetObjectManager().AddObject(*crawler3);
+		crawler3->GetComponent<Transform>()->SetTranslation(Vector2D(6300, 50));
+
+		GameObject* crawler4 = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject, 1);
+		GetSpace()->GetObjectManager().AddObject(*crawler4);
+		crawler4->GetComponent<Transform>()->SetTranslation(Vector2D(6250, -550));
+
+		GameObject* door = Archetypes::CreateDoorObject(doorMesh, crawlerSpriteSource);
+		GetSpace()->GetObjectManager().AddObject(*door);
+		door->GetComponent<Transform>()->SetTranslation(Vector2D(6400, -300));
 
 		GameObject* bat1 = Archetypes::CreateBat(batMesh, batSpriteSource, samus);
 		gameObjectManager.AddObject(*bat1);
@@ -239,5 +252,6 @@ namespace Levels
 		delete meshMap;
 		delete textureMap;
 		delete spriteSourceMap;
+		delete doorMesh;
 	}
 }

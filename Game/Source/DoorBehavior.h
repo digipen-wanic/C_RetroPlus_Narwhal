@@ -51,6 +51,8 @@ namespace Behaviors
 		// Initialize data for this object.
 		void Initialize();
 
+		void TransportToLevel();
+
 		// Update function for this component.
 		// Params:
 		//   dt = The (fixed) change in time since the last step.

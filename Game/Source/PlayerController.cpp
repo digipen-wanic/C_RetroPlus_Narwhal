@@ -144,7 +144,7 @@ namespace Behaviors
 				player->sprite->SetSpriteSource(player->resourceManager->GetSpriteSource("SamusIdle"));
 				player->sprite->SetMesh(player->resourceManager->GetMesh("SamusIdle"));
 
-				std::cout << "ln 134" << std::endl;
+				//std::cout << "ln 134" << std::endl;
 
 				
 			}
@@ -195,7 +195,7 @@ namespace Behaviors
 
 		if (other.GetName() == "Door")
 		{
-			object.GetSpace()->SetLevel(new Levels::StartScreen);
+			//object.GetSpace()->SetLevel(new Levels::StartScreen);
 		}
 	}
 

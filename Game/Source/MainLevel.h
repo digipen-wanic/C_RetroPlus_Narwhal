@@ -84,6 +84,9 @@ namespace Levels
 		SpriteSource* batSpriteSource;
 		Mesh* samusStandingMesh;
 		Mesh* crawlerMesh;
+
+		Mesh* doorMesh;
+
 		Mesh* batMesh;
 
 		// Tilemap
