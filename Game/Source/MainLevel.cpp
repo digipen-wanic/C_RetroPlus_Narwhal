@@ -40,7 +40,7 @@ namespace Levels
 
 	// Creates an instance of Level 2.
 	MainLevel::MainLevel()
-		: Level("MainLevel"), columnsMap(3), rowsMap(4)
+		: Level("MainLevel"), columnsMap(3), rowsMap(4), isDone(false), isPlaying(false)
 	{
 	}
 
@@ -114,9 +114,9 @@ namespace Levels
 	
 		//load sounds
 		soundManager = Engine::GetInstance().GetModule<SoundManager>();
-		//soundManager->SetEffectsVolume(0.01f);
 
-		//soundManager->AddMusic("Asteroid_Field.mp3");
+		soundManager->AddMusic("LevelMusicMP3.mp3");
+		soundManager->AddEffect("StartMusic4.wav");
 		soundManager->AddEffect("EnemyDeathFX.wav");
 		soundManager->AddEffect("EnemyHitFX.wav");
 		soundManager->AddEffect("EnergyPickUpFX.wav");
@@ -128,10 +128,13 @@ namespace Levels
 		soundManager->AddEffect("PlayerJump.wav");
 		soundManager->AddEffect("PlayerRun2FX.wav");
 
+		soundManager->SetEffectsVolume(0.2f);
+
 		//misc
 		Graphics::GetInstance().SetDepthEnabled(true);
 		Graphics::GetInstance().GetCurrentCamera().SetFOV(76.0f);
 		Graphics::GetInstance().GetCurrentCamera().SetTranslation(Vector2D(25.0f * 100.0f, 7.0f * -100.0f));
+
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -166,6 +169,9 @@ namespace Levels
 
 		//play music
 		//musicChannel = soundManager->PlaySound("");
+		effectChannel = soundManager->PlaySound("StartMusic4.wav");
+		effectChannel->setVolume(0.2f);
+		
 
 	}
 
@@ -175,7 +181,18 @@ namespace Levels
 	void MainLevel::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
-		
+
+		if (!isPlaying)
+		{
+			effectChannel->isPlaying(&isDone);
+			if (isDone != true)
+			{
+				musicChannel = soundManager->PlaySound("LevelMusicMP3");
+				isPlaying = true;
+				std::cout << "play music" << std::endl;
+			}
+		}
+
 		//press enter/start
 		if (Input::GetInstance().CheckTriggered(VK_RETURN))
 		{
@@ -184,6 +201,7 @@ namespace Levels
 		}
 		else if (Input::GetInstance().CheckTriggered('1'))
 		{
+			musicChannel->stop();
 			GetSpace()->RestartLevel();
 		}
 

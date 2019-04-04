@@ -93,7 +93,10 @@ namespace Levels
 
 		//Sound manager
 		SoundManager* soundManager;
+		FMOD::Channel* effectChannel;
 		FMOD::Channel* musicChannel;
+		bool isDone;
+		bool isPlaying;
 	};
 }
 

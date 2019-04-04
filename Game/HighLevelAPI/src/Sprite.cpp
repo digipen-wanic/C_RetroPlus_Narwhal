@@ -96,8 +96,6 @@ void Sprite::Draw(const Vector2D& offset)
 
 	if (spriteSource)
 	{
-		if (GetOwner()->GetName() == "Samus")
-			std::cout << "UV (" << frameIndex << "): " << spriteSource->GetUV(frameIndex) << std::endl;
 		Graphics::GetInstance().SetTexture(spriteSource->GetTexture(), spriteSource->GetUV(frameIndex));
 	}
 	else

@@ -4,5 +4,5 @@ Crawler
 	numCols : 1
 	frameCount : 2
 	frameStart : 0
-	texture : Crawler.png
+	texture : Zoomer.png
 }
