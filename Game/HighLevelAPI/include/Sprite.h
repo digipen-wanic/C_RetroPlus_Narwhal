@@ -28,6 +28,7 @@ class Mesh;
 class Transform;
 class SpriteSource;
 class Vector2D;
+class Camera;
 
 //------------------------------------------------------------------------------
 // Public Structures:
@@ -113,6 +114,9 @@ public:
 	//   parser = The parser object used to load the object's data.
 	void Deserialize(Parser& parser);
 
+	//Set camera to draw this sprite with
+	void SetCamera(Camera& newCamera);
+
 protected:
 	//------------------------------------------------------------------------------
 	// Protected Variables:
@@ -140,6 +144,9 @@ private:
 
 	// For depth
 	float zDepth;
+
+	//Camera for drawing sprite
+	Camera* camera;
 };
 
 //------------------------------------------------------------------------------

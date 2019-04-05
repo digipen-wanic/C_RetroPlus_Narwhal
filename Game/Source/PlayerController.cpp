@@ -31,6 +31,7 @@
 #include "Mesh.h"
 #include "Animation.h"
 #include "SpriteSource.h"
+#include "SpriteText.h"
 #include "StartScreen.h"
 
 #include <SoundManager.h>
@@ -101,6 +102,10 @@ namespace Behaviors
 		bulletArchetype = GetOwner()->GetSpace()->GetObjectManager().GetArchetypeByName("samusBullet");
 
 		animation->Play(0.07f, false);
+
+		//healthDisplay = GetOwner()->GetSpace()->GetObjectManager().GetObjectByName("HealthDisplay")->GetComponent<SpriteText>();
+
+		health = GetOwner()->GetComponent<Health>();
 	}
 
 	// Fixed update function for this component.
@@ -121,8 +126,9 @@ namespace Behaviors
 			MoveHorizontal(dt);
 			MoveVertical();
 			Shoot(dt);
-		}
 
+			//healthDisplay->SetString("EN .. " + static_cast<int>( health->GetHealth() ) );
+		}
 	}
 
 	// Map collision handler for Player objects.
@@ -171,9 +177,7 @@ namespace Behaviors
 		//if the object is named collectable, destroy it
 		if (other.GetName()._Equal("Crawler") )
 		{
-			Health* health = object.GetComponent<Health>();
-
-			if ( health->adjustHealth(-8.0f) )
+			if ( object.GetComponent<Health>()->adjustHealth(-8.0f) )
 			{
 				//lose
 				object.GetSpace()->RestartLevel();
@@ -182,9 +186,7 @@ namespace Behaviors
 
 		if (other.GetName()._Equal("Bat"))
 		{
-			Health* health = object.GetComponent<Health>();
-
-			if (health->adjustHealth(-8.0f))
+			if (object.GetComponent<Health>()->adjustHealth(-8.0f))
 			{
 				//lose
 				object.GetSpace()->RestartLevel();
@@ -193,9 +195,9 @@ namespace Behaviors
 
 		if (other.GetName()._Equal("HealthPickup"))
 		{
-			Health* health = object.GetComponent<Health>();
+			object.GetComponent<Health>()->adjustHealth(5.0f);
 
-			health->adjustHealth(5.0f);
+			other.Destroy();
 		}
 
 		if (other.GetName() == "Door")
@@ -235,7 +237,7 @@ namespace Behaviors
 				playerState = PlayerState::runRt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
-				animation->Play(0.07f, true);
+				animation->Play(0.06f, true);
 			}
 
 			if (playerState == PlayerState::idleRtUp || playerState == PlayerState::idleLtUp)
@@ -243,7 +245,7 @@ namespace Behaviors
 				playerState = PlayerState::runRtUp;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
-				animation->Play(0.07f, true);
+				animation->Play(0.06f, true);
 			}
 
 			//don't change sprite
@@ -279,7 +281,7 @@ namespace Behaviors
 				playerState = PlayerState::runLt;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRun"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRun"));
-				animation->Play(0.07f, true);
+				animation->Play(0.06f, true);
 			}
 
 			if (playerState == PlayerState::idleLtUp || playerState == PlayerState::idleLtUp)
@@ -287,7 +289,7 @@ namespace Behaviors
 				playerState = PlayerState::runLtUp;
 				sprite->SetSpriteSource(resourceManager->GetSpriteSource("SamusRunUp"));
 				sprite->SetMesh(resourceManager->GetMesh("SamusRunUp"));
-				animation->Play(0.07f, true);
+				animation->Play(0.06f, true);
 			}
 
 			if (playerState == PlayerState::jumpRt || playerState == PlayerState::jumpLt)

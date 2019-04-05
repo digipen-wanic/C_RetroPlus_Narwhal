@@ -31,6 +31,7 @@
 #include "CameraFollow.h"
 #include <Parser.h>
 #include "PlayerController.h"
+#include <SpriteText.h>
 
 namespace Levels
 {
@@ -51,7 +52,7 @@ namespace Levels
 
 		//graphics
 		samusIdleMesh = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
-
+		textMesh = CreateQuadMesh(Vector2D(1.0f / 6.0f, 1.0f / 7.0f), Vector2D(0.5f, 0.5f));
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
@@ -60,7 +61,7 @@ namespace Levels
 		doorOpening = CreateQuadMesh(Vector2D(0.5f,0.5f), Vector2D(0.5, 0.5));
 		doorClosing = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		doorOpened = CreateQuadMesh(Vector2D(1.0f,1.0f), Vector2D(0.5, 0.5));
-
+		Mesh* healthMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		samusStandingMesh = CreateQuadMesh(Vector2D(1.0f / 12.0f, 1.0f / 7.0f), Vector2D(0.5, 0.5));
@@ -79,10 +80,12 @@ namespace Levels
 		resourceManager.GetSpriteSource("DoorOpening");
 		resourceManager.GetSpriteSource("DoorOpened");
 		resourceManager.GetSpriteSource("DoorClosing");
+		textSprite = resourceManager.GetSpriteSource("FontSheet");
 
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
 		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
 		batSpriteSource = resourceManager.GetSpriteSource("Scree");
+		SpriteSource* healthSpriteSource = resourceManager.GetSpriteSource("Scree");
 
 		resourceManager.AddMesh("SamusStanding", samusStandingMesh);
 		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
@@ -101,11 +104,14 @@ namespace Levels
 
 		resourceManager.AddMesh("crawlerMesh", crawlerMesh);
 		resourceManager.AddMesh("batMesh", batMesh);
+		resourceManager.AddMesh("healthMesh", healthMesh);
 
 		resourceManager.AddMesh("SamusBullet", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
 
 		//bullet archetype
 		GetSpace()->GetObjectManager().AddArchetype( *Archetypes::CreateSamusBulletArchetype(samusIdleMesh, samusBullet) );
+
+		GetSpace()->GetObjectManager().AddArchetype( *Archetypes::CreateHealthPickup(healthMesh, healthSpriteSource));
 
 		//tilemap
 		Tilemap* tilemapBuffer = new Tilemap();
@@ -141,13 +147,13 @@ namespace Levels
 		soundManager->AddEffect("PlayerJump.wav");
 		soundManager->AddEffect("PlayerRun2FX.wav");
 
-		soundManager->SetEffectsVolume(0.2f);
+		soundManager->SetEffectsVolume(0.3f);
 
 		//misc
 		Graphics::GetInstance().SetDepthEnabled(true);
 		Graphics::GetInstance().GetCurrentCamera().SetFOV(76.0f);
 		Graphics::GetInstance().GetCurrentCamera().SetTranslation(Vector2D(25.0f * 100.0f, 7.0f * -100.0f));
-
+		textCamera = new Camera();
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -155,15 +161,21 @@ namespace Levels
 	{
 		std::cout << "Level2::Initialize" << std::endl;
 
+		GameObject* UItext = Archetypes::CreatUIText(textMesh, textSprite, textCamera);
+		UItext->GetComponent<SpriteText>()->SetString("EN.30");
+
 		GameObjectManager& gameObjectManager = GetSpace()->GetObjectManager();
 
 		GameObject* tileMapObject = Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap);
-
 		gameObjectManager.AddObject( *tileMapObject );
+		
 
 		GameObject* samus = Archetypes::CreateSamus(samusStandingMesh, samusStanding);
-
 		gameObjectManager.AddObject(*samus);
+
+		GameObject* healthDisplay = Archetypes::CreateHealthDisplay();
+		healthDisplay->SetParent( samus );
+		gameObjectManager.AddObject(*healthDisplay);
 
 		GameObject* crawler = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject,0);
 		GetSpace()->GetObjectManager().AddObject( *crawler );
@@ -192,10 +204,12 @@ namespace Levels
 		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
 
+		gameObjectManager.AddObject(*UItext);
+
 		//play music
 		//musicChannel = soundManager->PlaySound("");
 		effectChannel = soundManager->PlaySound("StartMusic4.wav");
-		effectChannel->setVolume(0.2f);
+		effectChannel->setVolume(0.3f);
 		
 
 	}
@@ -213,7 +227,7 @@ namespace Levels
 			if (isDone != true)
 			{
 				musicChannel = soundManager->PlaySound("LevelMusicMP3");
-				musicChannel->setVolume(0.5f);
+				musicChannel->setVolume(0.8f);
 				isPlaying = true;
 				std::cout << "play music" << std::endl;
 			}
@@ -264,9 +278,13 @@ namespace Levels
 		delete meshMap;
 		delete textureMap;
 		delete spriteSourceMap;
+
 		delete doorClosed;
 		delete doorClosing;
 		delete doorOpened;
 		delete doorOpening;
+
+		delete textMesh;
+		delete textCamera;
 	}
 }

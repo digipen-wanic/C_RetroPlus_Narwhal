@@ -59,21 +59,24 @@ void SpriteText::Draw()
 
 			
 		}
-		//lowercase letters
-		else if (asciiVal < 123 && asciiVal > 96)
-		{
-			SetFrame(asciiVal - 97);
-			Sprite::Draw(currOffset);
-		}
 		//numbers
 		else if (asciiVal < 58 && asciiVal > 47)
 		{
-			SetFrame(asciiVal - 48);
+			SetFrame(asciiVal - 22);
 			Sprite::Draw(currOffset);
 		}
-
+		//period
+		else if (asciiVal == 46)
+		{
+			SetFrame(35);
+			Sprite::Draw(currOffset);
+		}
+		else if (asciiVal == 44)
+		{
+			SetFrame(36);
+			Sprite::Draw(currOffset);
+		}
 		currOffset.x += scale.x;
-
 	}
 
 }

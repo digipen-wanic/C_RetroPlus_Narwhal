@@ -48,22 +48,25 @@ namespace Behaviors
 		if (hitTimer <= 0.0f)
 		{
 			health += addition;
-			hitTimer += hitRecoveryTime;
-			
-
+		
 			if (health <= 0.0f)
 			{
 				health = 0.0f;
 				return true;
 			}
 
-			if (isPlayer)
+			if (addition < 0)
 			{
-				sprite->SetAlpha(0.5f);
-			}
-			else 
-			{
-				sprite->SetColor(Colors::Red);
+				hitTimer += hitRecoveryTime;
+
+				if (isPlayer)
+				{
+					sprite->SetAlpha(0.5f);
+				}
+				else
+				{
+					sprite->SetColor(Colors::Red);
+				}
 			}
 		}
 
@@ -99,5 +102,11 @@ namespace Behaviors
 				sprite->SetColor(Colors::White);
 			}
 		}
+	}
+
+	//get health
+	float Health::GetHealth() const
+	{
+		return health;
 	}
 }
