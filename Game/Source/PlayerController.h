@@ -30,7 +30,7 @@ class Sprite;
 class SpriteSource;
 class Animation;
 class ColliderRectangle;
-class Health;
+class SpriteText;
 struct MapCollision;
 class SoundManager;
 class ResourceManager;
@@ -41,6 +41,8 @@ class ResourceManager;
 
 namespace Behaviors
 {
+	class Health;
+
 	enum PlayerState
 	{
 		standing,
@@ -154,6 +156,7 @@ namespace Behaviors
 		Sprite* sprite;
 		Animation* animation;
 		ColliderRectangle* colliderRect;
+		Health* health;
 
 		//sound
 		float footstepInterval;
@@ -164,6 +167,7 @@ namespace Behaviors
 		bool onGround;
 		bool jumping;
 
+		SpriteText* healthDisplay;
 		PlayerState playerState;
 		SoundManager* soundManager;
 		ResourceManager* resourceManager;
