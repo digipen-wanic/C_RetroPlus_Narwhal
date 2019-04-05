@@ -14,9 +14,13 @@
 #include "stdafx.h"
 #include "Component.h" // base class
 #include "DoorBehavior.h"
+#include "Space.h"
+
 #include <Transform.h>
 #include <Sprite.h>
 #include <Animation.h>
+#include <GameObject.h>
+#include <ResourceManager.h>
 #include <GameObject.h>
 #include <Collider.h>
 #include <Animation.h>
@@ -51,9 +55,14 @@ namespace Behaviors
 	// Initialize data for this object.
 	void DoorBehavior::Initialize()
 	{
+
 		sprite = GetOwner()->GetComponent<Sprite>();
+		resourceManager = &GetOwner()->GetSpace()->GetResourceManager();
+		animation = GetOwner()->GetComponent<Animation>();
 
 		static_cast<Collider*>(GetOwner()->GetComponent("Collider"))->SetCollisionHandler(DoorCollisionHandler);
+		sprite->SetSpriteSource(resourceManager->GetSpriteSource("DoorClosed"));
+
 	}
 
 	// Update function for this component.
@@ -62,6 +71,33 @@ namespace Behaviors
 	void DoorBehavior::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
+		if (open)
+		{
+			if (animation->IsDone())
+			{
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("DoorOpened"));
+				sprite->SetMesh(resourceManager->GetMesh("DoorOpened"));
+			}
+			if (timer >= doorCloseTime)
+			{
+				open = false;
+				std::cout << "closed";
+				timer = 0.0f;
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("DoorClosing"));
+				sprite->SetMesh(resourceManager->GetMesh("DoorClosing"));
+				animation->Play(0.07f, false);
+			}
+			else
+				timer += dt;
+		}
+		else
+		{
+			if (animation->IsDone())
+			{
+				sprite->SetSpriteSource(resourceManager->GetSpriteSource("DoorClosed"));
+				sprite->SetMesh(resourceManager->GetMesh("DoorClosed"));
+			}
+		}
 	}
 	void DoorBehavior::TransportToLevel()
 	{
@@ -79,16 +115,20 @@ namespace Behaviors
 			if (!object.GetComponent<DoorBehavior>()->open)
 			{
 				object.GetComponent<DoorBehavior>()->open = true;
+				std::cout << "open";
+				object.GetComponent<Sprite>()->SetSpriteSource(object.GetComponent<DoorBehavior>()->resourceManager->GetSpriteSource("DoorOpening"));
+				object.GetComponent<Sprite>()->SetMesh(object.GetComponent<DoorBehavior>()->resourceManager->GetMesh("DoorOpening"));
+				object.GetComponent<DoorBehavior>()->animation->Play(0.07f, false);
 			}
 		}
-		if (other.GetName() == "Samus")
+		if (other.GetName() == "Samus" && other.GetComponent<Animation>()->IsDone() )
 		{
 			if (object.GetComponent<DoorBehavior>()->open == true)
 			{
 				object.GetComponent<DoorBehavior>()->TransportToLevel();
 			}
 		}
-		if(other.GetName() == "Samus")
+		if(other.GetName() == "Samus" && object.GetComponent<DoorBehavior>()->open != true)
 			other.GetComponent<Transform>()->SetTranslation(Vector2D(object.GetComponent<Transform>()->GetTranslation().x - .5f * (object.GetComponent<Transform>()->GetScale().x + .5f * (other.GetComponent<Transform>()->GetScale().x)), other.GetComponent<Transform>()->GetTranslation().y));
 	}
 

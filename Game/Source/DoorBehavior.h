@@ -24,6 +24,8 @@
 //------------------------------------------------------------------------------
 
 class Sprite;
+class ResourceManager;
+class Animation;
 
 //------------------------------------------------------------------------------
 // Public Structures:
@@ -71,7 +73,7 @@ namespace Behaviors
 
 		// Components
 		Sprite* sprite;
-
+		Animation* animation;
 		// Properties
 		float doorOpenTime;
 		float doorCloseTime;
@@ -79,5 +81,7 @@ namespace Behaviors
 		// Other variables
 		float timer;
 		bool open;
+		ResourceManager* resourceManager;
+
 	};
 }
