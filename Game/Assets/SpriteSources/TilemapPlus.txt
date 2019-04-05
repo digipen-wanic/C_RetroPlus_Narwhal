@@ -1,0 +1,8 @@
+TilemapPlus
+{
+	numRows : 4
+	numCols : 3
+	frameCount : 1
+	frameStart : 0
+	texture : TilemapPlus.png
+}

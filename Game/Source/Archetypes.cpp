@@ -111,7 +111,7 @@ GameObject* Archetypes::CreateSamusBulletArchetype(Mesh* mesh, SpriteSource* spr
 {
 	//initilize all components
 	Transform* transform = new Transform(0.0f, 0.0f);
-	transform->SetScale(Vector2D(50.0f, 50.0f));
+	transform->SetScale(Vector2D(25.0f, 25.0f));
 
 	Sprite* sprite = new Sprite();
 	sprite->SetMesh(mesh);

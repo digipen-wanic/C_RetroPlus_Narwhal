@@ -1,0 +1,8 @@
+SamusJumpRoll
+{
+  numRows : 2
+  numCols : 3
+  frameCount : 4
+  frameStart : 0
+  texture : SamusJumpPlus.png
+}

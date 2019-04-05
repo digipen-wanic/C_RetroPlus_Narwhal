@@ -29,6 +29,7 @@
 //#include "Level1.h"
 //#include "Level2.h"
 #include "MainLevel.h"
+#include "plusLevel.h"
 #include "StartScreen.h"
 
 //------------------------------------------------------------------------------
@@ -54,7 +55,7 @@ int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prevInstance, _In
 	Space* space = new Space("GameSpace");
 
 	// Set initial level to the second level.
-	space->SetLevel(new Levels::StartScreen());
+	space->SetLevel(new Levels::PlusLevel());
 
 	// Add additional modules to engine
 	Engine::GetInstance().AddModule(space);

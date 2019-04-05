@@ -1,14 +1,14 @@
 //==================================================================-
 /*
-/file   MainLevel.cpp
-/author Nicole Smith
+/file   PlusLevel.cpp
+/author Jakob McFarland
 /date   3/27/19
 */
 //==================================================================-
 
 #include "stdafx.h"
 #include "Level2.h"
-#include "MainLevel.h"
+#include "PlusLevel.h"
 #include "GameObjectFactory.h"
 #include "Level1.h"
 #include "Level3.h"
@@ -39,15 +39,15 @@ namespace Levels
 	//==================================================================-
 
 	// Creates an instance of Level 2.
-	MainLevel::MainLevel()
-		: Level("MainLevel"), columnsMap(3), rowsMap(4), isDone(false), isPlaying(false)
+	PlusLevel::PlusLevel()
+		: Level("PlusLevel"), columnsMap(3), rowsMap(4), isDone(false), isPlaying(false)
 	{
 	}
 
 	// Load the resources associated with Level 2.
-	void MainLevel::Load()
+	void PlusLevel::Load()
 	{
-		std::cout << "MainLevel::Load" << std::endl;
+		std::cout << "PlusLevel::Load" << std::endl;
 
 		//graphics
 		samusIdleMesh = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
@@ -64,17 +64,17 @@ namespace Levels
 		samusStandingMesh = CreateQuadMesh(Vector2D(1.0f / 12.0f, 1.0f / 7.0f), Vector2D(0.5, 0.5));
 
 		ResourceManager& resourceManager = GetSpace()->GetResourceManager();
-		samusStanding = resourceManager.GetSpriteSource("SamusStanding");
-		resourceManager.GetSpriteSource("SamusIdle");
-		resourceManager.GetSpriteSource("SamusIdleUp");
-		resourceManager.GetSpriteSource("SamusRun");
-		resourceManager.GetSpriteSource("SamusRunUp");
-		resourceManager.GetSpriteSource("SamusRunShoot");
-		resourceManager.GetSpriteSource("SamusJump");
-		resourceManager.GetSpriteSource("SamusJumpRoll");
-		resourceManager.GetSpriteSource("SamusRoll");
+		samusStanding = resourceManager.GetSpriteSource("SamusStandingPlus");
+		resourceManager.GetSpriteSource("SamusIdlePlus");
+		resourceManager.GetSpriteSource("SamusIdleUpPlus");
+		resourceManager.GetSpriteSource("SamusRunPlus");
+		resourceManager.GetSpriteSource("SamusRunUpPlus");
+		resourceManager.GetSpriteSource("SamusRunShootPlus");
+		resourceManager.GetSpriteSource("SamusJumpPlus");
+		resourceManager.GetSpriteSource("SamusJumpRollPlus");
+		resourceManager.GetSpriteSource("SamusRollPlus");
 
-		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
+		samusBullet = resourceManager.GetSpriteSource("SamusBulletPlus");
 		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
 		batSpriteSource = resourceManager.GetSpriteSource("Scree");
 		SpriteSource* healthSpriteSource = resourceManager.GetSpriteSource("Health");
@@ -114,7 +114,7 @@ namespace Levels
 			std::cout << "Error loading map!" << std::endl;
 		}
 
-		textureMap = Texture::CreateTextureFromFile("TilemapMetroid.png");
+		textureMap = Texture::CreateTextureFromFile("TilemapPlus.png");
 		spriteSourceMap = new SpriteSource(textureMap, "Map", columnsMap, rowsMap);
 		meshMap = CreateQuadMesh(Vector2D(1.0f / columnsMap, 1.0f / rowsMap), Vector2D(0.5, 0.5));
 	
@@ -129,10 +129,10 @@ namespace Levels
 		soundManager->AddEffect("LowHealthFX.wav");
 		soundManager->AddEffect("PauseFX2.wav");
 		soundManager->AddEffect("PlayerDeathFX1.wav");
-		soundManager->AddEffect("PlayerFire.wav");
+		soundManager->AddEffect("PlayerFirePlusUp.wav");
 		soundManager->AddEffect("PlayerHitFX.wav");
 		soundManager->AddEffect("PlayerJump.wav");
-		soundManager->AddEffect("PlayerRun2FX.wav");
+		soundManager->AddEffect("PlayerRunPlusUp.wav");
 
 		soundManager->SetEffectsVolume(0.3f);
 
@@ -144,7 +144,7 @@ namespace Levels
 	}
 
 	// Initialize the memory associated with Level 2.
-	void MainLevel::Initialize()
+	void PlusLevel::Initialize()
 	{
 		std::cout << "Level2::Initialize" << std::endl;
 
@@ -206,7 +206,7 @@ namespace Levels
 	// Update Level 2.
 	// Params:
 	//	 dt = Change in time (in seconds) since the last game loop.
-	void MainLevel::Update(float dt)
+	void PlusLevel::Update(float dt)
 	{
 		UNREFERENCED_PARAMETER(dt);
 
@@ -215,7 +215,7 @@ namespace Levels
 			effectChannel->isPlaying(&isDone);
 			if (isDone != true)
 			{
-				musicChannel = soundManager->PlaySound("LevelMusicMP3");
+				musicChannel = soundManager->PlaySound("LevelMusicPlusUpMP3");
 				musicChannel->setVolume(0.8f);
 				isPlaying = true;
 				std::cout << "play music" << std::endl;
@@ -243,19 +243,18 @@ namespace Levels
 			
 			GetSpace()->RestartLevel();
 		}
-
 	}
 
-	void MainLevel::Shutdown()
+	void PlusLevel::Shutdown()
 	{
 		musicChannel->stop();
 		isPlaying = false;
 	}
 
 	// Unload the resources associated with Level 2.
-	void MainLevel::Unload()
+	void PlusLevel::Unload()
 	{
-		std::cout << "MainLevel::Unload" << std::endl;
+		std::cout << "PlusLevel::Unload" << std::endl;
 
 		//unload sounds
 		soundManager->Shutdown();
