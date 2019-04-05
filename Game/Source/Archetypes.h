@@ -25,6 +25,7 @@ class GameObject;
 class SpriteSource;
 class Mesh;
 class Tilemap;
+class Camera;
 
 //------------------------------------------------------------------------------
 // Public Structures:
@@ -161,6 +162,14 @@ namespace Archetypes
 	// Returns:
 	//   A pointer to the newly constructed game object.
 	GameObject* CreateDoorObject(Mesh * mesh, SpriteSource * spriteSource);
+
+	// Create UIText object
+	// Params:
+	//   mesh = The mesh to use for the sprite.
+	//   spriteSource = The sprite source to use for the sprite.
+	// Returns:
+	//   A pointer to the newly constructed game object.
+	GameObject* CreatUIText(Mesh * mesh, SpriteSource * spriteSource, Camera* camera);
 }
 
 //----------------------------------------------------------------------------
