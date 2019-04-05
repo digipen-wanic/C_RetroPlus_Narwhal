@@ -57,11 +57,14 @@ namespace Levels
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
 		batMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
+
+		Mesh* healthMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
+
 		doorClosed = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
 		doorOpening = CreateQuadMesh(Vector2D(0.5f,0.5f), Vector2D(0.5, 0.5));
 		doorClosing = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		doorOpened = CreateQuadMesh(Vector2D(1.0f,1.0f), Vector2D(0.5, 0.5));
-		Mesh* healthMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
+
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		samusStandingMesh = CreateQuadMesh(Vector2D(1.0f / 12.0f, 1.0f / 7.0f), Vector2D(0.5, 0.5));
@@ -85,7 +88,7 @@ namespace Levels
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
 		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
 		batSpriteSource = resourceManager.GetSpriteSource("Scree");
-		SpriteSource* healthSpriteSource = resourceManager.GetSpriteSource("Scree");
+		SpriteSource* healthSpriteSource = resourceManager.GetSpriteSource("Health");
 
 		resourceManager.AddMesh("SamusStanding", samusStandingMesh);
 		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
@@ -201,6 +204,14 @@ namespace Levels
 		gameObjectManager.AddObject(*bat1);
 		bat1->GetComponent<Transform>()->SetTranslation(Vector2D(4350, 75));
 
+		GameObject* bat2 = Archetypes::CreateBat(batMesh, batSpriteSource, samus);
+		gameObjectManager.AddObject(*bat2);
+		bat2->GetComponent<Transform>()->SetTranslation(Vector2D(5350, 75));
+
+		GameObject* bat3 = Archetypes::CreateBat(batMesh, batSpriteSource, samus);
+		gameObjectManager.AddObject(*bat3);
+		bat3->GetComponent<Transform>()->SetTranslation(Vector2D(5550, 75));
+
 		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
 
@@ -210,8 +221,7 @@ namespace Levels
 		//musicChannel = soundManager->PlaySound("");
 		effectChannel = soundManager->PlaySound("StartMusic4.wav");
 		effectChannel->setVolume(0.3f);
-		
-
+	
 	}
 
 	// Update Level 2.
