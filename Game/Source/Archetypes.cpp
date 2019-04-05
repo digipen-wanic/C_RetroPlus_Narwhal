@@ -667,7 +667,7 @@ GameObject* Archetypes::CreatUIText(Mesh * mesh, SpriteSource * spriteSource, Ca
 
 	return text;
 }
-
+	
 /*
 // Create a collectable object
 // Params:

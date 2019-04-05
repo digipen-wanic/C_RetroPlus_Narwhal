@@ -1,16 +1,5 @@
 ﻿  Archetypes.cpp
-  DoorBehavior.cpp
-  Main.cpp
-  MainLevel.cpp
-  StartScreen.cpp
-  Generating Code...
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  CS230Project4.vcxproj -> C:\Users\bills\Documents\GitHub\C_RetroPlus_Narwhal\Game\\x64\Debug\BetaFramework.exe
-  glfw\lib\x64\glfw3.dll
-  1 File(s) copied
-  fmod\lib\fmodL64.dll
-  1 File(s) copied
-  fmod\lib\fmodstudioL64.dll
-  1 File(s) copied
-  LowLevelAPI\lib\BetaLow_x64_D.pdb
-  1 File(s) copied
+Archetypes.obj : error LNK2019: unresolved external symbol "public: __cdecl SpriteText::SpriteText(void)" (??0SpriteText@@QEAA@XZ) referenced in function "class GameObject * __cdecl Archetypes::CreatUIText(class Mesh *,class SpriteSource *,class Camera *)" (?CreatUIText@Archetypes@@YAPEAVGameObject@@PEAVMesh@@PEAVSpriteSource@@PEAVCamera@@@Z)
+MainLevel.obj : error LNK2019: unresolved external symbol "public: void __cdecl SpriteText::SetString(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?SetString@SpriteText@@QEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) referenced in function "public: virtual void __cdecl Levels::MainLevel::Initialize(void)" (?Initialize@MainLevel@Levels@@UEAAXXZ)
+C:\Users\bills\Documents\GitHub\C_RetroPlus_Narwhal\Game\\x64\Debug\BetaFramework.exe : fatal error LNK1120: 2 unresolved externals
