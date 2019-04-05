@@ -41,6 +41,8 @@ file Archetypes.h.
 #include "Transform.h"
 #include "TileMap.h"
 #include <Animation.h>
+#include <SpriteText.h>
+#include <Camera.h>
 
 //metroid
 #include "PlayerController.h"
@@ -627,6 +629,30 @@ GameObject* Archetypes::CreateDoorObject(Mesh * mesh, SpriteSource * spriteSourc
 	return door;
 }
 
+
+// Create Text object
+// Params:
+//   mesh = The mesh to use for the sprite.
+//   spriteSource = The sprite source to use for the sprite.
+// Returns:
+//   A pointer to the newly constructed game object.
+GameObject* Archetypes::CreatUIText(Mesh * mesh, SpriteSource * spriteSource, Camera* camera)
+{
+	//initilize all components
+	Transform* transform = new Transform(0.0f, 0.0f);
+	transform->SetScale(Vector2D(200.0f, 200.0f));
+	SpriteText* spriteText = new SpriteText();
+	spriteText->SetCamera(*camera);
+	spriteText->SetMesh(mesh);
+	spriteText->SetSpriteSource(spriteSource);
+
+	//create object add all the components
+	GameObject* text = new GameObject("Text");
+	text->AddComponent(transform);
+	text->AddComponent(spriteText);
+
+	return text;
+}
 
 /*
 // Create a collectable object

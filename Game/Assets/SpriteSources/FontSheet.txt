@@ -1,8 +1,8 @@
 FontSheet
 {
-	numRows : 6
-	numCols : 16
-	frameCount : 1
+	numRows : 7
+	numCols : 6
+	frameCount : 37
 	frameStart : 0
-	texture : FontSheet.png
+	texture : Font.png
 }

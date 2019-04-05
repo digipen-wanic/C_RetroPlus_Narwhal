@@ -31,6 +31,7 @@
 #include "CameraFollow.h"
 #include <Parser.h>
 #include "PlayerController.h"
+#include <SpriteText.h>
 
 namespace Levels
 {
@@ -51,7 +52,7 @@ namespace Levels
 
 		//graphics
 		samusIdleMesh = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
-
+		textMesh = CreateQuadMesh(Vector2D(1.0f / 6.0f, 1.0f / 7.0f), Vector2D(0.5f, 0.5f));
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
@@ -72,6 +73,7 @@ namespace Levels
 		resourceManager.GetSpriteSource("SamusJump");
 		resourceManager.GetSpriteSource("SamusJumpRoll");
 		resourceManager.GetSpriteSource("SamusRoll");
+		textSprite = resourceManager.GetSpriteSource("FontSheet");
 
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
 		crawlerSpriteSource = resourceManager.GetSpriteSource("Crawler");
@@ -135,7 +137,7 @@ namespace Levels
 		Graphics::GetInstance().SetDepthEnabled(true);
 		Graphics::GetInstance().GetCurrentCamera().SetFOV(76.0f);
 		Graphics::GetInstance().GetCurrentCamera().SetTranslation(Vector2D(25.0f * 100.0f, 7.0f * -100.0f));
-
+		textCamera = new Camera();
 	}
 
 	// Initialize the memory associated with Level 2.
@@ -143,11 +145,15 @@ namespace Levels
 	{
 		std::cout << "Level2::Initialize" << std::endl;
 
+		GameObject* UItext = Archetypes::CreatUIText(textMesh, textSprite, textCamera);
+		UItext->GetComponent<SpriteText>()->SetString("EN.30");
+
 		GameObjectManager& gameObjectManager = GetSpace()->GetObjectManager();
 
 		GameObject* tileMapObject = Archetypes::CreateTilemapObject(meshMap, spriteSourceMap, dataMap);
 
 		gameObjectManager.AddObject( *tileMapObject );
+		
 
 		GameObject* samus = Archetypes::CreateSamus(samusStandingMesh, samusStanding);
 
@@ -179,6 +185,8 @@ namespace Levels
 
 		//GameObjectFactory::GetInstance().CreateObject("Monkey", meshMonkey, spriteSourceMonkey);
 		samus->GetComponent<Behaviors::CameraFollow>()->SetTileMap(dataMap);
+
+		gameObjectManager.AddObject(*UItext);
 
 		//play music
 		//musicChannel = soundManager->PlaySound("");
@@ -253,5 +261,8 @@ namespace Levels
 		delete textureMap;
 		delete spriteSourceMap;
 		delete doorMesh;
+
+		delete textMesh;
+		delete textCamera;
 	}
 }

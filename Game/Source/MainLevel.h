@@ -29,6 +29,7 @@ class SpriteSource;
 class Mesh;
 class GameObject;
 class Tilemap;
+class Camera;
 
 //------------------------------------------------------------------------------
 // Public Structures:
@@ -103,6 +104,11 @@ namespace Levels
 		FMOD::Channel* musicChannel;
 		bool isDone;
 		bool isPlaying;
+
+		//Text
+		Mesh* textMesh;
+		SpriteSource* textSprite;
+		Camera* textCamera;
 	};
 }
 

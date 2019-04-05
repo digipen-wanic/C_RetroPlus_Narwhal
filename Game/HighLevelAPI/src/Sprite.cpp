@@ -40,6 +40,7 @@
 Sprite::Sprite()
 	: Component("Sprite"), transform(nullptr), frameIndex(0), spriteSource(nullptr), mesh(nullptr), zDepth(0.0f)
 {
+	camera = &Graphics::GetInstance().GetDefaultCamera();
 }
 
 // Returns a dynamically allocated copy of the component.
@@ -102,6 +103,10 @@ void Sprite::Draw(const Vector2D& offset)
 	{
 		Graphics::GetInstance().SetTexture(nullptr);
 	}
+
+	Graphics::GetInstance().SetCurrentCamera(*camera);
+	if (camera != &Graphics::GetInstance().GetDefaultCamera())
+		std::cout << camera->GetTranslation() << std::endl;
 
 	// Set blend color
 	Graphics::GetInstance().SetSpriteBlendColor(color);
@@ -228,4 +233,10 @@ void Sprite::Deserialize(Parser& parser)
 
 	parser.ReadVariable("color", color);
 	parser.ReadVariable("zDepth", zDepth);
+}
+
+//Set camera to draw this sprite with
+void Sprite::SetCamera(Camera& newCamera)
+{
+	camera = &newCamera;
 }
