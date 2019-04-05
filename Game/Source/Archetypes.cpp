@@ -623,7 +623,7 @@ GameObject* Archetypes::CreateDoorObject(Mesh * mesh, SpriteSource * spriteSourc
 {
 	//initilize all components
 	Transform* transform = new Transform(71.0f * 100.0f, -2.0f * 100.0f);
-	transform->SetScale(Vector2D(100.0f, 200.0f));
+	transform->SetScale(Vector2D(200.0f, 300.0f));
 
 	Sprite* sprite = new Sprite();
 	sprite->SetMesh(mesh);
@@ -631,7 +631,7 @@ GameObject* Archetypes::CreateDoorObject(Mesh * mesh, SpriteSource * spriteSourc
 	Animation* animation = new Animation();
 	ColliderRectangle* collider = new ColliderRectangle();
 	collider->SetExtents(transform->GetScale() * 0.5f);
-	Behaviors::DoorBehavior* doorBehavior = new Behaviors::DoorBehavior();
+	Behaviors::DoorBehavior* doorBehavior = new Behaviors::DoorBehavior(0.25f,5.0f);
 	//create object add all the components
 	GameObject* door = new GameObject("Door");
 	door->AddComponent(transform);

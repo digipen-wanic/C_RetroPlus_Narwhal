@@ -57,8 +57,13 @@ namespace Levels
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
 		crawlerMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
 		batMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
-		doorMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
+
 		Mesh* healthMesh = CreateQuadMesh(Vector2D(1.0f, 0.5f), Vector2D(0.5, 0.5));
+
+		doorClosed = CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5));
+		doorOpening = CreateQuadMesh(Vector2D(0.5f,0.5f), Vector2D(0.5, 0.5));
+		doorClosing = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
+		doorOpened = CreateQuadMesh(Vector2D(1.0f,1.0f), Vector2D(0.5, 0.5));
 
 		//samusRunMesh = CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5));
 		//samusJumpRollMesh = CreateQuadMesh(Vector2D(0.33f, 0.5f), Vector2D(0.5, 0.5));
@@ -74,6 +79,10 @@ namespace Levels
 		resourceManager.GetSpriteSource("SamusJump");
 		resourceManager.GetSpriteSource("SamusJumpRoll");
 		resourceManager.GetSpriteSource("SamusRoll");
+		resourceManager.GetSpriteSource("DoorClosed");
+		resourceManager.GetSpriteSource("DoorOpening");
+		resourceManager.GetSpriteSource("DoorOpened");
+		resourceManager.GetSpriteSource("DoorClosing");
 		textSprite = resourceManager.GetSpriteSource("FontSheet");
 
 		samusBullet = resourceManager.GetSpriteSource("SamusBullet");
@@ -83,6 +92,11 @@ namespace Levels
 
 		resourceManager.AddMesh("SamusStanding", samusStandingMesh);
 		resourceManager.AddMesh("SamusIdle", samusIdleMesh);
+		resourceManager.AddMesh("DoorClosed", doorClosed);
+		resourceManager.AddMesh("DoorOpening", doorOpening);
+		resourceManager.AddMesh("DoorOpened", doorOpened);
+		resourceManager.AddMesh("DoorClosing", doorClosing);
+
 		resourceManager.AddMesh("SamusIdleUp", CreateQuadMesh(Vector2D(1.0f, 1.0f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusRun", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
 		resourceManager.AddMesh("SamusRunUp", CreateQuadMesh(Vector2D(0.5f, 0.5f), Vector2D(0.5, 0.5)));
@@ -178,13 +192,13 @@ namespace Levels
 		GetSpace()->GetObjectManager().AddObject(*crawler3);
 		crawler3->GetComponent<Transform>()->SetTranslation(Vector2D(6300, 50));
 
-		GameObject* crawler4 = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject, 1);
+		GameObject* crawler4 = Archetypes::CreateCrawler(crawlerMesh, crawlerSpriteSource, tileMapObject, 2);
 		GetSpace()->GetObjectManager().AddObject(*crawler4);
 		crawler4->GetComponent<Transform>()->SetTranslation(Vector2D(6250, -550));
 
-		GameObject* door = Archetypes::CreateDoorObject(doorMesh, crawlerSpriteSource);
+		GameObject* door = Archetypes::CreateDoorObject(doorClosed, crawlerSpriteSource);
 		GetSpace()->GetObjectManager().AddObject(*door);
-		door->GetComponent<Transform>()->SetTranslation(Vector2D(6400, -300));
+		door->GetComponent<Transform>()->SetTranslation(Vector2D(6400, -250));
 
 		GameObject* bat1 = Archetypes::CreateBat(batMesh, batSpriteSource, samus);
 		gameObjectManager.AddObject(*bat1);
@@ -207,8 +221,7 @@ namespace Levels
 		//musicChannel = soundManager->PlaySound("");
 		effectChannel = soundManager->PlaySound("StartMusic4.wav");
 		effectChannel->setVolume(0.3f);
-		
-
+	
 	}
 
 	// Update Level 2.
@@ -275,7 +288,11 @@ namespace Levels
 		delete meshMap;
 		delete textureMap;
 		delete spriteSourceMap;
-		delete doorMesh;
+
+		delete doorClosed;
+		delete doorClosing;
+		delete doorOpened;
+		delete doorOpening;
 
 		delete textMesh;
 		delete textCamera;

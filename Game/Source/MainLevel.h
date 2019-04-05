@@ -86,7 +86,10 @@ namespace Levels
 		Mesh* samusStandingMesh;
 		Mesh* crawlerMesh;
 
-		Mesh* doorMesh;
+		Mesh* doorClosed;
+		Mesh* doorOpening;
+		Mesh* doorOpened;
+		Mesh* doorClosing;
 
 		Mesh* batMesh;
 
